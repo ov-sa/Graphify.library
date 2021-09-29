@@ -1,0 +1,44 @@
+<meta>
+
+    <info author="OvileAmriam + Ren712" name="Graphify Library" type="Library" version="1.0.0"/>
+	<min_mta_version client="1.5.8"/>
+
+	<!-- Exports -->
+    <script src="exports/client.lua" type="client" cache="false"/>
+
+    <!-- Settings & Utilities -->
+    <script src="utilities/client.lua" type="client" cache="false"/>
+    <script src="settings/client.lua" type="client"/>
+
+    <!-- Files: Shaders -->
+    <file src="files/shaders/utilities/mta-helper.fx"/>
+    <script src="files/shaders/initial.lua" type="client" cache="false"/>
+    <script src="files/shaders/utilities/z_buffer.lua" type="client" cache="false"/>
+    <script src="files/shaders/world/rt_input.lua" type="client" cache="false"/>
+
+    <!-- Handlers -->
+    <script src="handlers/initial.lua" type="client" cache="false"/>
+    <script src="handlers/loader.lua" type="client" cache="false"/>
+
+    <!-- Exports -->
+	<export function="getRTs" type="client"/>
+
+	<!--script src="c_main.lua" type="client"/>
+	<script src="c_common.lua" type="client"/>
+	
+	<file src="fx/RTinput_car_paint.fx"/>
+	<file src="fx/RTinput_world_refAnim.fx"/>
+	<file src="fx/RTinput_world_emissive.fx"/>
+	<file src="fx/RTinput_world_noZWrite.fx"/>
+	<file src="fx/RTinput_water.fx"/>
+	<file src="fx/RTinput_water_detail.fx"/>
+	<file src="fx/RTinput_grass.fx"/>
+	<file src="fx/RTinput_ped.fx"/>
+	<file src="fx/RTinput_ped_normal.fx"/>
+	<file src="fx/RTinput_ped_noVS.fx"/>
+
+	<export function="passGTASAObjectNormals" type="client"/>
+	<export function="applyNormalToPedTexture" type="client"/-->
+
+
+</meta>
