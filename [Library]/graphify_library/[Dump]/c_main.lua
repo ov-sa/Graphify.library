@@ -1,9 +1,6 @@
 
-local scx, scy = guiGetScreenSize()
 local enablePedVS = true
-isFXSupported = (tonumber(dxGetStatus().VideoCardNumRenderTargets)> 1 and tonumber(dxGetStatus().VideoCardPSVersion)> 2 
-	and tostring(dxGetStatus().DepthBufferFormat) ~= "unknown")
-	
+
 ---------------------------------------------------------------------------------------------------
 -- shader lists
 ---------------------------------------------------------------------------------------------------
@@ -51,19 +48,19 @@ function functionTable.enableCore()
 			functionTable.syncRTWithShader(thisPart)
 		end
         engineApplyShaderToWorldTexture(shaderTable.SHWorld, "*")
-		functionTable.removeShaderFromList(shaderTable.SHWorld, DEFAULT_TEXTURE_CONFIG.BLACKLIST)
-		functionTable.removeShaderFromList(shaderTable.SHWorld, textureListTable.ZDisable)
-		functionTable.applyShaderToList(shaderTable.SHWorld, textureListTable.ApplyList)
+		setShaderTextureList(shaderTable.SHWorld, DEFAULT_TEXTURE_CONFIG.BLACKLIST, false)
+		setShaderTextureList(shaderTable.SHWorld, textureListTable.ZDisable, false)
+		setShaderTextureList(shaderTable.SHWorld, textureListTable.ApplyList, true)
         --TODO: MODIFIED
         functionTable.enableEmissive()
         ----------
 
-		functionTable.applyShaderToList(shaderTable.SHWorldRefAnim, textureListTable.ApplySpecial)
+		setShaderTextureList(shaderTable.SHWorldRefAnim, textureListTable.ApplySpecial, true)
 	
-		functionTable.applyShaderToList(shaderTable.SHWorldNoZWrite, textureListTable.ZDisableApply)
+		setShaderTextureList(shaderTable.SHWorldNoZWrite, textureListTable.ZDisableApply, true)
 		dxSetShaderValue(shaderTable.SHWorldNoZWrite, "sWorldZBias", 0.005 )		
 
-		functionTable.applyShaderToList(shaderTable.SHVehPaint, textureListTable.TextureGrun)		
+		setShaderTextureList(shaderTable.SHVehPaint, textureListTable.TextureGrun, true)		
 		engineApplyShaderToWorldTexture(shaderTable.SHVehPaint, "vehiclegeneric256")
 		engineApplyShaderToWorldTexture(shaderTable.SHVehPaint, "*")
 		engineRemoveShaderFromWorldTexture(shaderTable.SHVehPaint, "unnamed")
@@ -76,7 +73,7 @@ function functionTable.enableCore()
 		engineApplyShaderToWorldTexture(shaderTable.SHWaterWake, "waterwake")
 		dxSetShaderValue(shaderTable.SHWaterWake, "sWorldZBias", 0.45 )
 		
-		functionTable.applyShaderToList(shaderTable.SHWaterDetail, textureListTable.Detail)
+		setShaderTextureList(shaderTable.SHWaterDetail, textureListTable.Detail, true)
 		dxSetShaderValue(shaderTable.SHWaterDetail, "sWorldZBias", 0.01 )
 		isDREnabled = true
 	end
@@ -131,17 +128,5 @@ function functionTable.createPedNormalShader(texName, normalTex, lerpNormal, thi
 		return pedNormalShader
 	else 
 		return false
-	end
-end
-
-function functionTable.applyShaderToList(myShader, myList)
-	for _,applyMatch in ipairs(myList) do
-		engineApplyShaderToWorldTexture(myShader, applyMatch)	
-	end
-end
-
-function functionTable.removeShaderFromList(myShader, myList)
-	for _,removeMatch in ipairs(myList) do
-		engineRemoveShaderFromWorldTexture(myShader, removeMatch)	
 	end
 end

@@ -71,7 +71,7 @@ end
 
 function setShaderTextureList(shader, list, state)
 
-    if not isGraphifySupported or not shader or not list then return false end
+    if not isGraphifySupported or not shader or not list or (state ~= true and state ~= false) then return false end
 
     local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
     for i, j in imports.ipairs(list) do
