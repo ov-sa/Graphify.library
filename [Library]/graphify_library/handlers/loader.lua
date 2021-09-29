@@ -40,6 +40,7 @@ createdShaders = {
     zBuffer = {
         rwData = AVAILABLE_SHADERS["Utilities"]["Z_Buffer"],
         syncRT = false,
+        controlNormals = false,
         parameters = {
             ["viewportSize"] = {CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2]}
         }

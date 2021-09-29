@@ -145,16 +145,6 @@ function functionTable.createPedNormalShader(texName, normalTex, lerpNormal, thi
 	end
 end
 
-function functionTable.disableNormals(idisableNormals)
-	if shaderTable.SHWorld and shaderTable.SHWorldNoZWrite and shaderTable.SHWorldRefAnim then
-		dxSetShaderValue( shaderTable.SHWorld, "disableNormals", idisableNormals )
-		dxSetShaderValue( shaderTable.SHWorldRefAnim, "disableNormals", idisableNormals )
-		dxSetShaderValue( shaderTable.SHWorldNoZWrite, "disableNormals", idisableNormals )
-		return true
-	end
-	return false
-end
-
 function functionTable.applyShaderToList(myShader, myList)
 	for _,applyMatch in ipairs(myList) do
 		engineApplyShaderToWorldTexture(myShader, applyMatch)	

@@ -3,12 +3,12 @@
     <info author="OvileAmriam + Ren712" name="Graphify Library" type="Library" version="1.0.0"/>
 	<min_mta_version client="1.5.8"/>
 
-	<!-- Exports -->
-    <script src="exports/client.lua" type="client" cache="false"/>
-
     <!-- Settings & Utilities -->
     <script src="utilities/client.lua" type="client" cache="false"/>
     <script src="settings/client.lua" type="client"/>
+
+	<!-- Exports -->
+    <script src="exports/client.lua" type="client" cache="false"/>
 
     <!-- Files: Shaders -->
     <file src="files/shaders/utilities/mta-helper.fx"/>
@@ -22,6 +22,7 @@
 
     <!-- Exports -->
 	<export function="getRTs" type="client"/>
+	<export function="setNormalGeneratorState" type="client"/>
 
 	<!--script src="c_main.lua" type="client"/>
 	<script src="c_common.lua" type="client"/>
@@ -37,7 +38,6 @@
 	<file src="fx/RTinput_ped_normal.fx"/>
 	<file src="fx/RTinput_ped_noVS.fx"/>
 
-	<export function="passGTASAObjectNormals" type="client"/>
 	<export function="applyNormalToPedTexture" type="client"/-->
 
 

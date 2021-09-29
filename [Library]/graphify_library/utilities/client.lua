@@ -34,11 +34,29 @@ imports.loadstring(exports.beautify_library:fetchImports())()
 
 function syncRTWithShader(shader)
 
-    if not shader then return false end
+    if not isGraphifySupported or not shader then return false end
 
     for i, j in imports.pairs(createdRTs) do
         imports.dxSetShaderValue(shader, i, j)
     end
     return true
+
+end
+
+
+------------------------------------
+--[[ Function: Disables Normals ]]--
+------------------------------------
+
+function disableNormals(state)
+
+    if not isGraphifySupported then return false end
+
+    for i, j in imports.pairs(createdShaders) do
+        if j.shader and j.controlNormals then
+            imports.dxSetShaderValue(j.shader, "disableNormals", state)
+        end
+    end
+	return true
 
 end

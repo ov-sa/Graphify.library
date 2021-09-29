@@ -39,17 +39,13 @@ imports.addEvent("onGraphifyLoad", false)
 imports.addEvent("onGraphifyUnLoad", false)
 
 imports.addEventHandler("onClientResourceStart", resource, function()
-
     if isGraphifySupported then
 		imports.triggerEvent("onGraphifyLoad", resource)
     end
-
 end)
 
 imports.addEventHandler("onClientResourceStop", resource, function()
-
     if isGraphifySupported then
         imports.triggerEvent("onGraphifyUnLoad", resource)
     end
-
 end)

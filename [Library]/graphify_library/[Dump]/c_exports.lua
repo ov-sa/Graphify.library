@@ -2,14 +2,6 @@
 -- c_exports.lua
 --
 
-function passGTASAObjectNormals(isPassNormals)
-	if shaderTable.SHWorld and shaderTable.SHWorldNoZWrite then
-		return functionTable.disableNormals(not isPassNormals)
-	else
-		return false
-	end
-end
-
 function applyNormalToPedTexture(texName,normalTex,...)
 	assert(type(texName) == "string", "Expected string at argument 1 , got "..type(texName))
     if normalTex ~= nil then
