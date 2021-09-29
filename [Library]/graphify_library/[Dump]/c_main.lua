@@ -8,7 +8,6 @@ if enablePedVS then pedShader = "fx/RTinput_ped.fx" else pedShader = "fx/RTinput
 shaderParams = { 
     --TODO: MOFIEID
     SHWorldEmissive = {"fx/RTinput_world_refAnimEmissive.fx", 0, 0, false, "world,object"},
-	SHGrass = {"fx/RTinput_grass.fx", 0, 0, false, "world"}, -- world (grass)
 	SHWorldNoZWrite = {"fx/RTinput_world_noZWrite.fx", 2, 0, false, "world,object,vehicle"}, -- world
 	SHWaterWake = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWaterDetail = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
@@ -58,7 +57,7 @@ function functionTable.enableCore()
 		engineRemoveShaderFromWorldTexture(shaderTable.SHVehPaint, "unnamed")
 
 		engineApplyShaderToWorldTexture(shaderTable.SHPed, "*")	
-		engineApplyShaderToWorldTexture(shaderTable.SHGrass, "tx*")
+        
 		engineApplyShaderToWorldTexture(shaderTable.SHWater, "water*")
 		engineRemoveShaderFromWorldTexture(shaderTable.SHWater, "waterwake")
 		
@@ -91,7 +90,6 @@ function functionTable.createWorldShaders()
 
         --TODO: MODIFIED
         shaderTable.SHWorldEmissive = dxCreateShader(unpack(shaderParams.SHWorldEmissive))
-		shaderTable.SHGrass = dxCreateShader(unpack(shaderParams.SHGrass))
 		shaderTable.SHWorldNoZWrite = dxCreateShader(unpack(shaderParams.SHWorldNoZWrite))
 		shaderTable.SHWaterWake = dxCreateShader(unpack(shaderParams.SHWaterWake))
 		shaderTable.SHWaterDetail = dxCreateShader(unpack(shaderParams.SHWaterDetail))

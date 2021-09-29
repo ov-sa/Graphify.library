@@ -33,9 +33,9 @@ local imports = {
 -------------------
 
 createdRTs = {
-    colorLayer = false,
-    normalLayer = false,
-    emissiveLayer = false
+
+    ["__SORT_ORDER__"] = {"colorLayer", "normalLayer", "emissiveLayer"}
+
 }
 
 createdShaders = {
@@ -46,6 +46,7 @@ createdShaders = {
         rwData = {AVAILABLE_SHADERS["Utilities"]["Z_Buffer"]},
         syncRT = false,
         controlNormals = false,
+        ambientSupport = false,
         parameters = {
             ["viewportSize"] = {CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2]}
         },
@@ -56,6 +57,7 @@ createdShaders = {
         rwData = {AVAILABLE_SHADERS["World"]["RT_Input"], 0, 0, false, "world,object"},
         syncRT = true,
         controlNormals = true,
+        ambientSupport = true,
         parameters = {},
         textureLists = {
             {
@@ -81,11 +83,26 @@ createdShaders = {
         rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Ref"], 1, 0, false, "world,object"},
         syncRT = true,
         controlNormals = true,
+        ambientSupport = false,
         parameters = {},
         textureLists = {
             {
                 state = true,
                 textureList = {"newaterfal1_256", "casinolit2_128", "casinolights6lit3_256", "casinolights1b_128n", "royaleroof01_64", "flmngo11_128", "flmngo05_256", "flmngo04_256"}
+            }
+        }
+    },
+
+    world_RT_Input_Grass = {
+        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Grass"], 0, 0, false, "world"},
+        syncRT = true,
+        controlNormals = false,
+        ambientSupport = true,
+        parameters = {},
+        textureLists = {
+            {
+                state = true,
+                textureList = {"tx*"}
             }
         }
     }
@@ -99,8 +116,8 @@ createdShaders = {
 
 imports.addEventHandler("onGraphifyLoad", root, function()
 
-    for i, j in imports.pairs(createdRTs) do
-        createdRTs[i] = imports.dxCreateRenderTarget(CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], false) 
+    for i, j in imports.ipairs(createdRTs["__SORT_ORDER__"]) do
+        createdRTs[j] = imports.dxCreateRenderTarget(CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], false)
     end
 
     for i, j in imports.ipairs(createdShaders["__SORT_ORDER__"]) do
@@ -122,8 +139,10 @@ imports.addEventHandler("onGraphifyLoad", root, function()
 
     imports.addEventHandler("onClientPreRender", root, function()
         imports.dxDrawMaterialPrimitive3D("trianglelist", createdShaders.zBuffer.shader, false, {-0.5, 0.5, 0, 0, 1}, {-0.5, -0.5, 0, 0, 0}, {0.5, 0.5, 0, 1, 1}, {0.5, -0.5, 0, 1, 0}, {0.5, 0.5, 0, 1, 1}, {-0.5, -0.5, 0, 0, 0})
-        for i, j in imports.pairs(createdRTs) do
-            imports.dxSetRenderTarget(j, true)
+        for i, j in imports.ipairs(createdRTs["__SORT_ORDER__"]) do
+            if createdRTs[j] then
+                imports.dxSetRenderTarget(createdRTs[j], true)
+            end
         end
         imports.dxSetRenderTarget()
     end, false, PRIORITY_LEVEL.RT_RENDER)
