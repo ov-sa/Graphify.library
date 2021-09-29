@@ -51,7 +51,7 @@ function functionTable.enableCore()
 			functionTable.syncRTWithShader(thisPart)
 		end
         engineApplyShaderToWorldTexture(shaderTable.SHWorld, "*")
-		functionTable.removeShaderFromList(shaderTable.SHWorld, textureListTable.RemoveList)
+		functionTable.removeShaderFromList(shaderTable.SHWorld, DEFAULT_TEXTURE_CONFIG.BLACKLIST)
 		functionTable.removeShaderFromList(shaderTable.SHWorld, textureListTable.ZDisable)
 		functionTable.applyShaderToList(shaderTable.SHWorld, textureListTable.ApplyList)
         --TODO: MODIFIED

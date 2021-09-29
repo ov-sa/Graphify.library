@@ -17,3 +17,12 @@
 PRIORITY_LEVEL = {
     RT_RENDER = "high+999"
 }
+
+DEFAULT_TEXTURE_CONFIG = {
+    BLACKLIST = {
+        "",	"unnamed", "fire*", "basketball2", "skybox_tex*", "font*", "radar*", "sitem16", "snipercrosshair",
+        "siterocket", "cameracrosshair", "*shad*", "coronastar", "coronamoon", "coronaringa", "coronaheadlightline",
+        "lunar", "tx*", "cj_w_grad", "*cloud*", "*smoke*", "sphere_cj", "water*", "newaterfal1_256", "boatwake*", "splash_up", "carsplash_*",
+        "fist", "*icon", "headlight*", "sphere", "plaintarmac*", "vehiclegrunge256", "?emap*", "vehiclegeneric*", "gensplash"
+    }
+}
