@@ -25,8 +25,9 @@
     <script src="handlers/loader.lua" type="client" cache="false"/>
 
     <!-- Exports -->
-	<export function="getRTs" type="client"/>
-	<export function="setNormalGeneratorState" type="client"/>
+	<export function="getLayerRTs" type="client"/>
+	<export function="setNormalGenerationState" type="client"/>
+	<export function="setAmbienceMutiplier" type="client"/>
 
 	<!--script src="c_main.lua" type="client"/>
 	<script src="c_common.lua" type="client"/>

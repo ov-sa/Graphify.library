@@ -21,11 +21,11 @@ local imports = {
 }
 
 
----------------------------------
---[[ Function: Retrieves RTs ]]--
----------------------------------
+---------------------------------------
+--[[ Function: Retrieves Layer RTs ]]--
+---------------------------------------
 
-function getRTs()
+function getLayerRTs()
 
     if isGraphifySupported then 
         return createdRTs
@@ -35,11 +35,11 @@ function getRTs()
 end
 
 
--------------------------------------------------
---[[ Function: Sets Normal Generator's State ]]--
--------------------------------------------------
+--------------------------------------------------
+--[[ Function: Sets Normal Generation's State ]]--
+--------------------------------------------------
 
-function setNormalGeneratorState(...)
+function setNormalGenerationState(...)
 
     if isGraphifySupported then
         return imports.disableNormals(...)
