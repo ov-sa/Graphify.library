@@ -21,7 +21,7 @@ createdRTs = {
 
 createdShaders = {
 
-    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass", "world_RT_NoZWrite_"},
+    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass", "world_RT_NoZWrite_", "world_RT_Emissive_"},
 
     zBuffer = {
         rwData = {AVAILABLE_SHADERS["Utilities"]["Z_Buffer"]},
@@ -100,6 +100,15 @@ createdShaders = {
                 textureList = {"roucghstonebrtb", "vehiclescratch64" , "lamp_shad_64", "particleskid"}
             }
         }
+    },
+
+    world_RT_Emissive_ = {
+        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Emissive"], 3, 0, false, "world,object"},
+        syncRT = true,
+        controlNormals = true,
+        ambientSupport = false,
+        parameters = {},
+        textureLists = {}
     }
 
 }

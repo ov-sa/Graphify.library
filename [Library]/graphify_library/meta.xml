@@ -18,6 +18,7 @@
     <script src="files/shaders/world/rt_input_ref.lua" type="client" cache="false"/>
     <script src="files/shaders/world/rt_input_grass.lua" type="client" cache="false"/>
     <script src="files/shaders/world/rt_input_nozwrite.lua" type="client" cache="false"/>
+    <script src="files/shaders/world/rt_input_emissive.lua" type="client" cache="false"/>
 
     <!-- Handlers -->
     <script src="handlers/initial.lua" type="client" cache="false"/>

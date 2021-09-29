@@ -7,7 +7,6 @@ local enablePedVS = true
 if enablePedVS then pedShader = "fx/RTinput_ped.fx" else pedShader = "fx/RTinput_ped_noVS.fx" end
 shaderParams = { 
     --TODO: MOFIEID
-    SHWorldEmissive = {"fx/RTinput_world_refAnimEmissive.fx", 0, 0, false, "world,object"},
 	SHWaterWake = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWaterDetail = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWater = {"fx/RTinput_water.fx", 0, 0, false, "world,object"}, -- world (water)
@@ -19,18 +18,6 @@ isDRShValid = false
 isDRRtValid = false
 isDREnabled = false
 		
-
-
----TODO: MODIFIED
-emissiveTextures = {
-    "lrsrt_light*",
-    "weapon_assault_rifle_ammo*",
-    "lrsrt_gencoil",
-    "lrsrt_mtl_ddda",
-    "lrsrt_mtlpnl_hmntcha"
-}
--------------------------
-
 
 ---------------------------------------------------------------------------------------------------
 -- manage render targets
@@ -65,27 +52,12 @@ function functionTable.enableCore()
 		isDREnabled = true
 	end
 end
-
---TODO: MODIFIED....
-function functionTable.enableEmissive()
-
-    --TODO: CHANGE LATER
-    dxSetShaderValue(shaderTable.SHWorldEmissive, "colorLayer", targetTable.RTEmissive)
-    for i, j in ipairs(emissiveTextures) do
-        engineRemoveShaderFromWorldTexture(shaderTable.SHWorld, j)
-        engineApplyShaderToWorldTexture(shaderTable.SHWorldEmissive, j)
-    end
-
-end
 -------
-
 shaderTable = {}
 function functionTable.createWorldShaders()
 	if not isDRShValid then
 		shaderTable = {}
 
-        --TODO: MODIFIED
-        shaderTable.SHWorldEmissive = dxCreateShader(unpack(shaderParams.SHWorldEmissive))
 		shaderTable.SHWaterWake = dxCreateShader(unpack(shaderParams.SHWaterWake))
 		shaderTable.SHWaterDetail = dxCreateShader(unpack(shaderParams.SHWaterDetail))
 		shaderTable.SHWater = dxCreateShader(unpack(shaderParams.SHWater))

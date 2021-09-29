@@ -157,7 +157,7 @@ Pixel PixelShaderFunction(PSInput PS)
 
    // Normal render target
    Normal = normalize(Normal);
-   output.Normal = float4((Normal.xy * 0.5) + 0.5, Normal.z <0 ? 0.811 : 0.989, 1);
+   output.Normal = float4((Normal.xy * 0.5) + 0.5, Normal.z < 0 ? 0.811 : 0.989, 1);
    
     return output;
 }

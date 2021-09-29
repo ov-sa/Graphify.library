@@ -139,7 +139,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     if (PS.Normal.z == 0) {
         output.Normal = float4(0, 0, 0, 0);
     } else {
-        output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z <0 ? 0.611 : 0.789, 1);
+        output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z < 0 ? 0.611 : 0.789, 1);
     }
     return output;
 }
