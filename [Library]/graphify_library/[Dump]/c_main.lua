@@ -6,8 +6,6 @@ local enablePedVS = true
 ---------------------------------------------------------------------------------------------------
 if enablePedVS then pedShader = "fx/RTinput_ped.fx" else pedShader = "fx/RTinput_ped_noVS.fx" end
 shaderParams = { 
-	SHWorld = {"fx/RTinput_world.fx", 0, 0, false, "world,object"}, -- world
-	SHWorldRefAnim = {"fx/RTinput_world_refAnim.fx", 1, 0, false, "world,object"}, --
     --TODO: MOFIEID
     SHWorldEmissive = {"fx/RTinput_world_refAnimEmissive.fx", 0, 0, false, "world,object"},
 	SHGrass = {"fx/RTinput_grass.fx", 0, 0, false, "world"}, -- world (grass)
@@ -50,8 +48,6 @@ function functionTable.enableCore()
         --TODO: MODIFIED
         functionTable.enableEmissive()
         ----------
-
-		setShaderTextureList(shaderTable.SHWorldRefAnim, textureListTable.ApplySpecial, true)
 	
 		setShaderTextureList(shaderTable.SHWorldNoZWrite, textureListTable.ZDisableApply, true)
 		dxSetShaderValue(shaderTable.SHWorldNoZWrite, "sWorldZBias", 0.005 )		
@@ -93,7 +89,6 @@ function functionTable.createWorldShaders()
 	if not isDRShValid then
 		shaderTable = {}
 
-		shaderTable.SHWorldRefAnim = dxCreateShader(unpack(shaderParams.SHWorldRefAnim))
         --TODO: MODIFIED
         shaderTable.SHWorldEmissive = dxCreateShader(unpack(shaderParams.SHWorldEmissive))
 		shaderTable.SHGrass = dxCreateShader(unpack(shaderParams.SHGrass))

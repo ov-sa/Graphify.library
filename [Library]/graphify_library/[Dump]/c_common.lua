@@ -1,12 +1,7 @@
 
 textureListTable = { }
 
-textureListTable.ApplySpecial = {
-    "newaterfal1_256", "casinolit2_128", "casinolights6lit3_256",
-    "casinolights1b_128n", "royaleroof01_64", "flmngo11_128",
-    "flmngo05_256", "flmngo04_256"
-}
-					
+				
 textureListTable.Detail = {				
     "boatsplash", "boatwake*", "coronaringa"
 }

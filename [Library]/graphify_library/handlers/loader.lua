@@ -40,6 +40,8 @@ createdRTs = {
 
 createdShaders = {
 
+    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref"},
+
     zBuffer = {
         rwData = {AVAILABLE_SHADERS["Utilities"]["Z_Buffer"]},
         syncRT = false,
@@ -50,7 +52,7 @@ createdShaders = {
         textureLists = {}
     },
 
-    worldRTInput = {
+    world_RT_Input = {
         rwData = {AVAILABLE_SHADERS["World"]["RT_Input"], 0, 0, false, "world,object"},
         syncRT = true,
         controlNormals = true,
@@ -73,6 +75,19 @@ createdShaders = {
                 textureList = {"ws_tunnelwall2smoked", "shadover_law", "greenshade_64", "greenshade2_64", "venshade*", "blueshade2_64", "blueshade4_64", "greenshade4_64", "metpat64shadow", "bloodpool_*", "plaintarmac1"}
             }
         }
+    },
+
+    world_RT_Input_Ref = {
+        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Ref"], 1, 0, false, "world,object"},
+        syncRT = true,
+        controlNormals = true,
+        parameters = {},
+        textureLists = {
+            {
+                state = true,
+                textureList = {"newaterfal1_256", "casinolit2_128", "casinolights6lit3_256", "casinolights1b_128n", "royaleroof01_64", "flmngo11_128", "flmngo05_256", "flmngo04_256"}
+            }
+        }
     }
 
 }
@@ -88,17 +103,19 @@ imports.addEventHandler("onGraphifyLoad", root, function()
         createdRTs[i] = imports.dxCreateRenderTarget(CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], false) 
     end
 
-    for i, j in imports.pairs(createdShaders) do
-        j.shader = imports.dxCreateShader(imports.unpack(j.rwData))
-        if j.shader then
-            if j.syncRT then
-                syncRTWithShader(j.shader)
-            end
-            for k, v in imports.pairs(j.parameters) do
-                imports.dxSetShaderValue(j.shader, k, imports.unpack(v))
-            end
-            for k, v in imports.ipairs(j.textureLists) do
-                setShaderTextureList(j.shader, v.textureList, v.state)
+    for i, j in imports.ipairs(createdShaders["__SORT_ORDER__"]) do
+        if createdShaders[j] then
+            createdShaders[j].shader = imports.dxCreateShader(imports.unpack(createdShaders[j].rwData))
+            if createdShaders[j].shader then
+                if createdShaders[j].syncRT then
+                    imports.syncRTWithShader(createdShaders[j].shader)
+                end
+                for k, v in imports.pairs(createdShaders[j].parameters) do
+                    imports.dxSetShaderValue(createdShaders[j].shader, k, imports.unpack(v))
+                end
+                for k, v in imports.ipairs(createdShaders[j].textureLists) do
+                    imports.setShaderTextureList(createdShaders[j].shader, v.textureList, v.state)
+                end
             end
         end
     end
@@ -109,7 +126,7 @@ imports.addEventHandler("onGraphifyLoad", root, function()
             imports.dxSetRenderTarget(j, true)
         end
         imports.dxSetRenderTarget()
-    end, true, PRIORITY_LEVEL.RT_RENDER)
+    end, false, PRIORITY_LEVEL.RT_RENDER)
 
 end)
 
