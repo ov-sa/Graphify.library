@@ -26,17 +26,6 @@ isDRShValid = false
 isDRRtValid = false
 isDREnabled = false
 		
-----------------------------------------------------------------------------------------------------------------------------
--- onClientResourceStart/Stop
-----------------------------------------------------------------------------------------------------------------------------
-function switchDLOn()
-	functionTable.enableCore()
-	zBufferRecovery.create()
-	setElementData(localPlayer, "dl_core.on", true, false )
-end
-
-
-
 
 
 ---TODO: MODIFIED
