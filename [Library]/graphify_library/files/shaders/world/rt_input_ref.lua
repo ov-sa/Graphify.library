@@ -115,7 +115,7 @@ PSInput VertexShaderFunction(VSInput VS) {
 
     float3 Normal;
     if (gDeclNormal != 1) {
-        Normal = float3(0,0,0);
+        Normal = float3(0, 0, 0);
     } else {
         Normal = mul(VS.Normal, (float3x3)gWorld);
     }

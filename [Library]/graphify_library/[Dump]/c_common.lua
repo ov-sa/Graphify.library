@@ -5,10 +5,6 @@ textureListTable = { }
 textureListTable.Detail = {				
     "boatsplash", "boatwake*", "coronaringa"
 }
-					
-textureListTable.ZDisableApply = { -- apply to shader SHWorldNoZWrite
-"roucghstonebrtb", "vehiclescratch64" , "lamp_shad_64", "particleskid",
-}
 
 textureListTable.TextureGrun = {
     "vehiclegrunge256", "?emap*", "vehicleshatter128", 

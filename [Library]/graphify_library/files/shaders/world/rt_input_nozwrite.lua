@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: rt_input_grass.lua
+     Shaders: world: rt_input_nozwrite.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT Grass Inputter ]]--
+     Desc: World's RT No-Z-Write Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -25,7 +25,7 @@ local imports = {
 
 local shaderConfig = {
     category = "World",
-    reference = "RT_Input_Grass",
+    reference = "RT_Input_NoZWrite",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
 }
@@ -48,9 +48,8 @@ AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
 -----------------*/
 
 ]]..shaderConfig.dependencyData..[[
-int gStage1ColorOp <string stageState="1,COLOROP";>;
-float4 gTextureFactor <string renderState="TEXTUREFACTOR";>;
 texture colorLayer <string renderTarget = "yes";>;
+texture normalLayer <string renderTarget = "yes";>;
 texture emissiveLayer <string renderTarget = "yes";>;
 // #define GENERATE_NORMALS
 
@@ -59,19 +58,32 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
+bool disableNormals = false;
 float ambienceMultiplier = false;
-static const float pi = 3.141592653589793f;
+float2 sPixelSize = float2(0.00125, 0.00166);
+float2 sHalfPixel = float2(0.000625, 0.00083);
 
 struct Pixel {
     float4 World : COLOR0;
     float4 Color : COLOR1;
-    float4 Emissive : COLOR2;
+    float4 Normal : COLOR2;
+    float4 Emissive : COLOR3;
+};
+
+struct VSInput {
+    float3 Position : POSITION0;
+    float4 Diffuse : COLOR0;
+    float3 Normal : NORMAL0;
+    float2 TexCoord : TEXCOORD0;
+    float2 TexCoord1 : TEXCOORD1;
 };
 
 struct PSInput {
     float4 Position : POSITION0;
     float4 Diffuse : COLOR0;
     float2 TexCoord : TEXCOORD0;
+    float3 Normal : TEXCOORD1;
+    float4 WorldPos : TEXCOORD4;
 };
 
 
@@ -88,26 +100,47 @@ sampler inputSampler = sampler_state {
 -->> Handlers <<--
 ------------------*/
 
+PSInput VertexShaderFunction(VSInput VS) {
+    PSInput PS = (PSInput)0;
+    PS.TexCoord = VS.TexCoord;
+
+    float3 Normal;
+    if ((gDeclNormal != 1) || (disableNormals)) {
+        Normal = float3(0, 0, 0);
+    } else {
+        Normal = mul(VS.Normal, (float3x3)gWorld);
+    }
+    PS.Normal = Normal;
+
+    float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);	
+    float4 viewPos = mul(worldPos, gView);
+    float4 projPos = mul(viewPos, gProjection);
+    PS.Position = projPos;
+    PS.WorldPos = worldPos;
+    PS.Diffuse = MTACalcGTABuildingDiffuse(VS.Diffuse);
+    return PS;
+}
+
 Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
-
+	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
-    inputTexel = inputTexel*PS.Diffuse;
-    if (gStage1ColorOp == 4) {
-        inputTexel *= gTextureFactor;
-    }
 
     float4 worldColor = inputTexel*PS.Diffuse;
-    if (gStage1ColorOp == 4) {
-        worldColor *= gTextureFactor;
-    }
     if (ambienceMultiplier) {
         worldColor.rgb = ambienceMultiplier;
     }
-    output.World = worldColor; 
-    output.Color = inputTexel; 
+    output.World = saturate(worldColor);
+    output.Color.rgb = inputTexel.rgb*PS.Diffuse.rgb;
+    output.Color.a = inputTexel.a*PS.Diffuse.a;
     output.Emissive.rgb = 0;
     output.Emissive.a = 1;
+    float3 Normal = normalize(PS.Normal);
+    if (PS.Normal.z == 0) {
+        output.Normal = float4(0, 0, 0, 0);
+    } else {
+        output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z <0 ? 0.611 : 0.789, 1);
+    }
     return output;
 }
 
@@ -116,9 +149,11 @@ Pixel PixelShaderFunction(PSInput PS) {
 -->> Techniques <<--
 --------------------*/
 
-technique world_rtInputGrass {
+technique world_rtInputNoZWrite {
     pass P0 {
         ZWriteEnable = false;
+        SRGBWriteEnable = false;
+        VertexShader = compile vs_2_0 VertexShaderFunction();
         PixelShader = compile ps_2_0 PixelShaderFunction();
     }
 }

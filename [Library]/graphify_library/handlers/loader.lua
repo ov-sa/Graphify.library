@@ -105,6 +105,20 @@ createdShaders = {
                 textureList = {"tx*"}
             }
         }
+    },
+
+    world_RT_NoZWrite_ = {
+        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_NoZWrite"], 2, 0, false, "world,object,vehicle"},
+        syncRT = true,
+        controlNormals = true,
+        ambientSupport = true,
+        parameters = {},
+        textureLists = {
+            {
+                state = true,
+                textureList = {"roucghstonebrtb", "vehiclescratch64" , "lamp_shad_64", "particleskid"}
+            }
+        }
     }
 
 }
