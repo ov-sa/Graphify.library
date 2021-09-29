@@ -47,10 +47,6 @@ function functionTable.enableCore()
 		for i, thisPart in pairs(shaderTable) do
 			functionTable.syncRTWithShader(thisPart)
 		end
-        engineApplyShaderToWorldTexture(shaderTable.SHWorld, "*")
-		setShaderTextureList(shaderTable.SHWorld, DEFAULT_TEXTURE_CONFIG.BLACKLIST, false)
-		setShaderTextureList(shaderTable.SHWorld, textureListTable.ZDisable, false)
-		setShaderTextureList(shaderTable.SHWorld, textureListTable.ApplyList, true)
         --TODO: MODIFIED
         functionTable.enableEmissive()
         ----------
@@ -96,7 +92,7 @@ shaderTable = {}
 function functionTable.createWorldShaders()
 	if not isDRShValid then
 		shaderTable = {}
-		shaderTable.SHWorld = dxCreateShader(unpack(shaderParams.SHWorld))
+
 		shaderTable.SHWorldRefAnim = dxCreateShader(unpack(shaderParams.SHWorldRefAnim))
         --TODO: MODIFIED
         shaderTable.SHWorldEmissive = dxCreateShader(unpack(shaderParams.SHWorldEmissive))

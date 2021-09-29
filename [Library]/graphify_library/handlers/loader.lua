@@ -15,9 +15,11 @@
 
 local imports = {
     pairs = pairs,
+    ipairs = ipairs,
     unpack = unpack,
     addEventHandler = addEventHandler,
     syncRTWithShader = syncRTWithShader,
+    setShaderTextureList = setShaderTextureList,
     dxCreateRenderTarget = dxCreateRenderTarget,
     dxCreateShader = dxCreateShader,
     dxSetRenderTarget = dxSetRenderTarget,
@@ -37,14 +39,42 @@ createdRTs = {
 }
 
 createdShaders = {
+
     zBuffer = {
-        rwData = AVAILABLE_SHADERS["Utilities"]["Z_Buffer"],
+        rwData = {AVAILABLE_SHADERS["Utilities"]["Z_Buffer"]},
         syncRT = false,
         controlNormals = false,
         parameters = {
             ["viewportSize"] = {CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2]}
+        },
+        textureLists = {}
+    },
+
+    worldRTInput = {
+        rwData = {AVAILABLE_SHADERS["World"]["RT_Input"], 0, 0, false, "world,object"},
+        syncRT = true,
+        controlNormals = true,
+        parameters = {},
+        textureLists = {
+            {
+                state = true,
+                textureList = {"*"}
+            },
+            {
+                state = false,
+                textureList = DEFAULT_TEXTURE_CONFIG.BLACKLIST
+            },
+            {
+                state = false,
+                textureList = {"roucghstonebrtb", "shad_exp", "shad_ped", "shad_car", "headlight", "headlight1" , "shad_bike", "shad_heli", "shad_rcbaron", "vehiclescratch64" , "lamp_shad_64", "particleskid", "boatsplash", "waterwake", "boatwake1", "coronaringa"}
+            },
+            {
+                state = true,
+                textureList = {"ws_tunnelwall2smoked", "shadover_law", "greenshade_64", "greenshade2_64", "venshade*", "blueshade2_64", "blueshade4_64", "greenshade4_64", "metpat64shadow", "bloodpool_*", "plaintarmac1"}
+            }
         }
     }
+
 }
 
 
@@ -59,13 +89,16 @@ imports.addEventHandler("onGraphifyLoad", root, function()
     end
 
     for i, j in imports.pairs(createdShaders) do
-        j.shader = imports.dxCreateShader(j.rwData)
+        j.shader = imports.dxCreateShader(imports.unpack(j.rwData))
         if j.shader then
             if j.syncRT then
                 syncRTWithShader(j.shader)
             end
             for k, v in imports.pairs(j.parameters) do
                 imports.dxSetShaderValue(j.shader, k, imports.unpack(v))
+            end
+            for k, v in imports.ipairs(j.textureLists) do
+                setShaderTextureList(j.shader, v.textureList, v.state)
             end
         end
     end
@@ -77,5 +110,15 @@ imports.addEventHandler("onGraphifyLoad", root, function()
         end
         imports.dxSetRenderTarget()
     end, true, PRIORITY_LEVEL.RT_RENDER)
+
+end)
+
+
+--TODO: TESTING:
+addEventHandler("onClientRender", root, function()
+
+    if not createdRTs.colorLayer then return false end
+ 
+    dxDrawImage(100, 100, 1366/3, 768/3, createdRTs.colorLayer)
 
 end)
