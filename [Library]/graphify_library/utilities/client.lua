@@ -28,11 +28,11 @@ local imports = {
 imports.loadstring(exports.beautify_library:fetchImports())()
 
 
-----------------------------------------
---[[ Function: Applies RT To Shader ]]--
-----------------------------------------
+--------------------------------------
+--[[ Function: Syncs RT w/ Shader ]]--
+--------------------------------------
 
-function applyRTToShader(shader)
+function syncRTWithShader(shader)
 
     if not shader then return false end
 

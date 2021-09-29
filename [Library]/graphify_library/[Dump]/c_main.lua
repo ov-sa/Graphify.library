@@ -59,7 +59,7 @@ function functionTable.enableCore()
 	if isDREnabled then return end
 	if functionTable.createWorldShaders() and functionTable.createRenderTargets() then
 		for i, thisPart in pairs(shaderTable) do
-			functionTable.applyRTToShader(thisPart)
+			functionTable.syncRTWithShader(thisPart)
 		end
         engineApplyShaderToWorldTexture(shaderTable.SHWorld, "*")
 		functionTable.removeShaderFromList(shaderTable.SHWorld, textureListTable.RemoveList)
@@ -132,7 +132,7 @@ end
 function functionTable.createPedNormalShader(texName, normalTex, lerpNormal, thisEntity, colRed, colGreen, colBlue)
 	local pedNormalShader = dxCreateShader("fx/RTinput_ped_normal.fx", 1, 0, false, "ped")
 	if pedNormalShader then
-		functionTable.applyRTToShader(pedNormalShader)
+		functionTable.syncRTWithShader(pedNormalShader)
 		dxSetShaderValue(pedNormalShader, "fLerpNormal", lerpNormal) 
         if normalTex then
             dxSetShaderValue(pedNormalShader, "gTextureNormal", normalTex)
