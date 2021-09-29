@@ -16,8 +16,11 @@
 
 local imports = {
     pairs = pairs,
+    ipairs = ipairs,
     loadstring = loadstring,
-    dxSetShaderValue = dxSetShaderValue
+    dxSetShaderValue = dxSetShaderValue,
+    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
+    engineRemoveShaderFromWorldTexture = engineRemoveShaderFromWorldTexture
 }
 
 
@@ -58,5 +61,22 @@ function disableNormals(state)
         end
     end
 	return true
+
+end
+
+
+----------------------------------------------
+--[[ Function: Sets Shader's Texture List ]]--
+----------------------------------------------
+
+function setShaderTextureList(shader, list, state)
+
+    if not isGraphifySupported or not shader or not list then return false end
+
+    local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
+    for i, j in imports.ipairs(list) do
+        setterFunction(shader, j)
+    end
+    return true
 
 end
