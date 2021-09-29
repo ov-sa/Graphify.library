@@ -14,7 +14,10 @@
 -----------------
 
 local imports = {
-    disableNormals = disableNormals
+    pairs = pairs,
+    tonumber = tonumber,
+    disableNormals = disableNormals,
+    dxSetShaderValue = dxSetShaderValue
 }
 
 
@@ -38,8 +41,28 @@ end
 
 function setNormalGeneratorState(...)
 
-    if isGraphifySupported then 
+    if isGraphifySupported then
         return imports.disableNormals(...)
+    end
+    return false
+
+end
+
+
+--------------------------------------------
+--[[ Function: Sets Ambience Multiplier ]]--
+--------------------------------------------
+
+function setAmbienceMutiplier(multiplier)
+
+    if isGraphifySupported then
+        multiplier = imports.tonumber(multiplier) or false
+        for i, j in imports.pairs(createdShaders) do
+            if (i ~= "__SORT_ORDER__") and j.ambientSupport then
+                imports.dxSetShaderValue(j.shader, "ambienceMultiplier", multiplier)
+            end
+        end
+        return true
     end
     return false
 

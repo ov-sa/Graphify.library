@@ -21,6 +21,7 @@
 
     <!-- Handlers -->
     <script src="handlers/initial.lua" type="client" cache="false"/>
+    <script src="handlers/cache.lua" type="client" cache="false"/>
     <script src="handlers/loader.lua" type="client" cache="false"/>
 
     <!-- Exports -->
