@@ -62,12 +62,12 @@ texture emissiveLayer <string renderTarget = "yes";>;
 bool disableNormals = false;
 float ambienceMultiplier = false;
 float anisotropy = 1;
-float redDetailScale = 1;
-float greenDetailScale = 1;
-float blueDetailScale = 1;
-texture redControlDetail;
-texture greenControlDetail;
-texture blueControlDetail;
+float redControlScale = 1;
+float greenControlScale = 1;
+float blueControlScale = 1;
+texture redControlTexture;
+texture greenControlTexture;
+texture blueControlTexture;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -104,21 +104,21 @@ sampler controlSampler = sampler_state {
 };
 
 sampler redControlSampler = sampler_state { 
-    Texture = (redControlDetail);
+    Texture = (redControlTexture);
     MipFilter = Linear;
     MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
     MinFilter = Anisotropic;
 };
 
 sampler greenControlSampler = sampler_state { 
-    Texture = (greenControlDetail);
+    Texture = (greenControlTexture);
     MipFilter = Linear;
     MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
     MinFilter = Anisotropic;
 };
 
 sampler blueControlSampler = sampler_state { 
-    Texture = (blueControlDetail);
+    Texture = (blueControlTexture);
     MipFilter = Linear;
     MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
     MinFilter = Anisotropic;
@@ -154,9 +154,9 @@ Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
 
     float4 controlTexel = tex2D(controlSampler, PS.TexCoord);
-    float4 redTexel = tex2D(redControlSampler, PS.TexCoord*redDetailScale) * (tex2D(redControlSampler, PS.TexCoord*redDetailScale*1.9)*2) * tex2D(redControlSampler, PS.TexCoord*redDetailScale*3.6)*2 * (tex2D(redControlSampler, PS.TexCoord*redDetailScale*7.4)*2);
-    float4 greenTexel = tex2D(greenControlSampler, PS.TexCoord*greenDetailScale) * (tex2D(greenControlSampler, PS.TexCoord*greenDetailScale*1.9)*2) * tex2D(greenControlSampler, PS.TexCoord*greenDetailScale*3.6)*2 * (tex2D(greenControlSampler, PS.TexCoord*greenDetailScale*7.4)*2);
-    float4 blueTexel = tex2D(blueControlSampler, PS.TexCoord*blueDetailScale) * (tex2D(blueControlSampler, PS.TexCoord*blueDetailScale*1.9)*2) * tex2D(blueControlSampler, PS.TexCoord*blueDetailScale*3.6)*2 * (tex2D(blueControlSampler, PS.TexCoord*blueDetailScale*7.4)*2);
+    float4 redTexel = tex2D(redControlSampler, PS.TexCoord*redControlScale) * (tex2D(redControlSampler, PS.TexCoord*redControlScale*1.9)*2) * tex2D(redControlSampler, PS.TexCoord*redControlScale*3.6)*2 * (tex2D(redControlSampler, PS.TexCoord*redControlScale*7.4)*2);
+    float4 greenTexel = tex2D(greenControlSampler, PS.TexCoord*greenControlScale) * (tex2D(greenControlSampler, PS.TexCoord*greenControlScale*1.9)*2) * tex2D(greenControlSampler, PS.TexCoord*greenControlScale*3.6)*2 * (tex2D(greenControlSampler, PS.TexCoord*greenControlScale*7.4)*2);
+    float4 blueTexel = tex2D(blueControlSampler, PS.TexCoord*blueControlScale) * (tex2D(blueControlSampler, PS.TexCoord*blueControlScale*1.9)*2) * tex2D(blueControlSampler, PS.TexCoord*blueControlScale*3.6)*2 * (tex2D(blueControlSampler, PS.TexCoord*blueControlScale*7.4)*2);
 
     float4 sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
     sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);

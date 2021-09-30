@@ -124,6 +124,12 @@ end
 --[[ Functions: Creates/Destroys Control-Map ]]--
 -------------------------------------------------
 
+function createControlMap(...)
+
+    return generateControlMap(...)
+
+end
+
 function destroyControlMap(shader)
 
     if isGraphifySupported and controlMapCache.controlMaps[shader] then

@@ -15,9 +15,18 @@
 
 local imports = {
     pairs = pairs,
+    ipairs = ipairs,
+    unpack = unpack,
+    tonumber = tonumber,
     isElement = isElement,
+    getElementType = getElementType,
     destroyElement = destroyElement,
-    addEventHandler = addEventHandler
+    addEventHandler = addEventHandler,
+    dxCreateShader = dxCreateShader,
+    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
+    math = {
+        max = math.max
+    }
 }
 
 
@@ -26,58 +35,69 @@ local imports = {
 -------------------
 
 controlMapCache = {
+    validControlTypes = {
+        ["object"]
+            rwData = {AVAILABLE_SHADERS["World"]["RT_Input_ControlMap"], 3, 0, false, "world,object"},
+            syncRT = true,
+            controlNormals = true,
+            ambientSupport = true,
+            parameters = {
+                ["anisotropy"] = {1}
+            }
+        }
+    },
+    validControls = {"red", "green", "blue"},
     controlMaps = {}
 }
+
+
+-----------------------------------------
+--[[ Function: Generates Control-Map ]]--
+-----------------------------------------
+
+function generateControlMap(texture, controlMap, controls, type)
+
+    type = (type == "object" and "world") or type
+    if not texture or not controlMap or not imports.isElement(controlMap) or (imports.getElementType(controlMap) ~= "texture") or not controls or not type or not controlMapCache.validControlTypes[type] then return false end
+
+    for i, j in imports.ipairs(controlMapCache.validControls) do
+        if not controls[j] or not controls[j].texture or not imports.isElement(controls[j].texture) or not (imports.getElementType(controls[j].texture) ~= "texture") then
+            return false
+        else
+            controls[j].scale = imports.math.max(0, imports.tonumber(controls[j].scale) or 1)
+        end
+    end
+
+    local createdControlMap = imports.dxCreateShader(imports.unpack(controlMapCache.validControlTypes[type].rwData))
+    for i, j in imports.ipairs(controlMapCache.validControls) do
+        imports.dxSetShaderValue(createdControlMap, j.."ControlScale", controls[j].scale)
+        imports.dxSetShaderValue(createdControlMap, j.."ControlTexture", controls[j].texture)
+    end
+    for i, j in imports.pairs(controlMapCache.validControlTypes[type].parameters) do
+        imports.dxSetShaderValue(createdControlMap, i, imports.unpack(j))
+    end
+    controlMapCache.controlMaps[createdControlMap] = {
+        texture = texture,
+        controlMap = controlMap,
+        controls = controls,
+        type = type
+    }
+    imports.engineApplyShaderToWorldTexture(createdControlMap, texture)
+    return createdControlMap
+
+end
 
 
 ------------------------------------------
 --[[ Event: On Client Element Destroy ]]--
 ------------------------------------------
 
-
 imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if controlMapCache.controlMaps[source] then
-            for i, j in imports.pairs(controlMapCache.controlMaps[source].controls) do
-                if j and imports.isElement(j) then
-                    imports.destroyElement(j)
-                end
-            end
             controlMapCache.controlMaps[source] = nil
         end
     end
 
 end)
-
-function createControlMap()
-
-    --[[
-    if emissiveCache["__STATE__"] then return false end
-
-    emissiveCache["__STATE__"] = true
-    for i, j in imports.pairs(emissiveCache) do
-        if (i ~= "__STATE__") and (i ~= "__BLEND_COLOR__") and (i ~= "__EMISSIVE_CLASS_") then
-            j.shader = imports.dxCreateShader(imports.unpack(j.rwData))
-            for k, v in imports.pairs(j.parameters) do
-                imports.dxSetShaderValue(j.shader, k, imports.unpack(v))
-            end
-        end
-    end
-    imports.addEventHandler("onClientHUDRender", root, renderEmissiveMode, false, PRIORITY_LEVEL.Emissive_Render)
-    ]]--
-    return true
-
-end
-
---[[
-world_RT_Input_ControlMap = {
-    rwData = {AVAILABLE_SHADERS["World"]["RT_Input_ControlMap"], 3, 0, false, "world,object"},
-    syncRT = true,
-    controlNormals = true,
-    ambientSupport = true,
-    parameters = {
-
-    },
-    textureLists = {}
-},]]
