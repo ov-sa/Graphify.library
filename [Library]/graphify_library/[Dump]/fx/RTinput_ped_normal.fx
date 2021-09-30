@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------------------
 static const float pi = 3.141592653589793f;
 float fLerpNormal = 0.5;
-float3 gTexColor = float3(1,1,1);
+float3 gTexColor = float3(1, 1, 1);
 texture gTextureNormal;
 
 //------------------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ PSInput VertexShaderFunction(VSInput VS)
     PS.TexCoord = VS.TexCoord;
 
     // Calculate screen and world pos of vertex	
-    PS.Position = mul( float4(VS.Position.xyz,1) , gWorldViewProjection);
+    PS.Position = mul( float4(VS.Position.xyz, 1) , gWorldViewProjection);
     float4 worldPos = mul(float4(VS.Position, 1), gWorld);
     PS.WorldPos = worldPos.xyz;
 	

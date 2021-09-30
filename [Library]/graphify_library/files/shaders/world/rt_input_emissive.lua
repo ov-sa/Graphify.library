@@ -122,9 +122,12 @@ PSInput VertexShaderFunction(VSInput VS) {
     float3 ViewNormal = mul(VS.Normal, (float3x3)gWorldView);
     PS.TexCoord = VS.TexCoord;
     PS.TexCoord1 = 0;
-    if (gStage1ColorOp == 25) PS.TexCoord1 = ViewNormal.xy;
-    if (gStage0TextureTransformFlags != 0) PS.TexCoord = mul(float3(VS.TexCoord.xy, 1), (float3x3)gTransformTexture0);
-
+    if (gStage1ColorOp == 25) {
+        PS.TexCoord1 = ViewNormal.xy;
+    }
+    if (gStage0TextureTransformFlags != 0) {
+        PS.TexCoord = mul(float3(VS.TexCoord.xy, 1), (float3x3)gTransformTexture0);
+    }
     float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);	
     float4 viewPos = mul(worldPos, gView);
     float4 projPos = mul(viewPos, gProjection);

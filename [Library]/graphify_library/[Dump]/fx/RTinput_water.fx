@@ -60,7 +60,7 @@ PSInput VertexShaderFunction(VSInput VS)
     PS.TexCoord = VS.TexCoord;
 	
     // Calculate screen pos of vertex	
-    float4 worldPos = mul(float4(VS.Position.xyz,1) , gWorld);	
+    float4 worldPos = mul(float4(VS.Position.xyz, 1) , gWorld);	
     float4 viewPos = mul(worldPos, gView);
     float4 projPos = mul(viewPos, gProjection);
     PS.Position = projPos;

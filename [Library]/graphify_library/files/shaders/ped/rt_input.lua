@@ -105,7 +105,7 @@ PSInput VertexShaderFunction(VSInput VS) {
     PS.Normal = mul(VS.Normal, (float3x3)gWorld);
 
     PS.TexCoord = VS.TexCoord;
-    PS.Position = mul( float4(VS.Position.xyz,1) , gWorldViewProjection);
+    PS.Position = mul(float4(VS.Position.xyz, 1), gWorldViewProjection);
     PS.Diffuse = MTACalcGTACompleteDiffuse(PS.Normal, VS.Diffuse);
     return PS;
 }
