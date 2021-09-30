@@ -99,7 +99,7 @@ PSInput VertexShaderFunction(VSInput VS) {
 }
 
 float4 PixelShaderFunction(PSInput PS) : COLOR0 {
-	float4 inputTexel = tex2D(Sampler0, PS.TexCoord);
+	float4 inputTexel = tex2D(brightSampler, PS.TexCoord);
 
     float lum = (inputTexel.r + inputTexel.g + inputTexel.b)/3;
     float adj = saturate(lum - rtCuttOff)/(1.01 - rtCuttOff);

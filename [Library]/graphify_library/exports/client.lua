@@ -76,9 +76,10 @@ end
 function setEmissiveMode(state)
 
     if isGraphifySupported then
-        if ((state == true) or (state == false)) and (emissiveCache.state ~= state) then
-            emissiveCache.state = state
-            return true
+        if state == true then
+            return createEmissiveMode()
+        elseif state == false then
+            return destroyEmissiveMode()
         end
     end
     return false
@@ -88,7 +89,7 @@ end
 function getEmissiveMode()
 
     if isGraphifySupported then
-        return emissiveCache.state
+        return emissiveCache["__STATE__"]
     end
     return false
 

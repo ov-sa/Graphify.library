@@ -14,7 +14,12 @@
 -----------------
 
 local imports = {
-    addEventHandler = addEventHandler
+    pairs = pairs,
+    unpack = unpack,
+    addEventHandler = addEventHandler,
+    removeEventHandler = removeEventHandler,
+    dxCreateShader = dxCreateShader,
+    dxSetShaderValue = dxSetShaderValue
 }
 
 
@@ -23,30 +28,75 @@ local imports = {
 -------------------
 
 emissiveCache = {
-    state = false
+
+    ["__STATE__"] = false,
+
+    RT_Blend = {
+        rwData = {AVAILABLE_SHADERS["Bloom"]["RT_Blend"]},
+        parameters = {}
+    },
+
+    RT_BlurX = {
+        rwData = {AVAILABLE_SHADERS["Bloom"]["RT_BlurX"]},
+        parameters = {
+            ["viewportSize"] = {CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2]}
+        }
+    },
+
+    RT_BlurY = {
+        rwData = {AVAILABLE_SHADERS["Bloom"]["RT_BlurY"]},
+        parameters = {
+            ["viewportSize"] = {CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2]}
+        }
+    },
+
+    RT_Bright = {
+        rwData = {AVAILABLE_SHADERS["Bloom"]["RT_Bright"]},
+        parameters = {}
+    }
+
 }
 
 
--------------------------------------
---[[ Event: On Client HUD Render ]]--
--------------------------------------
+-----------------------------------------
+--[[ Function: Renders Emissive Mode ]]--
+-----------------------------------------
 
-imports.addEventHandler("onClientHUDRender", root, function()
+local function renderEmissiveMode()
 
-    if not emissiveCache.state then return false end
+    outputChatBox("rendering emissive...")
 
-    --TODO: PROCESS EMISSIVE HERE
-
-end)
+end
 
 
----------------------------------
---[[ Event: On Graphify Load ]]--
----------------------------------
+---------------------------------------------------
+--[[ Functions: Creates/Destroys Emissive Mode ]]--
+---------------------------------------------------
 
-imports.addEventHandler("onGraphifyLoad", root, function()
+function createEmissiveMode()
 
-    --TODO: INITILAIZE SHADER..
-    setEmissiveMode(DEFAULT_EMISSIVE)
+    if emissiveCache["__STATE__"] then return false end
 
-end)
+    emissiveCache["__STATE__"] = true
+    for i, j in imports.pairs(emissiveCache) do
+        if i ~= "__STATE__" then
+            j.shader = imports.dxCreateShader(imports.unpack(j.rwData))
+            for k, v in imports.pairs(j.parameters) do
+                imports.dxSetShaderValue(j.shader, k, imports.unpack(v))
+            end
+        end
+    end
+    imports.addEventHandler("onClientHUDRender", root, renderEmissiveMode)
+    return true
+
+end
+
+function destroyEmissiveMode()
+
+    if not emissiveCache["__STATE__"] then return false end
+
+    imports.removeEventHandler("onClientHUDRender", root, renderEmissiveMode)
+    emissiveCache["__STATE__"] = false
+    return true
+
+end

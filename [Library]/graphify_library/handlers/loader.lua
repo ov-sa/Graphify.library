@@ -66,6 +66,10 @@ imports.addEventHandler("onGraphifyLoad", root, function()
         imports.dxSetRenderTarget()
     end, false, PRIORITY_LEVEL.RT_RENDER)
 
+    if DEFAULT_EMISSIVE then
+        createEmissiveMode()
+    end
+
 end)
 
 

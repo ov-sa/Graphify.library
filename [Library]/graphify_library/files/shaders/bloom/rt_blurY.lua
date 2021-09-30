@@ -105,7 +105,7 @@ float4 PixelShaderFunction(PSInput PS) : COLOR0 {
     float4 inputTexel = 0;
 
     float2 rtColor;
-    rtColor.y = PS.TexCoord.y;
+    rtColor.x = PS.TexCoord.x;
     for(int i = 0; i < 13; ++i) {
         rtColor.y = PS.TexCoord.y + ((blurMultiplier*Kernel[i])/viewportSize.y);
         inputTexel += tex2D(blurSampler, rtColor.xy)*Weights[i]*bloomMultiplier;
