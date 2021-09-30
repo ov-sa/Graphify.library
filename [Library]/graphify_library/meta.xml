@@ -44,5 +44,6 @@
 	<export function="setAmbienceMutiplier" type="client"/>
 	<export function="setEmissiveMode" type="client"/>
 	<export function="getEmissiveMode" type="client"/>
+	<export function="destroyControlMap" type="client"/>
 
 </meta>
