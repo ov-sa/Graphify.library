@@ -3,6 +3,9 @@
     <info author="OvileAmriam + Ren712" name="Graphify Library" type="Library" version="1.0.0"/>
 	<min_mta_version client="1.5.8"/>
 
+    <!-- Imports -->
+    <include resource="beautify_library"/>
+
     <!-- Settings & Utilities -->
     <script src="utilities/client.lua" type="client" cache="false"/>
     <script src="settings/client.lua" type="client" cache="false"/>

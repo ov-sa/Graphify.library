@@ -155,6 +155,8 @@ emissiveCache = {
 
 local function renderEmissiveMode()
 
+    if CLIENT_MTA_MINIMIZED then return false end
+
     emissiveCache["__EMISSIVE_CLASS_"].pool.resetPool()
     local emissiveLayer = createdRTs.emissiveLayer
     emissiveLayer = emissiveCache["__EMISSIVE_CLASS_"].methods.applyBrightPass(emissiveLayer, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2])

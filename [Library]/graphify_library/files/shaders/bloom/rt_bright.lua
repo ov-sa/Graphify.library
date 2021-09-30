@@ -55,8 +55,8 @@ AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
 -------------------*/
 
 texture rtTexture;
-float rtCuttOff;
-float rtPower;
+float rtCuttOff = 0.001;
+float rtPower = 0.001;
 
 struct VSInput {
     float3 Position : POSITION0;
