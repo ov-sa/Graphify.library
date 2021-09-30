@@ -29,6 +29,7 @@ AVAILABLE_SHADERS = {
     },
     ["Generic"] = {},
     ["World"] = {},
-    ["Ped"] = {}
+    ["Ped"] = {},
+    ["Vehicle"] = {},
 
 }

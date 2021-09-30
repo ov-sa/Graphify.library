@@ -21,7 +21,7 @@ createdRTs = {
 
 createdShaders = {
 
-    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass", "world_RT_Input_NoZWrite", "world_RT_Input_Emissive", "ped_RT_Input"},
+    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass", "world_RT_Input_NoZWrite", "world_RT_Input_Emissive", "ped_RT_Input", "vehicle_RT_Input"},
 
     zBuffer = {
         rwData = {AVAILABLE_SHADERS["Utilities"]["Z_Buffer"]},
@@ -51,7 +51,7 @@ createdShaders = {
             },
             {
                 state = false,
-                textureList = {"roucghstonebrtb", "shad_exp", "shad_ped", "shad_car", "headlight", "headlight1" , "shad_bike", "shad_heli", "shad_rcbaron", "vehiclescratch64" , "lamp_shad_64", "particleskid", "boatsplash", "waterwake", "boatwake1", "coronaringa"}
+                textureList = {"roucghstonebrtb", "shad_exp", "shad_ped", "shad_car", "headlight", "headlight1", "shad_bike", "shad_heli", "shad_rcbaron", "vehiclescratch64", "lamp_shad_64", "particleskid", "boatsplash", "waterwake", "boatwake1", "coronaringa"}
             },
             {
                 state = true,
@@ -97,7 +97,7 @@ createdShaders = {
         textureLists = {
             {
                 state = true,
-                textureList = {"roucghstonebrtb", "vehiclescratch64" , "lamp_shad_64", "particleskid"}
+                textureList = {"roucghstonebrtb", "vehiclescratch64", "lamp_shad_64", "particleskid"}
             }
         }
     },
@@ -121,6 +121,34 @@ createdShaders = {
             {
                 state = true,
                 textureList = {"*"}
+            },
+            {
+                state = false,
+                textureList = {"unnamed"}
+            }
+        }
+    },
+
+    vehicle_RT_Input = {
+        rwData = {AVAILABLE_SHADERS["Vehicle"]["RT_Input"], 0, 0, false, "vehicle"},
+        syncRT = true,
+        controlNormals = false,
+        ambientSupport = true,
+        parameters = {},
+        textureLists = {
+            {
+                state = true,
+                textureList = {
+                    "*", "vehiclegeneric256", "vehiclegrunge256", "?emap*", "vehicleshatter128", "predator92body128", "monsterb92body256a", "monstera92body256a", "andromeda92wing", "fcr90092body128",
+                    "hotknifebody128b", "hotknifebody128a", "rcbaron92texpage64", "rcgoblin92texpage128", "rcraider92texpage128", "rctiger92body128", "rhino92texpage256", "petrotr92interior128", "artict1logos", "rumpo92adverts256", "dash92interior128",
+                    "coach92interior128", "combinetexpage128", "policemiami86body128", "policemiami868bit128", "hotdog92body256", "raindance92body128", "cargobob92body256", "andromeda92body", "at400_92_256", "nevada92body256", "polmavbody128a", "sparrow92body128",
+                    "hunterbody8bit256a", "seasparrow92floats64","dodo92body8bit256", "cropdustbody256", "beagle256", "hydrabody256", "rustler92body256",
+                    "shamalbody256", "skimmer92body128", "stunt256", "maverick92body128", "leviathnbody8bit256"
+                }
+            },
+            {
+                state = false,
+                textureList = {"unnamed"}
             }
         }
     }

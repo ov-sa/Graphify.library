@@ -4,17 +4,11 @@ shaderParams = {
 	SHWaterWake = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWaterDetail = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWater = {"fx/RTinput_water.fx", 0, 0, false, "world,object"}, -- world (water)
-	SHVehPaint = {"fx/RTinput_car_paint.fx", 0, 0, false, "vehicle"}, -- vehicle paint
 				}
 
 functionTable = {}
 
-function functionTable.enableCore()
-    setShaderTextureList(shaderTable.SHVehPaint, textureListTable.TextureGrun, true)		
-    engineApplyShaderToWorldTexture(shaderTable.SHVehPaint, "vehiclegeneric256")
-    engineApplyShaderToWorldTexture(shaderTable.SHVehPaint, "*")
-    engineRemoveShaderFromWorldTexture(shaderTable.SHVehPaint, "unnamed")
-    
+function functionTable.enableCore()    
     engineApplyShaderToWorldTexture(shaderTable.SHWater, "water*")
     engineRemoveShaderFromWorldTexture(shaderTable.SHWater, "waterwake")
     
@@ -33,7 +27,7 @@ function functionTable.createPedNormalShader(texName, normalTex, lerpNormal, thi
         if normalTex then
             dxSetShaderValue(pedNormalShader, "gTextureNormal", normalTex)
         end
-        dxSetShaderValue(pedNormalShader, "gTexColor", colRed / 255, colGreen / 255, colBlue / 255)
+        dxSetShaderValue(pedNormalShader, "gTexColor", colRed/255, colGreen/255, colBlue/255)
 		engineApplyShaderToWorldTexture(pedNormalShader, texName, thisEntity)
 		return pedNormalShader
 	else 

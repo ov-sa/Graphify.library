@@ -1,10 +1,53 @@
+----------------------------------------------------------------
+--[[ Resource: Graphify Library
+     Shaders: vehicle: rt_input.lua
+     Server: -
+     Author: OvileAmriam, Ren712
+     Developer: Aviril
+     DOC: 29/09/2021 (OvileAmriam)
+     Desc: Vehicle's RT Inputter ]]--
+----------------------------------------------------------------
 
+
+-----------------
+--[[ Imports ]]--
+-----------------
+
+local imports = {
+    pairs = pairs,
+    fetchFileData = fetchFileData
+}
+
+
+-------------------
+--[[ Variables ]]--
+-------------------
+
+local shaderConfig = {
+    category = "Vehicle",
+    reference = "RT_Input",
+    dependencies = {},
+    dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
+}
+
+for i, j in imports.pairs(shaderConfig.dependencies) do
+    local fileData = imports.fetchFileData(j)
+    if fileData then
+        shaderConfig.dependencyData = shaderConfig.dependencyData.."\n"..fileData
+    end
+end
+
+
+----------------
+--[[ Shader ]]--
+----------------
+
+AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
 /*---------------
 -->> Imports <<--
 -----------------*/
 
-#include "mta-helper.fx"
-
+]]..shaderConfig.dependencyData..[[
 float4 gBlendFactor <string renderState="BLENDFACTOR";>;
 int gZWriteEnable <string renderState="ZWRITEENABLE";>;
 int gCullMode <string renderState="CULLMODE";>;  
@@ -20,6 +63,8 @@ texture emissiveLayer <string renderTarget = "yes";>;
 /*-----------------
 -->> Variables <<--
 -------------------*/
+
+float ambienceMultiplier = false;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -51,7 +96,7 @@ struct PSInput {
 -->> Samplers <<--
 ------------------*/
 
-sampler inputinputSampler2 = sampler_state {
+sampler inputSampler1 = sampler_state {
     Texture = (gTexture0);
 };
 
@@ -78,8 +123,12 @@ PSInput VertexShaderFunction(VSInput VS) {
     PS.Position = projPos;
     PS.TexCoord = VS.TexCoord;
     PS.TexCoord1 = 0;
-    if (gStage1ColorOp == 25) PS.TexCoord1 = mul(ViewNormal.xyz, (float3x3)gTransformTexture1);
-    if (gStage1ColorOp == 14) PS.TexCoord1 = mul(float3(VS.TexCoord1.xy, 1), (float3x3)gTransformTexture1);
+    if (gStage1ColorOp == 25) {
+        PS.TexCoord1 = mul(ViewNormal.xyz, (float3x3)gTransformTexture1);
+    }
+    if (gStage1ColorOp == 14) {
+        PS.TexCoord1 = mul(float3(VS.TexCoord1.xy, 1), (float3x3)gTransformTexture1);
+    }
     PS.Depth = float2(viewPos.z, viewPos.w);
     PS.Diffuse = MTACalcGTACompleteDiffuse(Normal, VS.Diffuse);
     PS.Specular.rgb = gMaterialSpecular.rgb*MTACalculateSpecular(gCameraDirection, gLight1Direction, Normal, min(127, gMaterialSpecPower))*gLight1Specular.rgb;
@@ -88,42 +137,33 @@ PSInput VertexShaderFunction(VSInput VS) {
 
 Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;	
-	
-    float4 inputTexel = tex2D(inputinputSampler2, PS.TexCoord.xy);
+
+    float4 inputTexel = tex2D(inputSampler1, PS.TexCoord.xy);
 
     float4 worldColor = inputTexel*PS.Diffuse;
-
-    // Apply env reflection
-    // BlendFactorAlpha = 14,
     if (gStage1ColorOp == 14) {
         float4 envTexel = tex2D(inputSampler2, PS.TexCoord1.xy);
         worldColor.rgb = worldColor.rgb*(1 - gTextureFactor.a) + envTexel.rgb*gTextureFactor.a;
     }
-
-    // Apply spherical reflection
-    // MultiplyAdd = 25
     if (gStage1ColorOp == 25) {
         float4 sphTexel = tex2D(inputSampler2, PS.TexCoord1.xy/PS.TexCoord1.z);
         worldColor.rgb += sphTexel.rgb*gTextureFactor.r;
     }
-	
-    // Apply specular
-    if (gMaterialSpecPower != 0) worldColor.rgb += PS.Specular.rgb;
-	
-    worldColor = saturate(worldColor);
-
-    worldColor.rgb = MTAApplyFog(worldColor.rgb, PS.Depth.x / PS.Depth.y);
+    if (gMaterialSpecPower != 0) {
+        worldColor.rgb += PS.Specular.rgb;
+    }
+    worldColor.rgb = MTAApplyFog(worldColor.rgb, PS.Depth.x/PS.Depth.y);
+    float4 outputColor = worldColor;
+	if (ambienceMultiplier) {
+        worldColor.rgb = ambienceMultiplier;
+    }
     output.World = saturate(worldColor);
-		
-    // Color render target
-    output.Color.rgb = worldColor.rgb*0.85 + 0.15;
+    output.Color.rgb = outputColor.rgb*0.85 + 0.15;
     output.Color.a = inputTexel.a*PS.Diffuse.a;
-		
-    // Normal render target
+    output.Emissive.rgb = 0;
+    output.Emissive.a = 1;
     float3 Normal = normalize(PS.Normal);
-    Normal = float3((Normal.xy*0.5) + 0.5, Normal.z < 0 ? 0.811 : 0.989);
-    output.Normal = float4(Normal, 1);
-
+    output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z < 0 ? 0.811 : 0.989, 1);
     return output;
 }
 
@@ -132,10 +172,10 @@ Pixel PixelShaderFunction(PSInput PS) {
 -->> Techniques <<--
 --------------------*/
 
-technique world_rtInput {
+technique vehicle_rtInput {
     pass P0 {
-        CullMode = ((gMaterialDiffuse.a <0.9) && (gBlendFactor.a == 0)) ? 1 : gCullMode;
-        ZWriteEnable = (gMaterialDiffuse.a <0.9) ? 0 : gZWriteEnable;
+        CullMode = ((gMaterialDiffuse.a < 0.9) && (gBlendFactor.a == 0)) ? 1 : gCullMode;
+        ZWriteEnable = (gMaterialDiffuse.a < 0.9) ? 0 : gZWriteEnable;
         SRGBWriteEnable = false;
         VertexShader = compile vs_3_0 VertexShaderFunction();
         PixelShader = compile ps_3_0 PixelShaderFunction();
@@ -145,3 +185,4 @@ technique world_rtInput {
 technique fallback {
     pass P0 {}
 }
+]]

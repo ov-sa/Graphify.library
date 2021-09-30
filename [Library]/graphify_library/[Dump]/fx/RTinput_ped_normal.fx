@@ -147,7 +147,7 @@ Pixel PixelShaderFunction(PSInput PS)
     float4 finalColor = texel * PS.Diffuse;
 	
     // Apply fog
-    finalColor.rgb = MTAApplyFog(finalColor.rgb, PS.Depth.x / PS.Depth.y);
+    finalColor.rgb = MTAApplyFog(finalColor.rgb, PS.Depth.x/PS.Depth.y);
 
     output.World = saturate(finalColor);
 
