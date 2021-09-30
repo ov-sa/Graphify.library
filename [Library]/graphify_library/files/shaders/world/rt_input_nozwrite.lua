@@ -60,8 +60,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 
 bool disableNormals = false;
 float ambienceMultiplier = false;
-float2 sPixelSize = float2(0.00125, 0.00166);
-float2 sHalfPixel = float2(0.000625, 0.00083);
 
 struct Pixel {
     float4 World : COLOR0;
@@ -75,7 +73,6 @@ struct VSInput {
     float4 Diffuse : COLOR0;
     float3 Normal : NORMAL0;
     float2 TexCoord : TEXCOORD0;
-    float2 TexCoord1 : TEXCOORD1;
 };
 
 struct PSInput {
@@ -112,7 +109,7 @@ PSInput VertexShaderFunction(VSInput VS) {
     }
     PS.Normal = Normal;
 
-    float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);	
+    float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);
     float4 viewPos = mul(worldPos, gView);
     float4 projPos = mul(viewPos, gProjection);
     PS.Position = projPos;

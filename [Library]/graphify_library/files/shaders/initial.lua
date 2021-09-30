@@ -31,5 +31,6 @@ AVAILABLE_SHADERS = {
     ["World"] = {},
     ["Ped"] = {},
     ["Vehicle"] = {},
+    ["Water"] = {}
 
 }

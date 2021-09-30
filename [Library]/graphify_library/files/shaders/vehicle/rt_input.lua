@@ -117,7 +117,7 @@ PSInput VertexShaderFunction(VSInput VS) {
     PS.Normal = Normal.xyz;
     float3 ViewNormal = mul(VS.Normal, (float3x3)gWorldView);
 
-    float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);	
+    float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);
     float4 viewPos = mul(worldPos, gView);
     float4 projPos = mul(viewPos, gProjection);
     PS.Position = projPos;

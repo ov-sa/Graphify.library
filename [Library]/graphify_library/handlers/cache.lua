@@ -21,7 +21,13 @@ createdRTs = {
 
 createdShaders = {
 
-    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass", "world_RT_Input_NoZWrite", "world_RT_Input_Emissive", "ped_RT_Input", "vehicle_RT_Input"},
+    ["__SORT_ORDER__"] = {
+        "zBuffer",
+        "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass","world_RT_Input_NoZWrite", "world_RT_Input_Emissive",
+        "ped_RT_Input",
+        "vehicle_RT_Input",
+        "water_RT_Input", "water_RT_Input_Detail", "water_RT_Input_WaterWake"
+    },
 
     zBuffer = {
         rwData = {AVAILABLE_SHADERS["Utilities"]["Z_Buffer"]},
@@ -149,6 +155,52 @@ createdShaders = {
             {
                 state = false,
                 textureList = {"unnamed"}
+            }
+        }
+    },
+
+    water_RT_Input = {
+        rwData = {AVAILABLE_SHADERS["Water"]["RT_Input"], 0, 0, false, "world,object"},
+        syncRT = true,
+        controlNormals = false,
+        ambientSupport = true,
+        parameters = {},
+        textureLists = {
+            {
+                state = true,
+                textureList = {"water*"}
+            }
+        }
+    },
+
+    water_RT_Input_Detail = {
+        rwData = {AVAILABLE_SHADERS["Water"]["RT_Input_Detail"], 0, 0, false, "world,object"},
+        syncRT = true,
+        controlNormals = false,
+        ambientSupport = true,
+        parameters = {
+            ["worldZBias"] = {0.01}
+        },
+        textureLists = {
+            {
+                state = true,
+                textureList = {"boatsplash", "boatwake*", "coronaringa"}
+            }
+        }
+    },
+
+    water_RT_Input_WaterWake = {
+        rwData = {AVAILABLE_SHADERS["Water"]["RT_Input_Detail"], 0, 0, false, "world,object"},
+        syncRT = true,
+        controlNormals = false,
+        ambientSupport = true,
+        parameters = {
+            ["worldZBias"] = {0.45}
+        },
+        textureLists = {
+            {
+                state = true,
+                textureList = {"waterwake"}
             }
         }
     }

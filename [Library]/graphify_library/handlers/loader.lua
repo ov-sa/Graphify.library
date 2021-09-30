@@ -75,5 +75,6 @@ addEventHandler("onClientRender", root, function()
     if not createdRTs.colorLayer then return false end
  
     dxDrawImage(100, 100, 1366/3, 768/3, createdRTs.colorLayer)
+    --dxDrawImage(100 + 1366/3 + 10, 100, 1366/3, 768/3, createdRTs.normalLayer)
 
 end)
