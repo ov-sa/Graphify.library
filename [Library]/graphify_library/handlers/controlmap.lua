@@ -57,10 +57,10 @@ controlMapCache = {
 --[[ Function: Generates Control-Map ]]--
 -----------------------------------------
 
-function generateControlMap(texture, type, controlMap, controls)
+function generateControlMap(texture, type, controls)
 
     type = ((type == "object") and "world") or type
-    if not texture or not type or not controlMapCache.validControlTypes[type] or not controlMap or not imports.isElement(controlMap) or (imports.getElementType(controlMap) ~= "texture") or not controls then return false end
+    if not texture or not type or not controlMapCache.validControlTypes[type] or not controls then return false end
 
     for i, j in imports.ipairs(controlMapCache.validControls) do
         if not controls[j] or not controls[j].texture or not imports.isElement(controls[j].texture) or (imports.getElementType(controls[j].texture) ~= "texture") then
@@ -83,7 +83,6 @@ function generateControlMap(texture, type, controlMap, controls)
     end
     controlMapCache.controlMaps[createdControlMap] = {
         texture = texture,
-        controlMap = controlMap,
         controls = controls,
         type = type
     }
