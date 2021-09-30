@@ -18,7 +18,9 @@ local imports = {
     tonumber = tonumber,
     destroyElement = destroyElement,
     disableNormals = disableNormals,
-    dxSetShaderValue = dxSetShaderValue
+    dxSetShaderValue = dxSetShaderValue,
+    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
+    engineRemoveShaderFromWorldTexture = engineRemoveShaderFromWorldTexture
 }
 
 
@@ -91,6 +93,27 @@ function getEmissiveMode()
 
     if isGraphifySupported then
         return emissiveCache["__STATE__"]
+    end
+    return false
+
+end
+
+
+-------------------------------------------------
+--[[ Function: Sets Texture's Emissive State ]]--
+-------------------------------------------------
+
+function setTextureEmissive(texture, type, state)
+
+    if isGraphifySupported and texture and type and ((state == true) or (state == false)) then
+        local emissiveShader = false
+        if (type == "world") or (type == "object") then
+            emissiveShader = createdShaders["world_RT_Input_Emissive"].shader
+        end
+        if emissiveShader then
+            local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
+            setterFunction(shader, texture)
+        end
     end
     return false
 
