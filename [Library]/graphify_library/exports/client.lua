@@ -16,6 +16,7 @@
 local imports = {
     pairs = pairs,
     tonumber = tonumber,
+    destroyElement = destroyElement,
     disableNormals = disableNormals,
     dxSetShaderValue = dxSetShaderValue
 }
@@ -94,3 +95,18 @@ function getEmissiveMode()
     return false
 
 end
+
+
+-------------------------------------------------
+--[[ Functions: Creates/Destroys Control-Map ]]--
+-------------------------------------------------
+
+function destroyControlMap(shader)
+
+    if isGraphifySupported and controlMapCache.controlMaps[shader] then
+        imports.destroyElement(shader)
+    end
+    return true
+
+end
+

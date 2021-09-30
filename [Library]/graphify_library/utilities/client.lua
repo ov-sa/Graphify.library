@@ -18,6 +18,7 @@ local imports = {
     pairs = pairs,
     ipairs = ipairs,
     loadstring = loadstring,
+    addEventHandler = addEventHandler,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
     engineRemoveShaderFromWorldTexture = engineRemoveShaderFromWorldTexture
@@ -29,6 +30,18 @@ local imports = {
 -------------------
 
 imports.loadstring(exports.beautify_library:fetchImports())()
+
+
+---------------------------------
+--[[ Event: On Resource Stop ]]--
+---------------------------------
+
+isLibraryResourceStopping = false
+imports.addEventHandler("onClientResourceStop", root, function()
+    if source == resource then
+        isLibraryResourceStopping = true
+    end
+end)
 
 
 --------------------------------------
