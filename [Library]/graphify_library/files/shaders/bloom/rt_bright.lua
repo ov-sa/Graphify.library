@@ -55,8 +55,8 @@ AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
 -------------------*/
 
 texture rtTexture;
-float rtCuttOff = 0.2;
-float rtPower = 1;
+float rtCuttOff;
+float rtPower;
 
 struct VSInput {
     float3 Position : POSITION0;
@@ -75,7 +75,7 @@ struct PSInput {
 -->> Samplers <<--
 ------------------*/
 
-sampler blurSampler = sampler_state {
+sampler brightSampler = sampler_state {
     Texture = (rtTexture);
     MinFilter = Linear;
     MagFilter = Linear;

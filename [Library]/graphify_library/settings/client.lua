@@ -27,5 +27,6 @@ DEFAULT_TEXTURE_CONFIG = {
 }
 
 PRIORITY_LEVEL = {
-    RT_RENDER = "high+999"
+    RT_RENDER = "high+999",
+    Emissive_Render = "low-999"
 }
