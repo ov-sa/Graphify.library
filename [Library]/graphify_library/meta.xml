@@ -34,15 +34,4 @@
 	<export function="setNormalGenerationState" type="client"/>
 	<export function="setAmbienceMutiplier" type="client"/>
 
-	<!--script src="c_main.lua" type="client"/>
-	<script src="c_common.lua" type="client"/>
-	
-	<file src="fx/RTinput_car_paint.fx"/>
-	<file src="fx/RTinput_water.fx"/>
-	<file src="fx/RTinput_water_detail.fx"/>
-	<file src="fx/RTinput_ped_normal.fx"/>
-
-	<export function="applyNormalToPedTexture" type="client"/-->
-
-
 </meta>
