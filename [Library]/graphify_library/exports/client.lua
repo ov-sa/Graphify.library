@@ -103,7 +103,7 @@ end
 --[[ Function: Sets Texture's Emissive State ]]--
 -------------------------------------------------
 
-function setTextureEmissive(texture, type, state)
+function setTextureEmissiveState(texture, type, state)
 
     if isGraphifySupported and texture and type and ((state == true) or (state == false)) then
         local emissiveShader = false
@@ -112,7 +112,7 @@ function setTextureEmissive(texture, type, state)
         end
         if emissiveShader then
             local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
-            setterFunction(shader, texture)
+            setterFunction(emissiveShader, texture)
         end
     end
     return false
