@@ -22,6 +22,7 @@ local imports = {
     getElementType = getElementType,
     destroyElement = destroyElement,
     addEventHandler = addEventHandler,
+    syncRTWithShader = syncRTWithShader,
     dxCreateShader = dxCreateShader,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
@@ -70,6 +71,9 @@ function generateControlMap(texture, type, controlMap, controls)
     end
 
     local createdControlMap = imports.dxCreateShader(imports.unpack(controlMapCache.validControlTypes[type].rwData))
+    if controlMapCache.validControlTypes[type].syncRT then
+        imports.syncRTWithShader(createdControlMap)
+    end
     for i, j in imports.ipairs(controlMapCache.validControls) do
         imports.dxSetShaderValue(createdControlMap, j.."ControlScale", controls[j].scale)
         imports.dxSetShaderValue(createdControlMap, j.."ControlTexture", controls[j].texture)
