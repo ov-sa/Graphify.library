@@ -23,6 +23,7 @@ local imports = {
     destroyElement = destroyElement,
     addEventHandler = addEventHandler,
     dxCreateShader = dxCreateShader,
+    dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
     math = {
         max = math.max
@@ -55,13 +56,13 @@ controlMapCache = {
 --[[ Function: Generates Control-Map ]]--
 -----------------------------------------
 
-function generateControlMap(texture, controlMap, controls, type)
+function generateControlMap(texture, type, controlMap, controls)
 
     type = ((type == "object") and "world") or type
-    if not texture or not controlMap or not imports.isElement(controlMap) or (imports.getElementType(controlMap) ~= "texture") or not controls or not type or not controlMapCache.validControlTypes[type] then return false end
+    if not texture or not type or not controlMapCache.validControlTypes[type] or not controlMap or not imports.isElement(controlMap) or (imports.getElementType(controlMap) ~= "texture") or not controls then return false end
 
     for i, j in imports.ipairs(controlMapCache.validControls) do
-        if not controls[j] or not controls[j].texture or not imports.isElement(controls[j].texture) or not (imports.getElementType(controls[j].texture) ~= "texture") then
+        if not controls[j] or not controls[j].texture or not imports.isElement(controls[j].texture) or (imports.getElementType(controls[j].texture) ~= "texture") then
             return false
         else
             controls[j].scale = imports.math.max(0, imports.tonumber(controls[j].scale) or 1)

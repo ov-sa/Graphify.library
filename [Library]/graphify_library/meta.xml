@@ -37,6 +37,7 @@
     <script src="handlers/cache.lua" type="client" cache="false"/>
     <script src="handlers/loader.lua" type="client" cache="false"/>
     <script src="handlers/emissive.lua" type="client" cache="false"/>
+    <script src="handlers/controlmap.lua" type="client" cache="false"/>
 
     <!-- Exports -->
 	<export function="getLayerRTs" type="client"/>
@@ -45,6 +46,7 @@
 	<export function="setEmissiveMode" type="client"/>
 	<export function="getEmissiveMode" type="client"/>
 	<export function="setTextureEmissiveState" type="client"/>
+	<export function="createControlMap" type="client"/>
 	<export function="destroyControlMap" type="client"/>
 
 </meta>
