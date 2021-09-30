@@ -56,7 +56,7 @@ imports.addEventHandler("onGraphifyLoad", root, function()
     end
 
     imports.addEventHandler("onClientPreRender", root, function()
-        if CLIENT_MTA_MINIMIZED then
+        if not CLIENT_MTA_MINIMIZED then
             imports.dxDrawMaterialPrimitive3D("trianglelist", createdShaders.zBuffer.shader, false, {-0.5, 0.5, 0, 0, 1}, {-0.5, -0.5, 0, 0, 0}, {0.5, 0.5, 0, 1, 1}, {0.5, -0.5, 0, 1, 0}, {0.5, 0.5, 0, 1, 1}, {-0.5, -0.5, 0, 0, 0})
             for i, j in imports.ipairs(createdRTs["__SORT_ORDER__"]) do
                 if createdRTs[j] then
