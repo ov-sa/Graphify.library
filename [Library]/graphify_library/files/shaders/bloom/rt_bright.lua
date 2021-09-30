@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: bloom: rt_blurY.lua
+     Shaders: bloom: rt_bright.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: Bloom's RT Y-Blurrer ]]--
+     Desc: Bloom's RT Brighter ]]--
 ----------------------------------------------------------------
 
 
@@ -25,7 +25,7 @@ local imports = {
 
 local shaderConfig = {
     category = "Bloom",
-    reference = "RT_BlurY",
+    reference = "RT_Bright",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
 }
@@ -55,11 +55,8 @@ AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
 -------------------*/
 
 texture rtTexture;
-float bloomMultiplier = 1;
-float blurMultiplier = 1;
-float2 viewportSize = float2(800, 600);
-static const float Kernel[13] = {-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6};
-static const float Weights[13] = {0.002216, 0.008764, 0.026995, 0.064759, 0.120985, 0.176033, 0.199471, 0.176033, 0.120985, 0.064759, 0.026995, 0.008764, 0.002216};
+float rtCuttOff = 0.2;
+float rtPower = 1;
 
 struct VSInput {
     float3 Position : POSITION0;
@@ -102,17 +99,15 @@ PSInput VertexShaderFunction(VSInput VS) {
 }
 
 float4 PixelShaderFunction(PSInput PS) : COLOR0 {
-    float4 inputTexel = 0;
+	float4 inputTexel = tex2D(Sampler0, PS.TexCoord);
 
-    float2 rtColor;
-    rtColor.y = PS.TexCoord.y;
-    for(int i = 0; i < 13; ++i) {
-        rtColor.y = PS.TexCoord.y + ((blurMultiplier*Kernel[i])/viewportSize.y);
-        inputTexel += tex2D(blurSampler, rtColor.xy)*Weights[i]*bloomMultiplier;
-    }
-    inputTexel = inputTexel*PS.Diffuse;
-    inputTexel.a = 1;
-    return inputTexel;
+    float lum = (inputTexel.r + inputTexel.g + inputTexel.b)/3;
+    float adj = saturate(lum - rtCuttOff)/(1.01 - rtCuttOff);
+    inputTexel = inputTexel*adj;
+    inputTexel = pow(inputTexel, rtPower);
+    inputTexel = inputTexel;
+	inputTexel.a = 1;
+	return inputTexel;
 }
 
 
@@ -120,7 +115,7 @@ float4 PixelShaderFunction(PSInput PS) : COLOR0 {
 -->> Techniques <<--
 --------------------*/
 
-technique bloom_rtBlurY {
+technique bloom_rtBright {
     pass P0 {
         VertexShader = compile vs_2_0 VertexShaderFunction();
         PixelShader = compile ps_2_0 PixelShaderFunction();

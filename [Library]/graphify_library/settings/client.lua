@@ -16,6 +16,7 @@
 
 
 DEFAULT_AMBIENCE = false
+DEFAULT_EMISSIVE = true
 DEFAULT_TEXTURE_CONFIG = {
     BLACKLIST = {
         "",	"unnamed", "fire*", "basketball2", "skybox_tex*", "font*", "radar*", "sitem16", "snipercrosshair",

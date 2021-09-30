@@ -69,7 +69,7 @@ PSInput VertexShaderFunction(VSInput VS)
     PSInput PS = (PSInput)0;
 
     // Make sure normal is valid
-    MTAFixUpNormal( VS.Normal);
+    MTAFixUpNormal(VS.Normal);
 
     // Set information to do specular calculation
     PS.Normal = mul(VS.Normal, (float3x3)gWorld);
@@ -78,7 +78,7 @@ PSInput VertexShaderFunction(VSInput VS)
     PS.TexCoord = VS.TexCoord;
 
     // Calculate screen and world pos of vertex	
-    PS.Position = mul( float4(VS.Position.xyz, 1) , gWorldViewProjection);
+    PS.Position = mul(float4(VS.Position.xyz, 1) , gWorldViewProjection);
     float4 worldPos = mul(float4(VS.Position, 1), gWorld);
     PS.WorldPos = worldPos.xyz;
 	
@@ -107,20 +107,20 @@ struct Pixel
 float3x3 cotangent_frame(float3 N, float3 p, float2 uv)
 {
     // get edge vectors of the pixel triangle
-    float3 dp1 = ddx( p);
-    float3 dp2 = ddy( p);
-    float2 duv1 = ddx( uv);
-    float2 duv2 = ddy( uv);
+    float3 dp1 = ddx(p);
+    float3 dp2 = ddy(p);
+    float2 duv1 = ddx(uv);
+    float2 duv2 = ddy(uv);
  
     // solve the linear system
-    float3 dp2perp = cross( dp2, N);
-    float3 dp1perp = cross( N, dp1);
-    float3 T = dp2perp * duv1.x + dp1perp * duv2.x;
-    float3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+    float3 dp2perp = cross(dp2, N);
+    float3 dp1perp = cross(N, dp1);
+    float3 T = dp2perp*duv1.x + dp1perp*duv2.x;
+    float3 B = dp2perp*duv1.y + dp1perp*duv2.y;
  
     // construct a scale-invariant frame 
-    float invmax = rsqrt( max( dot(T,T), dot(B,B)));
-    return float3x3( -T * invmax, -B * invmax, N);
+    float invmax = rsqrt(max(dot(T,T), dot(B,B)));
+    return float3x3(-T*invmax, -B*invmax, N);
 }
 
 //------------------------------------------------------------------------------------------
@@ -132,18 +132,18 @@ Pixel PixelShaderFunction(PSInput PS)
 	
     // Get texture pixels
     float4 texel = tex2D(Sampler0, PS.TexCoord);
-    texel.rgb = gTexColor * texel.rgb;
+    texel.rgb = gTexColor*texel.rgb;
     float4 NormalTex = tex2D(SamplerNormal, PS.TexCoord);
 	
     // Get normal vector
     float3x3 tangentToWorldSpace = cotangent_frame(PS.Normal, PS.WorldPos - gCameraPosition, PS.TexCoord);
-    NormalTex.xyz = normalize((NormalTex.xyz * 2.0) - 1.0);
-    float3 Normal = normalize(NormalTex.x * normalize(tangentToWorldSpace[0]) - NormalTex.y * 
-        normalize(tangentToWorldSpace[1]) + NormalTex.z * normalize(tangentToWorldSpace[2]));
-    Normal = lerp(PS.Normal, normalize(Normal), fLerpNormal * texel.a);
+    NormalTex.xyz = normalize((NormalTex.xyz*2.0) - 1.0);
+    float3 Normal = normalize(NormalTex.x*normalize(tangentToWorldSpace[0]) - NormalTex.y*
+        normalize(tangentToWorldSpace[1]) + NormalTex.z*normalize(tangentToWorldSpace[2]));
+    Normal = lerp(PS.Normal, normalize(Normal), fLerpNormal*texel.a);
 
     // Apply diffuse lighting
-    float4 finalColor = texel * PS.Diffuse;
+    float4 finalColor = texel*PS.Diffuse;
 	
     // Apply fog
     finalColor.rgb = MTAApplyFog(finalColor.rgb, PS.Depth.x/PS.Depth.y);
@@ -152,11 +152,11 @@ Pixel PixelShaderFunction(PSInput PS)
 
     // Color render target
     output.Color.rgb = texel.rgb;
-    output.Color.a = texel.a * PS.Diffuse.a;
+    output.Color.a = texel.a*PS.Diffuse.a;
 
    // Normal render target
    Normal = normalize(Normal);
-   output.Normal = float4((Normal.xy * 0.5) + 0.5, Normal.z < 0 ? 0.811 : 0.989, 1);
+   output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z < 0 ? 0.811 : 0.989, 1);
    
     return output;
 }

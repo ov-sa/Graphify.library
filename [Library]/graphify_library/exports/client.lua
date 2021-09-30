@@ -67,3 +67,29 @@ function setAmbienceMutiplier(multiplier)
     return false
 
 end
+
+
+-------------------------------------------------
+--[[ Functions: Sets/Retrieves Emissive Mode ]]--
+-------------------------------------------------
+
+function setEmissiveMode(state)
+
+    if isGraphifySupported then
+        if ((state == true) or (state == false)) and (emissiveCache.state ~= state) then
+            emissiveCache.state = state
+            return true
+        end
+    end
+    return false
+
+end
+
+function getEmissiveMode()
+
+    if isGraphifySupported then
+        return emissiveCache.state
+    end
+    return false
+
+end

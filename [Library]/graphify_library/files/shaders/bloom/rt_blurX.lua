@@ -27,7 +27,7 @@ local shaderConfig = {
     category = "Bloom",
     reference = "RT_BlurX",
     dependencies = {},
-    dependencyData = ""
+    dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
 }
 
 for i, j in imports.pairs(shaderConfig.dependencies) do
@@ -48,6 +48,12 @@ AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
 -----------------*/
 
 ]]..shaderConfig.dependencyData..[[
+
+
+/*-----------------
+-->> Variables <<--
+-------------------*/
+
 texture rtTexture;
 float bloomMultiplier = 1;
 float blurMultiplier = 1;

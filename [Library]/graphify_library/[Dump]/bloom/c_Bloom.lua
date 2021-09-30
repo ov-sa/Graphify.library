@@ -14,13 +14,9 @@ function enableBloom()
 	if bEffectEnabled then return end
 	-- Create things
 	myScreenSource = dxCreateScreenSource( scx/2, scy/2)
-
 	blurHShader,tecName = dxCreateShader( "fx/blurH.fx")
-
 	blurVShader,tecName = dxCreateShader( "fx/blurV.fx")
-
 	brightPassShader,tecName = dxCreateShader( "fx/brightPass.fx")
-
     addBlendShader,tecName = dxCreateShader( "fx/blend.fx")
 
 	-- Get list of all elements used
@@ -85,19 +81,19 @@ levelSettings = {}
 
 levelSettings['Low'] = {}
 levelSettings['Low']['cutoff'] = 0.001
-levelSettings['Low']['power'] = 2
+levelSettings['Low']['rtPower'] = 2
 levelSettings['Low']['blur'] = 1
 levelSettings['Low']['bloom'] = 2
 
 levelSettings['Medium'] = {}
 levelSettings['Medium']['cutoff'] = 0.001
-levelSettings['Medium']['power'] = 1.3
+levelSettings['Medium']['rtPower'] = 1.3
 levelSettings['Medium']['blur'] = 1.3
 levelSettings['Medium']['bloom'] = 5
 
 levelSettings['High'] = {}
 levelSettings['High']['cutoff'] = 0.001
-levelSettings['High']['power'] = 1.3
+levelSettings['High']['rtPower'] = 1.3
 levelSettings['High']['blur'] = 1.3
 levelSettings['High']['bloom'] = 3
 
@@ -106,7 +102,7 @@ function setEffectVariables(level)
     -- Bloom
 	
     v.cutoff = levelSettings[level or 'Medium']['cutoff'] or 0.001
-    v.power = levelSettings[level or 'Medium']['power'] or 1.5
+    v.rtPower = levelSettings[level or 'Medium']['rtPower'] or 1.5
 	v.blur = levelSettings[level or 'Medium']['blur'] or 1
     v.bloom = levelSettings[level or 'Medium']['bloom'] or 2.5
     v.blendR = 204
@@ -140,7 +136,7 @@ addEventHandler( "onClientHUDRender", root,
 		local current = myScreenSource
 
 		-- Apply all the effects, bouncing from one render target to another
-		current = applyBrightPass( current, v.cutoff, v.power)
+		current = applyBrightPass( current, v.cutoff, v.rtPower)
 		current = applyDownsample( current)
 		current = applyDownsample( current)
 		current = applyGBlurH( current, v.bloom, v.blur)
@@ -210,27 +206,16 @@ function applyGBlurV( Src, bloom, blur)
 	return newRT
 end
 
-function applyBrightPass( Src, cutoff, power)
+function applyBrightPass( Src, cutoff, rtPower)
 	if not Src then return nil end
 	local mx,my = dxGetMaterialSize( Src)
 	local newRT = RTPool.GetUnused(mx,my)
 	if not newRT then return nil end
 	dxSetRenderTarget( newRT, true) 
 	dxSetShaderValue( brightPassShader, "rtTexture", Src)
-	dxSetShaderValue( brightPassShader, "CUTOFF", cutoff)
-	dxSetShaderValue( brightPassShader, "POWER", power)
+	dxSetShaderValue( brightPassShader, "rtCuttOff", cutoff)
+	dxSetShaderValue( brightPassShader, "rtPower", rtPower)
 	dxDrawImage( 0, 0, mx,my, brightPassShader)
 	DebugResults.addItem( newRT, "applyBrightPass")
 	return newRT
 end
-
-
-----------------------------------------------------------------
--- Avoid errors messages when memory is low
-----------------------------------------------------------------
-_dxDrawImage = dxDrawImage
-function xdxDrawImage(posX, posY, width, height, image, ...)
-	if not image then return false end
-	return _dxDrawImage( posX, posY, width, height, image, ...)
-end
-enableBloom()
