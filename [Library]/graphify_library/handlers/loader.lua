@@ -54,18 +54,20 @@ imports.addEventHandler("onGraphifyLoad", root, function()
             end
         end
     end
-    setAmbienceMutiplier(DEFAULT_AMBIENCE)
 
     imports.addEventHandler("onClientPreRender", root, function()
-        imports.dxDrawMaterialPrimitive3D("trianglelist", createdShaders.zBuffer.shader, false, {-0.5, 0.5, 0, 0, 1}, {-0.5, -0.5, 0, 0, 0}, {0.5, 0.5, 0, 1, 1}, {0.5, -0.5, 0, 1, 0}, {0.5, 0.5, 0, 1, 1}, {-0.5, -0.5, 0, 0, 0})
-        for i, j in imports.ipairs(createdRTs["__SORT_ORDER__"]) do
-            if createdRTs[j] then
-                imports.dxSetRenderTarget(createdRTs[j], true)
+        if CLIENT_MTA_MINIMIZED then
+            imports.dxDrawMaterialPrimitive3D("trianglelist", createdShaders.zBuffer.shader, false, {-0.5, 0.5, 0, 0, 1}, {-0.5, -0.5, 0, 0, 0}, {0.5, 0.5, 0, 1, 1}, {0.5, -0.5, 0, 1, 0}, {0.5, 0.5, 0, 1, 1}, {-0.5, -0.5, 0, 0, 0})
+            for i, j in imports.ipairs(createdRTs["__SORT_ORDER__"]) do
+                if createdRTs[j] then
+                    imports.dxSetRenderTarget(createdRTs[j], true)
+                end
             end
+            imports.dxSetRenderTarget()
         end
-        imports.dxSetRenderTarget()
     end, false, PRIORITY_LEVEL.RT_RENDER)
 
+    setAmbienceMutiplier(DEFAULT_AMBIENCE)
     if DEFAULT_EMISSIVE then
         createEmissiveMode()
     end
