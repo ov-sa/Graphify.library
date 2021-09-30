@@ -14,6 +14,9 @@
     <file src="files/shaders/utilities/mta-helper.fx"/>
     <script src="files/shaders/initial.lua" type="client" cache="false"/>
     <script src="files/shaders/utilities/z_buffer.lua" type="client" cache="false"/>
+    <script src="files/shaders/bloom/rt_blend.lua" type="client" cache="false"/>
+    <script src="files/shaders/bloom/rt_blurX.lua" type="client" cache="false"/>
+    <script src="files/shaders/bloom/rt_blurY.lua" type="client" cache="false"/>
     <script src="files/shaders/world/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/world/rt_input_ref.lua" type="client" cache="false"/>
     <script src="files/shaders/world/rt_input_grass.lua" type="client" cache="false"/>

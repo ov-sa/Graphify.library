@@ -27,7 +27,7 @@ AVAILABLE_SHADERS = {
     ["Utilities"] = {
         ["MTA_Helper"] = imports.fetchFileData("files/shaders/utilities/mta-helper.fx")
     },
-    ["Generic"] = {},
+    ["Bloom"] = {},
     ["World"] = {},
     ["Ped"] = {},
     ["Vehicle"] = {},
