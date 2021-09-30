@@ -59,7 +59,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -------------------*/
 
 float ambienceMultiplier = false;
-static const float pi = 3.141592653589793f;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -79,9 +78,11 @@ struct VSInput {
 struct PSInput {
     float4 Position : POSITION0;
     float4 Diffuse : COLOR0;
+    float3 Specular : COLOR1;
     float2 TexCoord : TEXCOORD0;
     float3 Normal : TEXCOORD1;
-    float4 WorldPos : TEXCOORD2;
+    float3 TexCoord1 : TEXCOORD2;
+    float2 Depth : TEXCOORD3;
 };
 
 

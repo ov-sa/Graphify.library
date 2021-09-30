@@ -60,7 +60,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -------------------*/
 
 float ambienceMultiplier = false;
-static const float pi = 3.141592653589793f;
 
 struct Pixel {
     float4 World : COLOR0;

@@ -1,6 +1,5 @@
 
 shaderParams = { 
-    --TODO: MOFIEID
 	SHWaterWake = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWaterDetail = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWater = {"fx/RTinput_water.fx", 0, 0, false, "world,object"}, -- world (water)
