@@ -81,7 +81,7 @@ struct PSInput {
     float4 Diffuse : COLOR0;
     float2 TexCoord : TEXCOORD0;
     float3 Normal : TEXCOORD1;
-    float4 WorldPos : TEXCOORD4;
+    float4 WorldPos : TEXCOORD2;
 };
 
 

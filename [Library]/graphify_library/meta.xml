@@ -19,6 +19,7 @@
     <script src="files/shaders/world/rt_input_grass.lua" type="client" cache="false"/>
     <script src="files/shaders/world/rt_input_nozwrite.lua" type="client" cache="false"/>
     <script src="files/shaders/world/rt_input_emissive.lua" type="client" cache="false"/>
+    <script src="files/shaders/ped/rt_input.lua" type="client" cache="false"/>
 
     <!-- Handlers -->
     <script src="handlers/initial.lua" type="client" cache="false"/>
@@ -34,13 +35,8 @@
 	<script src="c_common.lua" type="client"/>
 	
 	<file src="fx/RTinput_car_paint.fx"/>
-	<file src="fx/RTinput_world_refAnim.fx"/>
-	<file src="fx/RTinput_world_emissive.fx"/>
-	<file src="fx/RTinput_world_noZWrite.fx"/>
 	<file src="fx/RTinput_water.fx"/>
 	<file src="fx/RTinput_water_detail.fx"/>
-	<file src="fx/RTinput_grass.fx"/>
-	<file src="fx/RTinput_ped.fx"/>
 	<file src="fx/RTinput_ped_normal.fx"/>
 	<file src="fx/RTinput_ped_noVS.fx"/>
 

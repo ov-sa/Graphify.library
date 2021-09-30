@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: rt_input_nozwrite.lua
+     Shaders: ped: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT No-Z-Write Inputter ]]--
+     Desc: Ped's RT Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -24,8 +24,8 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = "World",
-    reference = "RT_Input_NoZWrite",
+    category = "Ped",
+    reference = "RT_Input",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
 }
@@ -58,10 +58,8 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool disableNormals = false;
 float ambienceMultiplier = false;
-float2 sPixelSize = float2(0.00125, 0.00166);
-float2 sHalfPixel = float2(0.000625, 0.00083);
+static const float pi = 3.141592653589793f;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -102,28 +100,19 @@ sampler inputSampler = sampler_state {
 
 PSInput VertexShaderFunction(VSInput VS) {
     PSInput PS = (PSInput)0;
+
+    MTAFixUpNormal(VS.Normal);
+    PS.Normal = mul(VS.Normal, (float3x3)gWorld);
+
     PS.TexCoord = VS.TexCoord;
-
-    float3 Normal;
-    if ((gDeclNormal != 1) || (disableNormals)) {
-        Normal = float3(0, 0, 0);
-    } else {
-        Normal = mul(VS.Normal, (float3x3)gWorld);
-    }
-    PS.Normal = Normal;
-
-    float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);	
-    float4 viewPos = mul(worldPos, gView);
-    float4 projPos = mul(viewPos, gProjection);
-    PS.Position = projPos;
-    PS.WorldPos = worldPos;
-    PS.Diffuse = MTACalcGTABuildingDiffuse(VS.Diffuse);
+    PS.Position = mul( float4(VS.Position.xyz,1) , gWorldViewProjection);
+    PS.Diffuse = MTACalcGTACompleteDiffuse(PS.Normal, VS.Diffuse);
     return PS;
 }
 
 Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
-	
+
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
     float4 worldColor = inputTexel*PS.Diffuse;
@@ -131,16 +120,12 @@ Pixel PixelShaderFunction(PSInput PS) {
         worldColor.rgb = ambienceMultiplier;
     }
     output.World = saturate(worldColor);
-    output.Color.rgb = inputTexel.rgb*PS.Diffuse.rgb;
+    output.Color.rgb = inputTexel.rgb;
     output.Color.a = inputTexel.a*PS.Diffuse.a;
     output.Emissive.rgb = 0;
     output.Emissive.a = 1;
     float3 Normal = normalize(PS.Normal);
-    if (PS.Normal.z == 0) {
-        output.Normal = float4(0, 0, 0, 0);
-    } else {
-        output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z < 0 ? 0.611 : 0.789, 1);
-    }
+    output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z < 0 ? 0.811 : 0.989, 1);
     return output;
 }
 
@@ -149,9 +134,8 @@ Pixel PixelShaderFunction(PSInput PS) {
 -->> Techniques <<--
 --------------------*/
 
-technique world_rtInputNoZWrite {
+technique ped_rtInput {
     pass P0 {
-        ZWriteEnable = false;
         SRGBWriteEnable = false;
         VertexShader = compile vs_2_0 VertexShaderFunction();
         PixelShader = compile ps_2_0 PixelShaderFunction();

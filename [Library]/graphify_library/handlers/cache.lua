@@ -21,7 +21,7 @@ createdRTs = {
 
 createdShaders = {
 
-    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass", "world_RT_NoZWrite_", "world_RT_Emissive_"},
+    ["__SORT_ORDER__"] = {"zBuffer", "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass", "world_RT_Input_NoZWrite", "world_RT_Input_Emissive", "ped_RT_Input"},
 
     zBuffer = {
         rwData = {AVAILABLE_SHADERS["Utilities"]["Z_Buffer"]},
@@ -88,7 +88,7 @@ createdShaders = {
         }
     },
 
-    world_RT_NoZWrite_ = {
+    world_RT_Input_NoZWrite = {
         rwData = {AVAILABLE_SHADERS["World"]["RT_Input_NoZWrite"], 2, 0, false, "world,object,vehicle"},
         syncRT = true,
         controlNormals = true,
@@ -102,13 +102,27 @@ createdShaders = {
         }
     },
 
-    world_RT_Emissive_ = {
+    world_RT_Input_Emissive = {
         rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Emissive"], 3, 0, false, "world,object"},
         syncRT = true,
         controlNormals = true,
         ambientSupport = false,
         parameters = {},
         textureLists = {}
+    },
+
+    ped_RT_Input = {
+        rwData = {AVAILABLE_SHADERS["Ped"]["RT_Input"], 0, 0, false, "ped"},
+        syncRT = true,
+        controlNormals = false,
+        ambientSupport = true,
+        parameters = {},
+        textureLists = {
+            {
+                state = true,
+                textureList = {"*"}
+            }
+        }
     }
 
 }

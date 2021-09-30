@@ -4,14 +4,15 @@ local enablePedVS = true
 ---------------------------------------------------------------------------------------------------
 -- shader lists
 ---------------------------------------------------------------------------------------------------
-if enablePedVS then pedShader = "fx/RTinput_ped.fx" else pedShader = "fx/RTinput_ped_noVS.fx" end
+if enablePedVS then pedShader = "fx/RTinput_ped.fx" else pedShader = "fx/RTinput_ped_noVS.fx" end --TODO: SWITCH B/W VS NO VS SOMEHOW/...
+
+
 shaderParams = { 
     --TODO: MOFIEID
 	SHWaterWake = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWaterDetail = {"fx/RTinput_water_detail.fx", 3, 0, false, "world,object"}, -- world (waterwake)
 	SHWater = {"fx/RTinput_water.fx", 0, 0, false, "world,object"}, -- world (water)
 	SHVehPaint = {"fx/RTinput_car_paint.fx", 0, 0, false, "vehicle"}, -- vehicle paint
-	SHPed = {pedShader, 0, 0, false, "ped"}
 				}
 
 isDRShValid = false
@@ -30,16 +31,11 @@ function functionTable.enableCore()
 		for i, thisPart in pairs(shaderTable) do
 			functionTable.syncRTWithShader(thisPart)
 		end
-        --TODO: MODIFIED
-        functionTable.enableEmissive()
-        ----------
 
 		setShaderTextureList(shaderTable.SHVehPaint, textureListTable.TextureGrun, true)		
 		engineApplyShaderToWorldTexture(shaderTable.SHVehPaint, "vehiclegeneric256")
 		engineApplyShaderToWorldTexture(shaderTable.SHVehPaint, "*")
 		engineRemoveShaderFromWorldTexture(shaderTable.SHVehPaint, "unnamed")
-
-		engineApplyShaderToWorldTexture(shaderTable.SHPed, "*")	
         
 		engineApplyShaderToWorldTexture(shaderTable.SHWater, "water*")
 		engineRemoveShaderFromWorldTexture(shaderTable.SHWater, "waterwake")
@@ -61,7 +57,6 @@ function functionTable.createWorldShaders()
 		shaderTable.SHWaterWake = dxCreateShader(unpack(shaderParams.SHWaterWake))
 		shaderTable.SHWaterDetail = dxCreateShader(unpack(shaderParams.SHWaterDetail))
 		shaderTable.SHWater = dxCreateShader(unpack(shaderParams.SHWater))
-		shaderTable.SHPed = dxCreateShader(unpack(shaderParams.SHPed))
 		shaderTable.SHVehPaint = dxCreateShader(unpack(shaderParams.SHVehPaint))
 		isDRShValid = true
         for i,thisPart in pairs(shaderTable) do
