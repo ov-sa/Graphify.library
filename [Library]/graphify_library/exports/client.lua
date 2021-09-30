@@ -92,7 +92,7 @@ end
 function getEmissiveMode()
 
     if isGraphifySupported then
-        return emissiveCache["__STATE__"]
+        return emissiveMapCache.state
     end
     return false
 
@@ -106,13 +106,11 @@ end
 function setTextureEmissiveState(texture, type, state)
 
     if isGraphifySupported and texture and type and ((state == true) or (state == false)) then
-        local emissiveShader = false
-        if (type == "world") or (type == "object") then
-            emissiveShader = createdShaders["world_RT_Input_Emissive"].shader
-        end
+        type = ((type == "object") and "world") or type
+        local emissiveShader = emissiveMapCache.validEmissiveTypes[type]
         if emissiveShader then
             local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
-            setterFunction(emissiveShader, texture)
+            setterFunction(emissiveShader.shader, texture)
         end
     end
     return false

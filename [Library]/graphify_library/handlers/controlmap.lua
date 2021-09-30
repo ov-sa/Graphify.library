@@ -36,7 +36,7 @@ local imports = {
 
 controlMapCache = {
     validControlTypes = {
-        ["object"]
+        ["world"] = {
             rwData = {AVAILABLE_SHADERS["World"]["RT_Input_ControlMap"], 3, 0, false, "world,object"},
             syncRT = true,
             controlNormals = true,
@@ -57,7 +57,7 @@ controlMapCache = {
 
 function generateControlMap(texture, controlMap, controls, type)
 
-    type = (type == "object" and "world") or type
+    type = ((type == "object") and "world") or type
     if not texture or not controlMap or not imports.isElement(controlMap) or (imports.getElementType(controlMap) ~= "texture") or not controls or not type or not controlMapCache.validControlTypes[type] then return false end
 
     for i, j in imports.ipairs(controlMapCache.validControls) do
