@@ -154,19 +154,23 @@ Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
 
     float4 controlTexel = tex2D(controlSampler, PS.TexCoord);
-    float4 redTexel = tex2D(redControlSampler, PS.TexCoord*redControlScale) * (tex2D(redControlSampler, PS.TexCoord*redControlScale*1.9)*2) * tex2D(redControlSampler, PS.TexCoord*redControlScale*3.6)*2 * (tex2D(redControlSampler, PS.TexCoord*redControlScale*7.4)*2);
-    float4 greenTexel = tex2D(greenControlSampler, PS.TexCoord*greenControlScale) * (tex2D(greenControlSampler, PS.TexCoord*greenControlScale*1.9)*2) * tex2D(greenControlSampler, PS.TexCoord*greenControlScale*3.6)*2 * (tex2D(greenControlSampler, PS.TexCoord*greenControlScale*7.4)*2);
-    float4 blueTexel = tex2D(blueControlSampler, PS.TexCoord*blueControlScale) * (tex2D(blueControlSampler, PS.TexCoord*blueControlScale*1.9)*2) * tex2D(blueControlSampler, PS.TexCoord*blueControlScale*3.6)*2 * (tex2D(blueControlSampler, PS.TexCoord*blueControlScale*7.4)*2);
+    float4 redTexel = tex2D(redControlSampler, PS.TexCoord*redControlScale);
+    float4 greenTexel = tex2D(greenControlSampler, PS.TexCoord*greenControlScale);
+    float4 blueTexel = tex2D(blueControlSampler, PS.TexCoord*blueControlScale);
 
     float4 sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
     sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
     sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
+    sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
+    sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
+    sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
     sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
     sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
     sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
     sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
     sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
     sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
+    sampledControlTexel.rgb = sampledControlTexel.rgb/3;
 
     float4 worldColor = sampledControlTexel;
     if (ambienceMultiplier) {

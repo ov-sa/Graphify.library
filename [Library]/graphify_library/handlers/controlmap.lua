@@ -44,7 +44,8 @@ controlMapCache = {
             controlNormals = true,
             ambientSupport = true,
             parameters = {
-                ["anisotropy"] = {1}
+                ["anisotropy"] = {1},
+                ["ambienceMultiplier"] = {DEFAULT_AMBIENCE}
             }
         }
     },
