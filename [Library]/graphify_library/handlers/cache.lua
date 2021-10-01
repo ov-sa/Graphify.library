@@ -15,7 +15,12 @@
 
 createdRTs = {
 
-    ["__SORT_ORDER__"] = {"colorLayer", "normalLayer", "emissiveLayer"}
+    ["__SORT_ORDER__"] = {
+        {name = "colorLayer", alpha = false, isSynced = true},
+        {name = "normalLayer", alpha = false, isSynced = true},
+        {name = "emissiveLayer", alpha = true, isSynced = true},
+        {name = "skyboxLayer", alpha = true, isSynced = false}
+    }
 
 }
 
@@ -26,6 +31,7 @@ createdShaders = {
         "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass","world_RT_Input_NoZWrite", "world_RT_Input_Emissive",
         "ped_RT_Input",
         "vehicle_RT_Input",
+        "sky_RT_Input",
         "water_RT_Input", "water_RT_Input_Detail", "water_RT_Input_WaterWake"
     },
 
@@ -157,6 +163,15 @@ createdShaders = {
                 textureList = {"unnamed"}
             }
         }
+    },
+
+    sky_RT_Input = {
+        rwData = {AVAILABLE_SHADERS["Sky"]["RT_Input"], 0, 0, false},
+        syncRT = false,
+        controlNormals = false,
+        ambientSupport = false,
+        parameters = {},
+        textureLists = {}
     },
 
     water_RT_Input = {

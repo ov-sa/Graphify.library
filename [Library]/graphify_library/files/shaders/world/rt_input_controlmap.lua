@@ -162,8 +162,6 @@ Pixel PixelShaderFunction(PSInput PS) {
     sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
     sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
     sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
-    sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
-    sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
     sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
     sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
     sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);

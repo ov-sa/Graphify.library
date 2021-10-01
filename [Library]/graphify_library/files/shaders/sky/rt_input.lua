@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: bloom: rt_bright.lua
+     Shaders: sky: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: Bloom's RT Brighter ]]--
+     Desc: Sky's RT Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -24,10 +24,10 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = "Bloom",
-    reference = "RT_Bright",
+    category = "Sky",
+    reference = "RT_Input",
     dependencies = {},
-    dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
+    dependencyData = ""
 }
 
 for i, j in imports.pairs(shaderConfig.dependencies) do
@@ -54,34 +54,21 @@ AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
 -->> Variables <<--
 -------------------*/
 
-texture rtTexture;
-float rtCuttOff = 0.001;
-float rtPower = 0.001;
-
-struct VSInput {
-    float3 Position : POSITION0;
-    float4 Diffuse : COLOR0;
-    float2 TexCoord : TEXCOORD0;
-};
-
-struct PSInput {
-    float4 Position : POSITION0;
-    float4 Diffuse : COLOR0;
-    float2 TexCoord: TEXCOORD0;
-};
+texture skyControlMap;
+texture skyControlTexture;
+float4 transparentTexel = float4(0, 0, 0, 0);
 
 
 /*----------------
 -->> Samplers <<--
 ------------------*/
 
-sampler brightSampler = sampler_state {
-    Texture = (rtTexture);
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Linear;
-    AddressU = Mirror;
-    AddressV = Mirror;
+sampler controlSampler = sampler_state {
+    Texture = (skyControlMap);
+};
+
+sampler skyControlSampler = sampler_state { 
+    Texture = (skyControlTexture);
 };
 
 
@@ -89,34 +76,25 @@ sampler brightSampler = sampler_state {
 -->> Handlers <<--
 ------------------*/
 
-PSInput VertexShaderFunction(VSInput VS) {
-    PSInput PS = (PSInput)0;
-
-    PS.Position = MTACalcScreenPosition(VS.Position);
-    PS.Diffuse = VS.Diffuse;
-    PS.TexCoord = VS.TexCoord;
-    return PS;
-}
-
-float4 PixelShaderFunction(PSInput PS) : COLOR0 {
-	float4 inputTexel = tex2D(brightSampler, PS.TexCoord);
-
-    float lum = (inputTexel.r + inputTexel.g + inputTexel.b)/3;
-    float adj = saturate(lum - rtCuttOff)/(1.01 - rtCuttOff);
-    inputTexel = inputTexel*adj;
-    inputTexel = pow(inputTexel, rtPower);
-	inputTexel.a = 1;
-	return inputTexel;
-}
+float4 PixelShaderFunction(float2 TexCoord : TEXCOORD0) : COLOR0 {
+    float4 controlTexel = tex2D(controlSampler, TexCoord);
+    controlTexel.r = 1;
+    float4 skyTexel = tex2D(skyControlSampler, TexCoord);
+    float4 sampledControlTexel = lerp(skyTexel, controlTexel, controlTexel.a);
+    sampledControlTexel = lerp(sampledControlTexel, transparentTexel, controlTexel.a);
+    return sampledControlTexel;
+} 
 
 
 /*------------------
 -->> Techniques <<--
 --------------------*/
 
-technique bloom_rtBright {
+technique sky_rtInput {
     pass P0 {
-        VertexShader = compile vs_2_0 VertexShaderFunction();
+        AlphaBlendEnable = true;
+        SrcBlend = SrcAlpha;
+        DestBlend = InvSrcAlpha;
         PixelShader = compile ps_2_0 PixelShaderFunction();
     }
 }

@@ -52,8 +52,10 @@ function syncRTWithShader(shader)
 
     if not isGraphifySupported or not shader then return false end
 
-    for i, j in imports.pairs(createdRTs) do
-        imports.dxSetShaderValue(shader, i, j)
+    for i, j in imports.ipairs(createdRTs["__SORT_ORDER__"]) do
+        if createdRTs[(j.name)] and j.isSynced then
+            imports.dxSetShaderValue(shader, j.name, createdRTs[(j.name)])
+        end
     end
     return true
 
