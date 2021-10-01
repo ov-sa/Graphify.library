@@ -69,7 +69,7 @@ imports.addEventHandler("onGraphifyLoad", root, function()
     end, false, PRIORITY_LEVEL.RT_RENDER)
 
     imports.dxSetShaderValue(createdShaders.sky_RT_Input.shader, "skyControlMap", createdRTs.emissiveLayer)
-    imports.dxSetShaderValue(createdShaders.sky_RT_Input.shader, "skyControlTexture", skyTexture)
+    imports.dxSetShaderValue(createdShaders.sky_RT_Input.shader, "skyControlTexture", createdRTs.skyboxLayer)
     setAmbienceMutiplier(DEFAULT_AMBIENCE)
     if DEFAULT_EMISSIVE then
         createEmissiveMode()
@@ -78,24 +78,17 @@ imports.addEventHandler("onGraphifyLoad", root, function()
 end)
 
 
---TODO: TESTING:
-blend_color = tocolor(204, 153, 130, 80)
+--TODO: INTEGRATE...
+local skyshader = dxCreateShader ( "test/sky.fx" )
+local skytexture = dxCreateTexture( "test/skymap.jpg" )
+dxSetShaderValue( skyshader, "sTexture", skytexture )
+dxSetShaderValue( skyshader, "fScreenSize", CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2] )
 
-skyTexture = dxCreateTexture("test.png")
 imports.addEventHandler("onClientHUDRender", root, function()
-
-    if not createdRTs.skyboxLayer then return false end
  
-    --[[
-    outputChatBox("YO: "..tostring(createdShaders.sky_RT_Input))
     imports.dxSetRenderTarget(createdRTs.skyboxLayer, true)
-    dxDrawRectangle(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], tocolor(255, 255, 255, 255))
-    --imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdRTs.emissiveLayer, 0, 0, 0, -16777216)
-    imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdRTs.emissiveLayer, 0, 0, 0, tocolor(0, 0, 0))
+    imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], skyshader, 0, 0, 0)
     imports.dxSetRenderTarget()
-    imports.dxDrawImage(100, 100, 1366/3, 768/3, createdRTs.skyboxLayer, 0, 0, 0)
-    --dxDrawImage(100 + 1366/3 + 10, 100, 1366/3, 768/3, createdRTs.normalLayer)]]
-    
     imports.dxDrawImage(0, 0, 1366, 768, createdShaders.sky_RT_Input.shader)
 
 end)
