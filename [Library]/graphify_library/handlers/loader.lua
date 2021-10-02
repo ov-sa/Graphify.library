@@ -80,15 +80,15 @@ end)
 
 --TODO: INTEGRATE...
 local skyshader = dxCreateShader ( "test/sky.fx" )
-local skytexture = dxCreateTexture( "test/skymap.jpg" )
+local skytexture = dxCreateTexture( "test/desert_sunset2.jpg" )
 dxSetShaderValue( skyshader, "sTexture", skytexture )
-dxSetShaderValue( skyshader, "fScreenSize", CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2] )
+dxSetShaderValue( skyshader, "fScreenSize", CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2])
 
 imports.addEventHandler("onClientHUDRender", root, function()
  
     imports.dxSetRenderTarget(createdRTs.skyboxLayer, true)
     imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], skyshader, 0, 0, 0)
     imports.dxSetRenderTarget()
-    imports.dxDrawImage(0, 0, 1366, 768, createdShaders.sky_RT_Input.shader)
+    imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdShaders.sky_RT_Input.shader)
 
 end)
