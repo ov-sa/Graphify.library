@@ -30,12 +30,9 @@
     <script src="files/shaders/ped/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/vehicle/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/sky/rt_input.lua" type="client" cache="false"/>
+    <script src="files/shaders/sky/rt_input_transform.lua" type="client" cache="false"/>
     <script src="files/shaders/water/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/water/rt_input_detail.lua" type="client" cache="false"/>
-
-    <!-- TODO: TEST -->
-    <file src="test/skymap.jpg"/>
-    <file src="test/sky.fx"/>
 
     <!-- Handlers -->
     <script src="handlers/initial.lua" type="client" cache="false"/>
@@ -43,6 +40,9 @@
     <script src="handlers/loader.lua" type="client" cache="false"/>
     <script src="handlers/emissive.lua" type="client" cache="false"/>
     <script src="handlers/controlmap.lua" type="client" cache="false"/>
+
+    <!-- Files: Textures -->
+    <file src="files/textures/sky/default.jpg"/>
 
     <!-- Exports -->
 	<export function="getLayerRTs" type="client"/>

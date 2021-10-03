@@ -42,6 +42,8 @@ float4x4 gView : VIEW;
 float4x4 gProjection : PROJECTION;
 float4x4 gWorldView : WORLDVIEW;
 float4x4 gWorldViewProjection : WORLDVIEWPROJECTION;
+float4x4 gProjectionMainScene : PROJECTION_MAIN_SCENE;
+float4x4 gViewMainScene : VIEW_MAIN_SCENE;
 float4x4 gViewProjection : VIEWPROJECTION;
 float4x4 gViewInverse : VIEWINVERSE;
 float4x4 gWorldInverseTranspose : WORLDINVERSETRANSPOSE;

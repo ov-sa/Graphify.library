@@ -10,13 +10,22 @@
 ----------------------------------------------------------------
 
 
+-----------------
+--[[ Imports ]]--
+-----------------
+
+local imports = {
+    dxCreateTexture = dxCreateTexture
+}
+
+
 ------------------
 --[[ Settings ]]--
 ------------------
 
-
-DEFAULT_AMBIENCE = 0.02
-DEFAULT_EMISSIVE = true
+DEFAULT_AMBIENCE_MULTIPLIER = false
+DEFAULT_EMISSIVE_MODE = true
+DEFAULT_SKY_MAP = imports.dxCreateTexture("files/textures/sky/default.jpg")
 DEFAULT_TEXTURE_CONFIG = {
     BLACKLIST = {
         "",	"unnamed", "fire*", "basketball2", "skybox_tex*", "font*", "radar*", "sitem16", "snipercrosshair",
@@ -27,6 +36,7 @@ DEFAULT_TEXTURE_CONFIG = {
 }
 
 PRIORITY_LEVEL = {
-    RT_RENDER = "high+999",
+    RT_RENDER = "high+1000",
+    Sky_Render = "low-1000",
     Emissive_Render = "low-999"
 }

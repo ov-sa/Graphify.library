@@ -70,25 +70,17 @@ imports.addEventHandler("onGraphifyLoad", root, function()
 
     imports.dxSetShaderValue(createdShaders.sky_RT_Input.shader, "skyControlMap", createdRTs.emissiveLayer)
     imports.dxSetShaderValue(createdShaders.sky_RT_Input.shader, "skyControlTexture", createdRTs.skyboxLayer)
-    setAmbienceMutiplier(DEFAULT_AMBIENCE)
-    if DEFAULT_EMISSIVE then
+    imports.dxSetShaderValue(createdShaders.sky_RT_Input_Transform.shader, "skyMapTexture", DEFAULT_SKY_MAP)
+    imports.addEventHandler("onClientHUDRender", root, function()
+        imports.dxSetRenderTarget(createdRTs.skyboxLayer, true)
+        imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdShaders.sky_RT_Input_Transform.shader, 0, 0, 0)
+        imports.dxSetRenderTarget()
+        imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdShaders.sky_RT_Input.shader)
+    end, false, PRIORITY_LEVEL.Sky_Render)
+
+    setAmbienceMutiplier(DEFAULT_AMBIENCE_MULTIPLIER)
+    if DEFAULT_EMISSIVE_MODE then
         createEmissiveMode()
     end
-
-end)
-
-
---TODO: INTEGRATE...
-local skyshader = dxCreateShader ( "test/sky.fx" )
-local skytexture = dxCreateTexture( "test/desert_sunset2.jpg" )
-dxSetShaderValue( skyshader, "sTexture", skytexture )
-dxSetShaderValue( skyshader, "fScreenSize", CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2])
-
-imports.addEventHandler("onClientHUDRender", root, function()
- 
-    imports.dxSetRenderTarget(createdRTs.skyboxLayer, true)
-    imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], skyshader, 0, 0, 0)
-    imports.dxSetRenderTarget()
-    imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdShaders.sky_RT_Input.shader)
 
 end)

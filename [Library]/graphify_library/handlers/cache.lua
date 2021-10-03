@@ -31,7 +31,7 @@ createdShaders = {
         "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass","world_RT_Input_NoZWrite", "world_RT_Input_Emissive",
         "ped_RT_Input",
         "vehicle_RT_Input",
-        "sky_RT_Input",
+        "sky_RT_Input", "sky_RT_Input_Transform",
         "water_RT_Input", "water_RT_Input_Detail", "water_RT_Input_WaterWake"
     },
 
@@ -171,6 +171,17 @@ createdShaders = {
         controlNormals = false,
         ambientSupport = false,
         parameters = {},
+        textureLists = {}
+    },
+
+    sky_RT_Input_Transform = {
+        rwData = {AVAILABLE_SHADERS["Sky"]["RT_Input_Transform"], 0, 0, false},
+        syncRT = false,
+        controlNormals = false,
+        ambientSupport = false,
+        parameters = {
+            ["viewportSize"] = {CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2]}
+        },
         textureLists = {}
     },
 
