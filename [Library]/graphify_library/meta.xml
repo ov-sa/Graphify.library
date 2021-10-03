@@ -47,6 +47,7 @@
     <!-- Exports -->
 	<export function="getLayerRTs" type="client"/>
 	<export function="setNormalGenerationState" type="client"/>
+    <export function="setSkyMapTexture" type="client"/>
 	<export function="setAmbienceMutiplier" type="client"/>
 	<export function="setEmissiveMode" type="client"/>
 	<export function="getEmissiveMode" type="client"/>

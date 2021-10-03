@@ -16,6 +16,8 @@
 local imports = {
     pairs = pairs,
     tonumber = tonumber,
+    isElement = isElement,
+    getElementType = getElementType,
     destroyElement = destroyElement,
     disableNormals = disableNormals,
     dxSetShaderValue = dxSetShaderValue,
@@ -46,6 +48,20 @@ function setNormalGenerationState(...)
 
     if isGraphifySupported then
         return imports.disableNormals(...)
+    end
+    return false
+
+end
+
+
+------------------------------------------
+--[[ Function: Sets Sky-Map's Texture ]]--
+------------------------------------------
+
+function setSkyMapTexture(texture)
+
+    if isGraphifySupported and texture and imports.isElement(texture) and (imports.getElementType(texture) == "texture") then
+        return imports.dxSetShaderValue(createdShaders.sky_RT_Input_Transform.shader, "skyMapTexture", texture)
     end
     return false
 
@@ -110,7 +126,7 @@ function setTextureEmissiveState(texture, type, state)
         local emissiveShader = emissiveMapCache.validEmissiveTypes[type]
         if emissiveShader then
             local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
-            setterFunction(emissiveShader.shader, texture)
+            return setterFunction(emissiveShader.shader, texture)
         end
     end
     return false

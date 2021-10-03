@@ -70,7 +70,7 @@ imports.addEventHandler("onGraphifyLoad", root, function()
 
     imports.dxSetShaderValue(createdShaders.sky_RT_Input.shader, "skyControlMap", createdRTs.emissiveLayer)
     imports.dxSetShaderValue(createdShaders.sky_RT_Input.shader, "skyControlTexture", createdRTs.skyboxLayer)
-    imports.dxSetShaderValue(createdShaders.sky_RT_Input_Transform.shader, "skyMapTexture", DEFAULT_SKY_MAP)
+    setSkyMapTexture(DEFAULT_SKY_MAP)
     imports.addEventHandler("onClientHUDRender", root, function()
         imports.dxSetRenderTarget(createdRTs.skyboxLayer, true)
         imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdShaders.sky_RT_Input_Transform.shader, 0, 0, 0)
