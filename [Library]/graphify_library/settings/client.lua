@@ -23,6 +23,7 @@ local imports = {
 --[[ Settings ]]--
 ------------------
 
+DEFAULT_VS_MODE = false
 DEFAULT_AMBIENCE_MULTIPLIER = false
 DEFAULT_EMISSIVE_MODE = true
 DEFAULT_SKY_MAP = imports.dxCreateTexture("files/textures/sky/default.jpg")

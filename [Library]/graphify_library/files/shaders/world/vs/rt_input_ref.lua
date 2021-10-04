@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: rt_input_ref.lua
+     Shaders: world: vs: rt_input_ref.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = "World",
+    category = AVAILABLE_SHADERS["World"]["VS"],
     reference = "RT_Input_Ref",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
@@ -42,7 +42,7 @@ end
 --[[ Shader ]]--
 ----------------
 
-AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
+shaderConfig.category[shaderConfig.reference] = [[
 /*---------------
 -->> Imports <<--
 -----------------*/

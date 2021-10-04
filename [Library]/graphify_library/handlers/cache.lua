@@ -47,7 +47,7 @@ createdShaders = {
     },
 
     world_RT_Input = {
-        rwData = {AVAILABLE_SHADERS["World"]["RT_Input"], 0, 0, false, "world,object"},
+        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]) or AVAILABLE_SHADERS["World"]["No_VS"])["RT_Input"], 0, 0, false, "world,object"},
         syncRT = true,
         controlNormals = true,
         ambientSupport = true,
@@ -73,7 +73,7 @@ createdShaders = {
     },
 
     world_RT_Input_Ref = {
-        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Ref"], 1, 0, false, "world,object"},
+        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]) or AVAILABLE_SHADERS["World"]["No_VS"])["RT_Input_Ref"], 1, 0, false, "world,object"},
         syncRT = true,
         controlNormals = true,
         ambientSupport = false,
@@ -87,7 +87,7 @@ createdShaders = {
     },
 
     world_RT_Input_Grass = {
-        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Grass"], 0, 0, false, "world"},
+        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]) or AVAILABLE_SHADERS["World"]["No_VS"])["RT_Input_Grass"], 0, 0, false, "world"},
         syncRT = true,
         controlNormals = false,
         ambientSupport = true,
@@ -101,7 +101,7 @@ createdShaders = {
     },
 
     world_RT_Input_NoZWrite = {
-        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_NoZWrite"], 2, 0, false, "world,object,vehicle"},
+        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]) or AVAILABLE_SHADERS["World"]["No_VS"])["RT_Input_NoZWrite"], 2, 0, false, "world,object,vehicle"},
         syncRT = true,
         controlNormals = true,
         ambientSupport = true,
@@ -115,7 +115,7 @@ createdShaders = {
     },
 
     world_RT_Input_Emissive = {
-        rwData = {AVAILABLE_SHADERS["World"]["RT_Input_Emissive"], 3, 0, false, "world,object"},
+        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]) or AVAILABLE_SHADERS["World"]["No_VS"])["RT_Input_Emissive"], 3, 0, false, "world,object"},
         syncRT = true,
         controlNormals = true,
         ambientSupport = false,
