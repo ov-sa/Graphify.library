@@ -59,7 +59,8 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-float ambienceMultiplier = false;
+bool filterOverlayMode;
+float4 filterColor;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -100,9 +101,12 @@ Pixel PixelShaderFunction(PSInput PS) {
     if (gStage1ColorOp == 4) {
         worldColor *= gTextureFactor;
     }
-    if (ambienceMultiplier) {
-        worldColor.rgb = ambienceMultiplier;
+    if (filterOverlayMode) {
+        worldColor += filterColor;
+    } else {
+        worldColor *= filterColor;
     }
+    worldColor.a = inputTexel.a;
     output.World = worldColor; 
     output.Color = inputTexel; 
     output.Emissive.rgb = 0;

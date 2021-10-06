@@ -60,7 +60,8 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -------------------*/
 
 bool disableNormals = false;
-float ambienceMultiplier = false;
+bool filterOverlayMode;
+float4 filterColor;
 float anisotropy = 1;
 float redControlScale = 1;
 float greenControlScale = 1;
@@ -170,9 +171,12 @@ Pixel PixelShaderFunction(PSInput PS) {
     sampledControlTexel.rgb = sampledControlTexel.rgb/3;
 
     float4 worldColor = sampledControlTexel;
-    if (ambienceMultiplier) {
-        worldColor.rgb = ambienceMultiplier;
+    if (filterOverlayMode) {
+        worldColor += filterColor;
+    } else {
+        worldColor *= filterColor;
     }
+    worldColor.a = inputTexel.a;
     output.World = saturate(worldColor);
     output.Color.rgb = sampledControlTexel.rgb;
     output.Color.a = sampledControlTexel.a*PS.Diffuse.a;

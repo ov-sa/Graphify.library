@@ -23,8 +23,8 @@ local imports = {
 --[[ Settings ]]--
 ------------------
 
-DEFAULT_VS_MODE = false
-DEFAULT_AMBIENCE_MULTIPLIER = false
+DEFAULT_VS_MODE = true
+DEFAULT_FILTER_OVERLAY_MODE, DEFAULT_FILTER_COLOR = false, {255, 255, 255, 255}
 DEFAULT_EMISSIVE_MODE = true
 DEFAULT_SKY_MAP = imports.dxCreateTexture("files/textures/sky/default.jpg")
 DEFAULT_TEXTURE_CONFIG = {

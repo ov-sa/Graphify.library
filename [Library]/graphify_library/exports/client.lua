@@ -19,10 +19,15 @@ local imports = {
     isElement = isElement,
     getElementType = getElementType,
     destroyElement = destroyElement,
+    unpackColor = unpackColor,
     disableNormals = disableNormals,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
-    engineRemoveShaderFromWorldTexture = engineRemoveShaderFromWorldTexture
+    engineRemoveShaderFromWorldTexture = engineRemoveShaderFromWorldTexture,
+    math = {
+        min = math.min,
+        max = math.max
+    }
 }
 
 
@@ -68,20 +73,47 @@ function setSkyMapTexture(texture)
 end
 
 
---------------------------------------------
---[[ Function: Sets Ambience Multiplier ]]--
---------------------------------------------
+-----------------------------------------------------
+--[[ Functions: Sets Filter's Overlay Mode/Color ]]--
+-----------------------------------------------------
 
-function setAmbienceMutiplier(multiplier)
+function setFilterOverlayMode(state)
 
     if isGraphifySupported then
-        multiplier = imports.tonumber(multiplier) or false
-        for i, j in imports.pairs(createdShaders) do
-            if (i ~= "__SORT_ORDER__") and j.ambientSupport then
-                imports.dxSetShaderValue(j.shader, "ambienceMultiplier", multiplier)
+        if (state == true) or (state == false) then
+            for i, j in imports.pairs(createdShaders) do
+                if (i ~= "__SORT_ORDER__") and j.ambientSupport then
+                    imports.dxSetShaderValue(j.shader, "filterOverlayMode", state)
+                end
+            end
+            return true
+        end
+    end
+    return false
+
+end
+
+function setFilterColor(color)
+
+    if isGraphifySupported and (#color >= 4) then
+        local isColorValidated = true
+        for i = 1, 4, 1 do
+            color[i] = imports.tonumber(color[i])
+            if not color[i] then
+                isColorValidated = false
+                break
+            else
+                color[i] = imports.math.max(-255, imports.math.min(255, color[i]))/255
             end
         end
-        return true
+        if isColorValidated then
+            for i, j in imports.pairs(createdShaders) do
+                if (i ~= "__SORT_ORDER__") and j.ambientSupport then
+                    imports.dxSetShaderValue(j.shader, "filterColor", imports.unpackColor(color))
+                end
+            end
+            return true
+        end
     end
     return false
 
