@@ -13,8 +13,9 @@
 * Completely Open-Source
 * Procedure Oriented Programming
 * Completely Performance-Friendly
-* Gamemode Perspective
 * Pixel Lightning
+* Gamemode Perspective
+* Beautify Intgration 🎨
 * Supports Color Filter
 * Supports Normal Maps
 * Supports Emissive Maps
@@ -23,9 +24,15 @@
 * Supports UE based HDR Skyboxes
 * Necessary Integration APIs
 
+## ━ Dependencies
+
+* [**Beautify Library**](https://github.com/OvileAmriam/MTA-Beautify-Library)
+
 ## ━ Roadmap
+
 * UE Height Maps
 * Ped/Player Shadows
+* Automated Prelights
 * Procedural Grass Generation
 * Custom Effects
 
