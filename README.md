@@ -36,6 +36,7 @@
 * UE Height Maps
 * Ped/Player Shadows
 * Automated Prelights
+* HBAO
 * Night Mode
 * Anti-Aliasing Modes
 * Procedural Grass Generation
