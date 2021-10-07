@@ -146,7 +146,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     } else {
         worldColor *= filterColor;
     }
-    worldColor.a = inputTexel.a;
+    worldColor.a = controlTexel.a;
     output.World = saturate(worldColor);
     output.Color.rgb = sampledControlTexel.rgb;
     output.Color.a = sampledControlTexel.a*PS.Diffuse.a;
