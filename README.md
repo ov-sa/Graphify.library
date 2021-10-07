@@ -21,9 +21,12 @@
 * Supports UE based Control Maps
 * Supports UE based Weathers
 * Supports UE based HDR Skyboxes
-* Supports Ped/Player Shadows (WIP)
-* Supports Procedural Grass Generation (WIP)
 * Necessary Integration APIs
+
+## ━ Roadmap
+* UE Height Maps
+* Ped/Player Shadows
+* Procedural Grass Generation
 
 ## ━ Contents
 
