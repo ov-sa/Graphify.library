@@ -15,11 +15,11 @@
 * Completely Performance-Friendly
 * Gamemode Perspective
 * Pixel Lightning
+* Supports Color Filter
 * Supports Normal Maps
 * Supports Emissive Maps
-* Supports Color Filter
-* Supports UE based Control Maps
-* Supports UE based Weathers
+* Supports UE Control Maps
+* Supports UE Weathers
 * Supports UE based HDR Skyboxes
 * Necessary Integration APIs
 
