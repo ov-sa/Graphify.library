@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = "Sky",
+    category = AVAILABLE_SHADERS["Sky"],
     reference = "RT_Input",
     dependencies = {},
     dependencyData = ""
@@ -42,7 +42,7 @@ end
 --[[ Shader ]]--
 ----------------
 
-AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
+shaderConfig.category[shaderConfig.reference] = [[
 /*---------------
 -->> Imports <<--
 -----------------*/

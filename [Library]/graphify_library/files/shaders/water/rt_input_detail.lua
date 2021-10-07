@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = "Water",
+    category = AVAILABLE_SHADERS["Water"],
     reference = "RT_Input_Detail",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
@@ -42,7 +42,7 @@ end
 --[[ Shader ]]--
 ----------------
 
-AVAILABLE_SHADERS[shaderConfig.category][shaderConfig.reference] = [[
+shaderConfig.category[shaderConfig.reference] = [[
 /*---------------
 -->> Imports <<--
 -----------------*/
