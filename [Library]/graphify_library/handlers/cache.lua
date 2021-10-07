@@ -27,7 +27,7 @@ createdRTs = {
 createdShaders = {
 
     ["__SORT_ORDER__"] = {
-        "zBuffer",
+        "zBuffer", "texClear",
         "world_RT_Input", "world_RT_Input_Ref", "world_RT_Input_Grass","world_RT_Input_NoZWrite", "world_RT_Input_Emissive",
         "ped_RT_Input",
         "vehicle_RT_Input",
@@ -43,6 +43,15 @@ createdShaders = {
         parameters = {
             ["viewportSize"] = {CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2]}
         },
+        textureLists = {}
+    },
+
+    texClear = {
+        rwData = {AVAILABLE_SHADERS["Utilities"]["Tex_Clear"], 1000, 0, false, "all"},
+        syncRT = false,
+        controlNormals = false,
+        ambientSupport = false,
+        parameters = {},
         textureLists = {}
     },
 

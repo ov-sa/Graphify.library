@@ -63,10 +63,10 @@ end
 --[[ Function: Sets Sky-Map's Texture ]]--
 ------------------------------------------
 
-function setSkyMapTexture(texture)
+function setSkyMapTexture(textureElement)
 
-    if isGraphifySupported and texture and imports.isElement(texture) and (imports.getElementType(texture) == "texture") then
-        return imports.dxSetShaderValue(createdShaders.sky_RT_Input_Transform.shader, "skyMapTexture", texture)
+    if isGraphifySupported and textureElement and imports.isElement(textureElement) and (imports.getElementType(textureElement) == "texture") then
+        return imports.dxSetShaderValue(createdShaders.sky_RT_Input_Transform.shader, "skyMapTexture", textureElement)
     end
     return false
 
@@ -147,18 +147,30 @@ function getEmissiveMode()
 end
 
 
--------------------------------------------------
---[[ Function: Sets Texture's Emissive State ]]--
--------------------------------------------------
+-------------------------------------------------------
+--[[ Function: Sets Texture's Clear/Emissive State ]]--
+-------------------------------------------------------
 
-function setTextureEmissiveState(texture, type, state)
+function setTextureClearState(texture, state, targetElement)
+
+    if isGraphifySupported and texture and ((state == true) or (state == false)) then
+        targetElement = (targetElement and imports.isElement(targetElement)) or nil
+        local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
+        return setterFunction(createdShaders.texClear.shader, texture, targetElement)
+    end
+    return false
+
+end
+
+function setTextureEmissiveState(texture, type, state, targetElement)
 
     if isGraphifySupported and texture and type and ((state == true) or (state == false)) then
         type = ((type == "object") and "world") or type
         local emissiveShader = emissiveMapCache.validEmissiveTypes[type]
         if emissiveShader then
+            targetElement = (targetElement and imports.isElement(targetElement)) or nil
             local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
-            return setterFunction(emissiveShader.shader, texture)
+            return setterFunction(emissiveShader.shader, texture, targetElement)
         end
     end
     return false
