@@ -33,7 +33,10 @@ AVAILABLE_SHADERS = {
         ["No_VS"] = {}
     },
     ["Ped"] = {},
-    ["Vehicle"] = {},
+    ["Vehicle"] = {
+        ["VS"] = {},
+        ["No_VS"] = {}
+    },
     ["Sky"] = {},
     ["Water"] = {}
 

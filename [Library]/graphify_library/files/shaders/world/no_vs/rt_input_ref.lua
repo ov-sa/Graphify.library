@@ -87,10 +87,6 @@ sampler inputSampler1 = sampler_state {
     Texture = (gTexture0);
 };
 
-sampler inputSampler2 = sampler_state {
-    Texture = (gTexture1);
-};
-
 
 /*----------------
 -->> Handlers <<--

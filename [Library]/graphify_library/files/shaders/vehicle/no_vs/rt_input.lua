@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: no_vs: rt_input_emissive.lua
+     Shaders: vehicle: no_vs: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT Emissive Inputter ]]--
+     Desc: Vehicle's RT Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -24,8 +24,8 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["No_VS"],
-    reference = "RT_Input_Emissive",
+    category = AVAILABLE_SHADERS["Vehicle"]["No_VS"],
+    reference = "RT_Input",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
 }
@@ -53,9 +53,7 @@ int gZWriteEnable <string renderState="ZWRITEENABLE";>;
 int gCullMode <string renderState="CULLMODE";>;  
 int gStage1ColorOp <string stageState="1,COLOROP";>;
 float4 gTextureFactor <string renderState="TEXTUREFACTOR";>;
-int gStage0TextureTransformFlags <string stageState="0,TEXTURETRANSFORMFLAGS";>;
-float4x4 gTransformTexture0 <string transformState="TEXTURE0";>; 
-float4x4 gTransformTexture1 <string transformState="TEXTURE1";>; 
+texture colorLayer <string renderTarget = "yes";>;
 texture normalLayer <string renderTarget = "yes";>;
 texture emissiveLayer <string renderTarget = "yes";>;
 
@@ -64,17 +62,21 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
+bool filterOverlayMode;
+float4 filterColor;
+
 struct Pixel {
     float4 World : COLOR0;
-    float4 Normal : COLOR1;
-    float4 Emissive : COLOR2;
+    float4 Color : COLOR1;
+    float4 Normal : COLOR2;
+    float4 Emissive : COLOR3;
 };
 
 struct PSInput {
     float4 Position : POSITION0;
     float4 Diffuse : COLOR0;
     float2 TexCoord : TEXCOORD0;
-}; 
+};
 
 
 /*----------------
@@ -91,19 +93,32 @@ sampler inputSampler1 = sampler_state {
 ------------------*/
 
 Pixel PixelShaderFunction(PSInput PS) {
-    Pixel output;
+    Pixel output;	
 
-    float4 inputTexel = tex2D(inputSampler1, PS.TexCoord);
+    float4 inputTexel = tex2D(inputSampler1, PS.TexCoord.xy);
 
-    float4 Color = inputTexel*PS.Diffuse;
-    float4 worldColor = inputTexel;
-    worldColor.a = Color.a;
+    float4 worldColor = inputTexel*PS.Diffuse;
+    if (gStage1ColorOp == 14) {
+        worldColor.rgb = worldColor.rgb*(1 - gTextureFactor.a) + inputTexel.rgb*gTextureFactor.a;
+    }
     if (gStage1ColorOp == 25) {
         worldColor.rgb += inputTexel.rgb*gTextureFactor.r;
     }
+    if (gMaterialSpecPower != 0) {
+        worldColor.rgb += PS.Diffuse.rgb;
+    }
+    float4 outputColor = worldColor;
+    if (filterOverlayMode) {
+        worldColor += filterColor;
+    } else {
+        worldColor *= filterColor;
+    }
+    worldColor.a = inputTexel.a;
     output.World = saturate(worldColor);
-    output.Emissive.rgb = inputTexel.rgb;
-    output.Emissive.a = inputTexel.a*PS.Diffuse.a;
+    output.Color.rgb = outputColor.rgb*0.85 + 0.15;
+    output.Color.a = inputTexel.a*PS.Diffuse.a;
+    output.Emissive.rgb = 0;
+    output.Emissive.a = 1;
     output.Normal = float4(0, 0, 0, 1);
     return output;
 }
@@ -113,10 +128,12 @@ Pixel PixelShaderFunction(PSInput PS) {
 -->> Techniques <<--
 --------------------*/
 
-technique world_rtInputEmissive {
+technique vehicle_rtInput {
     pass P0 {
+        CullMode = ((gMaterialDiffuse.a < 0.9) && (gBlendFactor.a == 0)) ? 1 : gCullMode;
+        ZWriteEnable = (gMaterialDiffuse.a < 0.9) ? 0 : gZWriteEnable;
         SRGBWriteEnable = false;
-        PixelShader = compile ps_2_0 PixelShaderFunction();
+        PixelShader = compile ps_3_0 PixelShaderFunction();
     }
 }
 

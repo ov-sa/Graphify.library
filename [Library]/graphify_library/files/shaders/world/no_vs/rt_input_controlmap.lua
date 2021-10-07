@@ -52,7 +52,6 @@ int gCapsMaxAnisotropy <string deviceCaps="MaxAnisotropy";>;
 texture colorLayer <string renderTarget = "yes";>;
 texture normalLayer <string renderTarget = "yes";>;
 texture emissiveLayer <string renderTarget = "yes";>;
-// #define GENERATE_NORMALS
 
 
 /*-----------------

@@ -35,7 +35,8 @@
     <script src="files/shaders/world/vs/rt_input_emissive.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_controlmap.lua" type="client" cache="false"/>
     <script src="files/shaders/ped/rt_input.lua" type="client" cache="false"/>
-    <script src="files/shaders/vehicle/rt_input.lua" type="client" cache="false"/>
+    <script src="files/shaders/vehicle/no_vs/rt_input.lua" type="client" cache="false"/>
+    <script src="files/shaders/vehicle/vs/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/sky/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/sky/rt_input_transform.lua" type="client" cache="false"/>
     <script src="files/shaders/water/rt_input.lua" type="client" cache="false"/>

@@ -151,7 +151,7 @@ createdShaders = {
     },
 
     vehicle_RT_Input = {
-        rwData = {AVAILABLE_SHADERS["Vehicle"]["RT_Input"], 0, 0, false, "vehicle"},
+        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["Vehicle"]["VS"]) or AVAILABLE_SHADERS["Vehicle"]["No_VS"])["RT_Input"], 0, 0, false, "vehicle"},
         syncRT = true,
         controlNormals = false,
         ambientSupport = true,
