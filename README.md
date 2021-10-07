@@ -36,6 +36,7 @@
 * Ped/Player Shadows
 * Automated Prelights
 * Night Mode
+* Anti-Aliasing Modes
 * Procedural Grass Generation
 * Custom Effects
 * Module-Type Exports
