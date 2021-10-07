@@ -24,7 +24,7 @@
 * Supports Emissive Maps
 * Supports UE Control Maps
 * Supports UE Weathers
-* Supports UE based HDR Skyboxes
+* Supports UE HDR Skyboxes
 * Necessary Integration APIs
 
 ## ━ Dependencies
