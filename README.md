@@ -15,7 +15,7 @@
 * Completely Performance-Friendly
 * Pixel Lightning
 * Gamemode Perspective
-* Beautify Intgration 🎨
+* Beautify Integration 🎨
 * Supports Color Filter
 * Supports Normal Maps
 * Supports Emissive Maps
