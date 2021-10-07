@@ -18,7 +18,7 @@
 * Pixel Lightning
 * Gamemode Perspective
 * Beautify Integration 🎨
-* Supports Color Filter
+* Supports Filter Color
 * Supports Normal Maps
 * Supports Emissive Maps
 * Supports UE Control Maps
