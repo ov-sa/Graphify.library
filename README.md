@@ -27,6 +27,7 @@
 * UE Height Maps
 * Ped/Player Shadows
 * Procedural Grass Generation
+* Custom Effects
 
 ## ━ Contents
 
