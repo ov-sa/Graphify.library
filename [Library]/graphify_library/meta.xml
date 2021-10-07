@@ -54,7 +54,7 @@
     <!-- Exports -->
 	<export function="getLayerRTs" type="client"/>
 	<export function="setNormalGenerationState" type="client"/>
-    <export function="setSkyMapTexture" type="client"/>
+	<export function="setSkyMapTexture" type="client"/>
 	<export function="setFilterOverlayMode" type="client"/>
 	<export function="setFilterColor" type="client"/>
 	<export function="setEmissiveMode" type="client"/>
