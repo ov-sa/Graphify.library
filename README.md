@@ -35,6 +35,7 @@
 * Automated Prelights
 * Procedural Grass Generation
 * Custom Effects
+* Module-Type Exports
 
 ## ━ Contents
 
