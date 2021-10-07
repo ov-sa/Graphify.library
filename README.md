@@ -22,7 +22,7 @@
 * Supports UE based Weathers
 * Supports UE based HDR Skyboxes
 * Supports Ped/Player Shadows (WIP)
-* Supports Procedural GrasS Generation (WIP)
+* Supports Procedural Grass Generation (WIP)
 * Necessary Integration APIs
 
 ## ━ Contents
