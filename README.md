@@ -18,6 +18,7 @@
 * Pixel Lightning
 * Gamemode Perspective
 * Beautify Integration 🎨
+* Extended FOV Limit [0 - 179] (No Side-Glitches)
 * Supports Filter Color
 * Supports Normal Maps
 * Supports Emissive Maps
