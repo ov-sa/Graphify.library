@@ -1,7 +1,6 @@
 <meta>
 
     <info author="OvileAmriam + Ren712" name="Graphify Library" type="Library" version="1.0.0"/>
-	<min_mta_version client="1.5.8"/>
 
     <!-- Imports -->
     <include resource="beautify_library"/>
