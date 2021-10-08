@@ -74,6 +74,7 @@ struct PSInput {
     float4 Position : POSITION0;
     float4 Diffuse : COLOR0;
     float2 TexCoord : TEXCOORD0;
+    float2 TexCoord1 : TEXCOORD1;
 }; 
 
 
@@ -83,6 +84,10 @@ struct PSInput {
 
 sampler inputSampler1 = sampler_state {
     Texture = (gTexture0);
+};
+
+sampler inputSampler2 = sampler_state {
+    Texture = (gTexture1);
 };
 
 
@@ -99,7 +104,8 @@ Pixel PixelShaderFunction(PSInput PS) {
     float4 worldColor = inputTexel;
     worldColor.a = Color.a;
     if (gStage1ColorOp == 25) {
-        worldColor.rgb += inputTexel.rgb*gTextureFactor.r;
+        float4 sphTexel = tex2D(inputSampler2, PS.TexCoord1.xy);
+        worldColor.rgb += sphTexel.rgb*gTextureFactor.r;
     }
     output.World = saturate(worldColor);
     output.Emissive.rgb = inputTexel.rgb;
