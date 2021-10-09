@@ -1,6 +1,6 @@
 # ━ S Y N O P S I S
 
-![](https://raw.githubusercontent.com/OvileAmriam/MTA-Graphify-Library/Documentation/assets/graphify_banner.png)
+![](https://raw.githubusercontent.com/ov-sa/Graphify-Library/Documentation/assets/graphify_banner.png)
 
 ##### ━ Maintainer(s): [Aviril](https://github.com/Aviril)
 
