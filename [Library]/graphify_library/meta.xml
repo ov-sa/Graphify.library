@@ -10,7 +10,7 @@
     <script src="utilities/client.lua" type="client" cache="false"/>
     <script src="settings/client.lua" type="client" cache="false"/>
 
-	<!-- Exports -->
+    <!-- Exports -->
     <script src="exports/client.lua" type="client" cache="false"/>
 
     <!-- Files: Shaders -->
