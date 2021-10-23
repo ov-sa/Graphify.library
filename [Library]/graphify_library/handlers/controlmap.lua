@@ -64,7 +64,7 @@ controlMapCache = {
 function generateControlMap(texture, type, controls)
 
     type = ((type == "object") and "world") or type
-    if not texture or not type or not controlMapCache.validControlTypes[type] or not controls then return false end
+    if not texture or not type or not controlMapCache.validControlTypes[type] or not controls or controlMapCache.controlMaps.textures[texture] then return false end
 
     for i, j in imports.ipairs(controlMapCache.validControls) do
         if not controls[j] or not controls[j].texture or not imports.isElement(controls[j].texture) or (imports.getElementType(controls[j].texture) ~= "texture") then
@@ -90,10 +90,7 @@ function generateControlMap(texture, type, controls)
         controls = controls,
         type = type
     }
-    if not controlMapCache.controlMaps.textures[texture] then
-        controlMapCache.controlMaps.textures[texture] = {}
-    end
-    controlMapCache.controlMaps.textures[texture][createdControlMap] = true
+    controlMapCache.controlMaps.textures[texture] = createdControlMap
     imports.engineApplyShaderToWorldTexture(createdControlMap, texture)
     return createdControlMap
 
@@ -108,18 +105,7 @@ imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if controlMapCache.controlMaps.shaders[source] then
-            local isTextureEmpty = true
-            local texturePointer = controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)]
-            texturePointer[source] = nil
-            for i, j in imports.pairs(texturePointer) do
-                if i then
-                    isTextureEmpty = false
-                    break
-                end
-            end
-            if isTextureEmpty then
-                texturePointer = nil
-            end
+            controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)] = nil
             controlMapCache.controlMaps.shaders[source] = nil
         end
     end
