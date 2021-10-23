@@ -59,10 +59,11 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
+bool enableBump = false;
 bool disableNormals = false;
 bool filterOverlayMode;
 float4 filterColor;
-texture bumpTexture = false;
+texture bumpTexture;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -133,7 +134,7 @@ Pixel PixelShaderFunction(PSInput PS) {
 	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
-    if (bumpTexture) {
+    if (enableBump) {
         float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
         inputTexel.rgb *= bumpTexel.rgb;
     }

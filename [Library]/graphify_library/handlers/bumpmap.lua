@@ -42,6 +42,7 @@ bumpMapCache = {
             controlNormals = (DEFAULT_VS_MODE and true) or false,
             ambientSupport = true,
             parameters = {
+                ["enableBump"] = {true},
                 ["filterColor"] = {DEFAULT_FILTER_COLOR}
             }
         }
@@ -71,9 +72,9 @@ function generateBumpMap(texture, type, bumpElement)
         if bumpMapCache.validBumpTypes[type].syncRT then
             imports.syncRTWithShader(createdBumpMap)
         end
-        for i, j in imports.pairs(bumpMapCache.validBumpTypes[type].parameters) do
-            imports.dxSetShaderValue(createdBumpMap, i, imports.unpack(j))
-        end
+    end
+    for i, j in imports.pairs(bumpMapCache.validBumpTypes[type].parameters) do
+        imports.dxSetShaderValue(createdBumpMap, i, imports.unpack(j))
     end
     imports.dxSetShaderValue(createdBumpMap, "bumpTexture", bumpElement)
     bumpMapCache.bumpMaps.shaders[createdBumpMap] = {

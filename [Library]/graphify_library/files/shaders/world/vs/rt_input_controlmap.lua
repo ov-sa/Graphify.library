@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["VS"]["Bump"],
+    category = AVAILABLE_SHADERS["World"]["VS"],
     reference = "RT_Input_ControlMap",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
@@ -60,9 +60,10 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -------------------*/
 
 bool disableNormals = false;
+bool enableBump = false;
 bool filterOverlayMode;
 float4 filterColor;
-texture bumpTexture = false;
+texture bumpTexture;
 float anisotropy = 1;
 float redControlScale = 1;
 float greenControlScale = 1;
@@ -178,7 +179,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
     sampledControlTexel.rgb = sampledControlTexel.rgb/3;
 
-    if (bumpTexture) {
+    if (enableBump) {
         float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
         sampledControlTexel.rgb *= bumpTexel.rgb;
     }
