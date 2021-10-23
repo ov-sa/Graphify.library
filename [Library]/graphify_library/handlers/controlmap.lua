@@ -50,7 +50,10 @@ controlMapCache = {
         }
     },
     validControls = {"red", "green", "blue"},
-    controlMaps = {}
+    controlMaps = {
+        shaders = {},
+        textures = {}
+    }
 }
 
 
@@ -82,11 +85,15 @@ function generateControlMap(texture, type, controls)
     for i, j in imports.pairs(controlMapCache.validControlTypes[type].parameters) do
         imports.dxSetShaderValue(createdControlMap, i, imports.unpack(j))
     end
-    controlMapCache.controlMaps[createdControlMap] = {
+    controlMapCache.controlMaps.shaders[createdControlMap] = {
         texture = texture,
         controls = controls,
         type = type
     }
+    if not controlMapCache.controlMaps.textures[texture] then
+        controlMapCache.controlMaps.textures[texture] = {}
+    end
+    controlMapCache.controlMaps.textures[texture][createdControlMap] = true
     imports.engineApplyShaderToWorldTexture(createdControlMap, texture)
     return createdControlMap
 
@@ -100,8 +107,20 @@ end
 imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
-        if controlMapCache.controlMaps[source] then
-            controlMapCache.controlMaps[source] = nil
+        if controlMapCache.controlMaps.shaders[source] then
+            local isTextureEmpty = true
+            local texturePointer = controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)]
+            texturePointer[source] = nil
+            for i, j in imports.pairs(texturePointer) do
+                if i then
+                    isTextureEmpty = false
+                    break
+                end
+            end
+            if isTextureEmpty then
+                texturePointer = nil
+            end
+            controlMapCache.controlMaps.shaders[source] = nil
         end
     end
 
