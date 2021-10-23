@@ -210,7 +210,7 @@ end
 
 function destroyControlMap(shader)
 
-    if isGraphifySupported and controlMapCache.controlMaps[shader] then
+    if isGraphifySupported and controlMapCache.controlMaps.shaders[shader] then
         return imports.destroyElement(shader)
     end
     return true
