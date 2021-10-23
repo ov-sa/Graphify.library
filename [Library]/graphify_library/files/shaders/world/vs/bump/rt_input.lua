@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["VS"],
+    category = AVAILABLE_SHADERS["World"]["VS"]["Bump"],
     subCategory = "VS",
     reference = "RT_Input",
     dependencies = {},
