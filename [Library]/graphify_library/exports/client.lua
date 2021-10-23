@@ -202,6 +202,15 @@ end
 --[[ Functions: Creates/Destroys Control-Map ]]--
 -------------------------------------------------
 
+function getControlMaps(texture)
+
+    if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
+        return controlMapCache.controlMaps.textures[texture]
+    end
+    return false
+
+end
+
 function createControlMap(...)
 
     return generateControlMap(...)
