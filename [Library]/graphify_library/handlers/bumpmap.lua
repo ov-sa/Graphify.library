@@ -64,7 +64,9 @@ function generateBumpMap(texture, type, bumpElement)
 
     local createdBumpMap = false
     local textureControlMap = imports.getControlMap(texture)
-    if not textureControlMap then
+    if textureControlMap then
+        createdBumpMap = textureControlMap
+    else
         createdBumpMap = imports.dxCreateShader(imports.unpack(bumpMapCache.validBumpTypes[type].rwData))
         if bumpMapCache.validBumpTypes[type].syncRT then
             imports.syncRTWithShader(createdBumpMap)
