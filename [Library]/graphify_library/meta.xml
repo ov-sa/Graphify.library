@@ -67,8 +67,9 @@
     <export function="setTextureEmissiveState" type="client"/>
     <export function="createBumpMap" type="client"/>
     <export function="destroyBumpMap" type="client"/>
-    <export function="getControlMap" type="client"/>
+    <export function="getBumpMap" type="client"/>
     <export function="createControlMap" type="client"/>
     <export function="destroyControlMap" type="client"/>
+    <export function="getControlMap" type="client"/>
 
 </meta>
