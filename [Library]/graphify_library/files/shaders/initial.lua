@@ -29,13 +29,19 @@ AVAILABLE_SHADERS = {
     },
     ["Bloom"] = {},
     ["World"] = {
-        ["VS"] = {},
-        ["No_VS"] = {}
+        ["No_VS"] = {
+            ["No_Bump"] = {},
+            ["Bump"] = {}
+        },
+        ["VS"] = {
+            ["No_Bump"] = {},
+            ["Bump"] = {}
+        }
     },
     ["Ped"] = {},
     ["Vehicle"] = {
-        ["VS"] = {},
-        ["No_VS"] = {}
+        ["No_VS"] = {},
+        ["VS"] = {}
     },
     ["Sky"] = {},
     ["Water"] = {}
