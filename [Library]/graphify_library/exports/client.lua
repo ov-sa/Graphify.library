@@ -178,6 +178,26 @@ function setTextureEmissiveState(texture, type, state, targetElement)
 end
 
 
+----------------------------------------------
+--[[ Functions: Creates/Destroys Bump-Map ]]--
+----------------------------------------------
+
+function createBumpMap(...)
+
+    return generateBumpMap(...)
+
+end
+
+function destroyBumpMap(shader)
+
+    if isGraphifySupported and bumpMapCache.bumpMaps[shader] then
+        return imports.destroyElement(shader)
+    end
+    return true
+
+end
+
+
 -------------------------------------------------
 --[[ Functions: Creates/Destroys Control-Map ]]--
 -------------------------------------------------
@@ -196,4 +216,3 @@ function destroyControlMap(shader)
     return true
 
 end
-
