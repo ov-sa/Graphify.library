@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: vs: rt_input_controlmap.lua
+     Shaders: world: vs: bump: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT Control-Map Inputter ]]--
+     Desc: World's RT Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -25,7 +25,8 @@ local imports = {
 
 local shaderConfig = {
     category = AVAILABLE_SHADERS["World"]["VS"],
-    reference = "RT_Input_ControlMap",
+    subCategory = "VS",
+    reference = "RT_Input",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
 }
@@ -48,7 +49,6 @@ shaderConfig.category[shaderConfig.reference] = [[
 -----------------*/
 
 ]]..shaderConfig.dependencyData..[[
-int gCapsMaxAnisotropy <string deviceCaps="MaxAnisotropy";>;
 texture colorLayer <string renderTarget = "yes";>;
 texture normalLayer <string renderTarget = "yes";>;
 texture emissiveLayer <string renderTarget = "yes";>;
@@ -63,13 +63,6 @@ bool disableNormals = false;
 bool filterOverlayMode;
 float4 filterColor;
 texture bumpTexture = false;
-float anisotropy = 1;
-float redControlScale = 1;
-float greenControlScale = 1;
-float blueControlScale = 1;
-texture redControlTexture;
-texture greenControlTexture;
-texture blueControlTexture;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -98,11 +91,8 @@ struct PSInput {
 -->> Samplers <<--
 ------------------*/
 
-sampler controlSampler = sampler_state {
+sampler inputSampler = sampler_state {
     Texture = (gTexture0);
-    MipFilter = Linear;
-    MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
-    MinFilter = Anisotropic;
 };
 
 sampler bumpSampler = sampler_state {
@@ -111,27 +101,6 @@ sampler bumpSampler = sampler_state {
     MagFilter = Linear;
     MipFilter = Linear;
 };
-
-sampler redControlSampler = sampler_state { 
-    Texture = (redControlTexture);
-    MipFilter = Linear;
-    MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
-    MinFilter = Anisotropic;
-};
-
-sampler greenControlSampler = sampler_state { 
-    Texture = (greenControlTexture);
-    MipFilter = Linear;
-    MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
-    MinFilter = Anisotropic;
-};
-
-sampler blueControlSampler = sampler_state { 
-    Texture = (blueControlTexture);
-    MipFilter = Linear;
-    MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
-    MinFilter = Anisotropic;
-}; 
 
 
 /*----------------
@@ -161,44 +130,30 @@ PSInput VertexShaderFunction(VSInput VS) {
 
 Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
-
-    float4 controlTexel = tex2D(controlSampler, PS.TexCoord);
-    float4 redTexel = tex2D(redControlSampler, PS.TexCoord*redControlScale);
-    float4 greenTexel = tex2D(greenControlSampler, PS.TexCoord*greenControlScale);
-    float4 blueTexel = tex2D(blueControlSampler, PS.TexCoord*blueControlScale);
-
-    float4 sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
-    sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
-    sampledControlTexel = lerp(controlTexel, redTexel, controlTexel.r);
-    sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
-    sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
-    sampledControlTexel = lerp(sampledControlTexel, greenTexel, controlTexel.g);
-    sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
-    sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
-    sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
-    sampledControlTexel.rgb = sampledControlTexel.rgb/3;
+	
+    float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
     if (bumpTexture) {
         float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
-        sampledControlTexel.rgb *= bumpTexel.rgb;
+        inputTexel.rgb *= bumpTexel.rgb;
     }
-    float4 worldColor = sampledControlTexel;
+    float4 worldColor = inputTexel*PS.Diffuse;
     if (filterOverlayMode) {
         worldColor += filterColor;
     } else {
         worldColor *= filterColor;
     }
-    worldColor.a = controlTexel.a;
+    worldColor.a = inputTexel.a;
     output.World = saturate(worldColor);
-    output.Color.rgb = sampledControlTexel.rgb;
-    output.Color.a = sampledControlTexel.a*PS.Diffuse.a;
+    output.Color.rgb = inputTexel.rgb;
+    output.Color.a = inputTexel.a*PS.Diffuse.a;
     output.Emissive.rgb = 0;
     output.Emissive.a = 1;
     float3 Normal = normalize(PS.Normal);
     if (PS.Normal.z == 0) {
         output.Normal = float4(0, 0, 0, 1);
     } else {
-        output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z <0 ? 0.611 : 0.789, 1);
+        output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z < 0 ? 0.611 : 0.789, 1);
     }
     return output;
 }
@@ -208,7 +163,7 @@ Pixel PixelShaderFunction(PSInput PS) {
 -->> Techniques <<--
 --------------------*/
 
-technique world_rtInputControlMap {
+technique world_rtInput {
     pass P0 {
         SRGBWriteEnable = false;
         VertexShader = compile vs_2_0 VertexShaderFunction();

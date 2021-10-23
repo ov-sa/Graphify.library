@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: no_vs: rt_input_controlmap.lua
+     Shaders: world: no_vs: bump: rt_input_controlmap.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
