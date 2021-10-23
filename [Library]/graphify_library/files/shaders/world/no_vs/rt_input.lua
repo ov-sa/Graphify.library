@@ -59,6 +59,7 @@ texture emissiveLayer <string renderTarget = "yes";>;
 
 bool filterOverlayMode;
 float4 filterColor;
+texture bumpTexture = false;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -82,6 +83,13 @@ sampler inputSampler = sampler_state {
     Texture = (gTexture0);
 };
 
+sampler bumpSampler = sampler_state {
+    Texture = (bumpTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
+
 
 /*----------------
 -->> Handlers <<--
@@ -92,6 +100,10 @@ Pixel PixelShaderFunction(PSInput PS) {
 	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
+    if (bumpTexture) {
+        float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
+        inputTexel.rgb *= bumpTexel.rgb;
+    }
     float4 worldColor = inputTexel*PS.Diffuse;
     if (filterOverlayMode) {
         worldColor += filterColor;
