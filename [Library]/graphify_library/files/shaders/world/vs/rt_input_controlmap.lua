@@ -62,6 +62,7 @@ texture emissiveLayer <string renderTarget = "yes";>;
 bool disableNormals = false;
 bool filterOverlayMode;
 float4 filterColor;
+texture bumpTexture = false;
 float anisotropy = 1;
 float redControlScale = 1;
 float greenControlScale = 1;
@@ -102,6 +103,13 @@ sampler controlSampler = sampler_state {
     MipFilter = Linear;
     MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
     MinFilter = Anisotropic;
+};
+
+sampler bumpSampler = sampler_state {
+    Texture = (bumpTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
 };
 
 sampler redControlSampler = sampler_state { 
@@ -170,6 +178,10 @@ Pixel PixelShaderFunction(PSInput PS) {
     sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
     sampledControlTexel.rgb = sampledControlTexel.rgb/3;
 
+    if (bumpTexture) {
+        float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
+        sampledControlTexel.rgb *= bumpTexel.rgb;
+    }
     float4 worldColor = sampledControlTexel;
     if (filterOverlayMode) {
         worldColor += filterColor;
