@@ -198,18 +198,9 @@ function destroyBumpMap(shader)
 end
 
 
--------------------------------------------------
---[[ Functions: Creates/Destroys Control-Map ]]--
--------------------------------------------------
-
-function getControlMaps(texture)
-
-    if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
-        return controlMapCache.controlMaps.textures[texture]
-    end
-    return false
-
-end
+-----------------------------------------------------------
+--[[ Functions: Creates/Destroys/Retrieves Control-Map ]]--
+-----------------------------------------------------------
 
 function createControlMap(...)
 
@@ -223,5 +214,14 @@ function destroyControlMap(shader)
         return imports.destroyElement(shader)
     end
     return true
+
+end
+
+function getControlMap(texture)
+
+    if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
+        return controlMapCache.controlMaps.textures[texture]
+    end
+    return false
 
 end
