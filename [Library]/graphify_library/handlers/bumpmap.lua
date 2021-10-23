@@ -26,7 +26,7 @@ local imports = {
     getControlMap = getControlMap,
     dxCreateShader = dxCreateShader,
     dxSetShaderValue = dxSetShaderValue,
-    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
+    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture
 }
 
 
