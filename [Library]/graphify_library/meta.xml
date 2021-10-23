@@ -49,6 +49,7 @@
     <script src="handlers/cache.lua" type="client" cache="false"/>
     <script src="handlers/loader.lua" type="client" cache="false"/>
     <script src="handlers/emissive.lua" type="client" cache="false"/>
+    <script src="handlers/bumpmap.lua" type="client" cache="false"/>
     <script src="handlers/controlmap.lua" type="client" cache="false"/>
 
     <!-- Files: Textures -->

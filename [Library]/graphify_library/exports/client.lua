@@ -190,7 +190,7 @@ end
 
 function destroyBumpMap(shader)
 
-    if isGraphifySupported and bumpMapCache.bumpMaps[shader] then
+    if isGraphifySupported and bumpMapCache.bumpMaps.shaders[shader] then
         return imports.destroyElement(shader)
     end
     return true
