@@ -205,7 +205,7 @@ end
 function getControlMaps(texture)
 
     if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
-        return controlMapCache.controlMaps.textures[texture]
+        return controlMapCache.controlMaps.textures[texture] or false
     end
     return false
 
