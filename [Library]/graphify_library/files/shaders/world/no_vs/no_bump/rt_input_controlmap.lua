@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["No_VS"],
+    category = AVAILABLE_SHADERS["World"]["No_VS"]["No_Bump"],
     reference = "RT_Input_ControlMap",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
