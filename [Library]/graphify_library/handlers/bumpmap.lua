@@ -23,6 +23,7 @@ local imports = {
     destroyElement = destroyElement,
     addEventHandler = addEventHandler,
     syncRTWithShader = syncRTWithShader,
+    getControlMap = getControlMap,
     dxCreateShader = dxCreateShader,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
@@ -62,7 +63,7 @@ function generateBumpMap(texture, type, bumpElement)
     if not texture or not type or not bumpMapCache.validBumpTypes[type] or not bumpElement or not imports.isElement(bumpElement) or (imports.getElementType(bumpElement) ~= "texture") or bumpMapCache.bumpMaps.textures[texture] then return false end
 
     local createdBumpMap = false
-    local textureControlMap = getControlMap(texture)
+    local textureControlMap = imports.getControlMap(texture)
     if not textureControlMap then
         createdBumpMap = imports.dxCreateShader(imports.unpack(bumpMapCache.validBumpTypes[type].rwData))
         if bumpMapCache.validBumpTypes[type].syncRT then
