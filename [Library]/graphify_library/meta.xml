@@ -28,16 +28,14 @@
     <script src="files/shaders/world/no_vs/rt_input_grass.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input_nozwrite.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input_emissive.lua" type="client" cache="false"/>
-    <script src="files/shaders/world/no_vs/no_bump/rt_input_controlmap.lua" type="client" cache="false"/>
-    <script src="files/shaders/world/no_vs/bump/rt_input_controlmap.lua" type="client" cache="false"/>
+    <script src="files/shaders/world/no_vs/rt_input_controlmap.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/no_bump/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/bump/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_ref.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_grass.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_nozwrite.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_emissive.lua" type="client" cache="false"/>
-    <script src="files/shaders/world/vs/no_bump/rt_input_controlmap.lua" type="client" cache="false"/>
-    <script src="files/shaders/world/vs/bump/rt_input_controlmap.lua" type="client" cache="false"/>
+    <script src="files/shaders/world/vs/rt_input_controlmap.lua" type="client" cache="false"/>
     <script src="files/shaders/ped/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/vehicle/no_vs/rt_input.lua" type="client" cache="false"/>
     <script src="files/shaders/vehicle/vs/rt_input.lua" type="client" cache="false"/>

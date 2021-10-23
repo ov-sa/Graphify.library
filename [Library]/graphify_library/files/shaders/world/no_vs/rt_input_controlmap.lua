@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: vs: no_bump: rt_input_controlmap.lua
+     Shaders: world: no_vs: rt_input_controlmap.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["VS"]["No_Bump"],
+    category = AVAILABLE_SHADERS["World"]["No_VS"]["Bump"],
     reference = "RT_Input_ControlMap",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
@@ -52,7 +52,6 @@ int gCapsMaxAnisotropy <string deviceCaps="MaxAnisotropy";>;
 texture colorLayer <string renderTarget = "yes";>;
 texture normalLayer <string renderTarget = "yes";>;
 texture emissiveLayer <string renderTarget = "yes";>;
-// #define GENERATE_NORMALS
 
 
 /*-----------------
@@ -62,6 +61,7 @@ texture emissiveLayer <string renderTarget = "yes";>;
 bool disableNormals = false;
 bool filterOverlayMode;
 float4 filterColor;
+texture bumpTexture = false;
 float anisotropy = 1;
 float redControlScale = 1;
 float greenControlScale = 1;
@@ -77,19 +77,10 @@ struct Pixel {
     float4 Emissive : COLOR3;
 };
 
-struct VSInput {
-    float3 Position : POSITION0;
-    float4 Diffuse : COLOR0;
-    float3 Normal : NORMAL0;
-    float2 TexCoord : TEXCOORD0;
-};
-
 struct PSInput {
     float4 Position : POSITION0;
     float4 Diffuse : COLOR0;
     float2 TexCoord : TEXCOORD0;
-    float3 Normal : TEXCOORD1;
-    float4 WorldPos : TEXCOORD2;
 };
 
 
@@ -102,6 +93,13 @@ sampler controlSampler = sampler_state {
     MipFilter = Linear;
     MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
     MinFilter = Anisotropic;
+};
+
+sampler bumpSampler = sampler_state {
+    Texture = (bumpTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
 };
 
 sampler redControlSampler = sampler_state { 
@@ -130,27 +128,6 @@ sampler blueControlSampler = sampler_state {
 -->> Handlers <<--
 ------------------*/
 
-PSInput VertexShaderFunction(VSInput VS) {
-    PSInput PS = (PSInput)0;
-    PS.TexCoord = VS.TexCoord;
-
-    float3 Normal;
-    if ((gDeclNormal != 1) || (disableNormals)) {
-        Normal = float3(0, 0, 0);
-    } else {
-        Normal = mul(VS.Normal, (float3x3)gWorld);
-    }
-    PS.Normal = Normal;
-
-    float4 worldPos = mul(float4(VS.Position.xyz, 1), gWorld);
-    float4 viewPos = mul(worldPos, gView);
-    float4 projPos = mul(viewPos, gProjection);
-    PS.Position = projPos;
-    PS.WorldPos = worldPos;
-    PS.Diffuse = MTACalcGTABuildingDiffuse(VS.Diffuse);
-    return PS;
-}
-
 Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
 
@@ -170,6 +147,10 @@ Pixel PixelShaderFunction(PSInput PS) {
     sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
     sampledControlTexel.rgb = sampledControlTexel.rgb/3;
 
+    if (bumpTexture) {
+        float4 bumpTexel = tex2D(sampledControlTexel, PS.TexCoord);
+        sampledControlTexel.rgb *= bumpTexel.rgb;
+    }
     float4 worldColor = sampledControlTexel;
     if (filterOverlayMode) {
         worldColor += filterColor;
@@ -182,12 +163,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     output.Color.a = sampledControlTexel.a*PS.Diffuse.a;
     output.Emissive.rgb = 0;
     output.Emissive.a = 1;
-    float3 Normal = normalize(PS.Normal);
-    if (PS.Normal.z == 0) {
-        output.Normal = float4(0, 0, 0, 1);
-    } else {
-        output.Normal = float4((Normal.xy*0.5) + 0.5, Normal.z <0 ? 0.611 : 0.789, 1);
-    }
+    output.Normal = float4(0, 0, 0, 1);
     return output;
 }
 
@@ -199,7 +175,6 @@ Pixel PixelShaderFunction(PSInput PS) {
 technique world_rtInputControlMap {
     pass P0 {
         SRGBWriteEnable = false;
-        VertexShader = compile vs_2_0 VertexShaderFunction();
         PixelShader = compile ps_2_0 PixelShaderFunction();
     }
 }
