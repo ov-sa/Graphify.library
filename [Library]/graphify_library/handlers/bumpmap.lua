@@ -19,6 +19,7 @@ local imports = {
     unpack = unpack,
     tonumber = tonumber,
     isElement = isElement,
+    setTimer = setTimer,
     getElementType = getElementType,
     destroyElement = destroyElement,
     addEventHandler = addEventHandler,
@@ -26,7 +27,10 @@ local imports = {
     getControlMap = getControlMap,
     dxCreateShader = dxCreateShader,
     dxSetShaderValue = dxSetShaderValue,
-    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture
+    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
+    table = {
+        clone = table.clone
+    }
 }
 
 
@@ -54,9 +58,9 @@ bumpMapCache = {
 }
 
 
---------------------------------------
---[[ Function: Generates Bump-Map ]]--
---------------------------------------
+-------------------------------------------------
+--[[ FunctionS: Generates/Refreshes Bump-Map ]]--
+-------------------------------------------------
 
 function generateBumpMap(texture, type, bumpElement)
 
@@ -87,6 +91,23 @@ function generateBumpMap(texture, type, bumpElement)
         imports.engineApplyShaderToWorldTexture(createdBumpMap, texture)
     end
     return createdBumpMap
+
+end
+
+function refreshBumpMap(texture)
+
+    if not texture then return false end
+
+    local textureReference = bumpMapCache.bumpMaps.textures[texture]
+    if textureReference then
+        local bumpDetails = imports.table.clone(bumpMapCache.bumpMaps.shaders[textureReference], false)
+        bumpMapCache.bumpMaps.textures[texture] = nil
+        bumpMapCache.bumpMaps.shaders[textureReference] = nil
+        imports.setTimer(function()
+            generateBumpMap(bumpDetails.texture, bumpDetails.type, bumpDetails.bumpElement)
+        end, 1, 1)
+    end
+    return false
 
 end
 
