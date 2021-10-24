@@ -23,7 +23,7 @@ local imports = {
     destroyElement = destroyElement,
     addEventHandler = addEventHandler,
     syncRTWithShader = syncRTWithShader,
-    refreshBumpMap = refreshBumpMap,
+    regenerateBumpMap = regenerateBumpMap,
     dxCreateShader = dxCreateShader,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
@@ -75,7 +75,7 @@ function generateControlMap(texture, type, controls)
         end
     end
 
-    imports.refreshBumpMap(texture)
+    imports.regenerateBumpMap(texture, true)
     local createdControlMap = imports.dxCreateShader(imports.unpack(controlMapCache.validControlTypes[type].rwData))
     if controlMapCache.validControlTypes[type].syncRT then
         imports.syncRTWithShader(createdControlMap)
@@ -107,7 +107,7 @@ imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if controlMapCache.controlMaps.shaders[source] then
-            imports.refreshBumpMap(controlMapCache.controlMaps.shaders[source].texture)
+            imports.regenerateBumpMap(controlMapCache.controlMaps.shaders[source].texture)
             controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)] = nil
             controlMapCache.controlMaps.shaders[source] = nil
         end

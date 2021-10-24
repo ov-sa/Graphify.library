@@ -58,9 +58,9 @@ bumpMapCache = {
 }
 
 
--------------------------------------------------
---[[ FunctionS: Generates/Refreshes Bump-Map ]]--
--------------------------------------------------
+----------------------------------------------------
+--[[ FunctionS: Generates/Re-Generates Bump-Map ]]--
+----------------------------------------------------
 
 function generateBumpMap(texture, type, bumpElement)
 
@@ -94,18 +94,22 @@ function generateBumpMap(texture, type, bumpElement)
 
 end
 
-function refreshBumpMap(texture)
+function regenerateBumpMap(texture, destroyMap)
 
     if not texture then return false end
 
     local textureReference = bumpMapCache.bumpMaps.textures[texture]
     if textureReference then
         local bumpDetails = imports.table.clone(bumpMapCache.bumpMaps.shaders[textureReference], false)
+        if destroyMap then
+            imports.destroyElement(textureReference)
+        end
         bumpMapCache.bumpMaps.textures[texture] = nil
         bumpMapCache.bumpMaps.shaders[textureReference] = nil
         imports.setTimer(function()
             generateBumpMap(bumpDetails.texture, bumpDetails.type, bumpDetails.bumpElement)
         end, 1, 1)
+        return true
     end
     return false
 
