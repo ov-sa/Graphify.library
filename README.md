@@ -22,6 +22,7 @@
 * Supports Filter Color
 * Supports Normal Maps
 * Supports Emissive Maps
+* Supports UE Bump Maps
 * Supports UE Control Maps
 * Supports UE Weathers
 * Supports UE HDR Skyboxes
