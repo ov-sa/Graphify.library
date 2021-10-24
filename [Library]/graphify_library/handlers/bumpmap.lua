@@ -82,6 +82,7 @@ function generateBumpMap(texture, type, bumpElement)
         bumpElement = bumpElement,
         type = type
     }
+    bumpMapCache.bumpMaps.textures[texture] = createdBumpMap
     if not textureControlMap then
         imports.engineApplyShaderToWorldTexture(createdBumpMap, texture)
     end
@@ -97,9 +98,11 @@ end
 imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
-        if bumpMapCache.bumpMaps[source] then
-            bumpMapCache.bumpMaps.textures[(bumpMapCache.bumpMaps.shaders[source].texture)] = nil
-            bumpMapCache.bumpMaps.shaders[source] = nil
+        if bumpMapCache.bumpMaps.shaders[source] then
+            if not controlMapCache.controlMaps.shaders[source] then
+                bumpMapCache.bumpMaps.textures[(bumpMapCache.bumpMaps.shaders[source].texture)] = nil
+                bumpMapCache.bumpMaps.shaders[source] = nil
+            end
         end
     end
 

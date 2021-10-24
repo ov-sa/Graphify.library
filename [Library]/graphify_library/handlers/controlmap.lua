@@ -19,13 +19,19 @@ local imports = {
     unpack = unpack,
     tonumber = tonumber,
     isElement = isElement,
+    setTimer = setTimer,
     getElementType = getElementType,
     destroyElement = destroyElement,
     addEventHandler = addEventHandler,
     syncRTWithShader = syncRTWithShader,
+    getBumpMap = getBumpMap,
+    generateBumpMap = generateBumpMap,
     dxCreateShader = dxCreateShader,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
+    table = {
+        clone = table.clone
+    },
     math = {
         max = math.max
     }
@@ -105,6 +111,15 @@ imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if controlMapCache.controlMaps.shaders[source] then
+            local textureBumpMap = imports.getBumpMap(controlMapCache.controlMaps.shaders[source].texture)
+            if textureBumpMap then
+                local clonedBumpDetails = imports.table.clone(bumpMapCache.bumpMaps.shaders[source], false)
+                bumpMapCache.bumpMaps.textures[(bumpMapCache.bumpMaps.shaders[source].texture)] = nil
+                bumpMapCache.bumpMaps.shaders[source] = nil
+                imports.setTimer(function()
+                    imports.generateBumpMap(clonedBumpDetails.texture, clonedBumpDetails.type, clonedBumpDetails.bumpElement)
+                end, 1, 1)
+            end
             controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)] = nil
             controlMapCache.controlMaps.shaders[source] = nil
         end
