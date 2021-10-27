@@ -23,7 +23,7 @@
     <script src="files/shaders/bloom/rt_blurX.lua" type="client" cache="false"/>
     <script src="files/shaders/bloom/rt_blurY.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input.lua" type="client" cache="false"/>
-    <!--script src="files/shaders/world/no_vs/normal/rt_input.lua" type="client" cache="false"/-->
+    <script src="files/shaders/world/no_vs/rt_input_normal.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input_ref.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input_grass.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input_nozwrite.lua" type="client" cache="false"/>

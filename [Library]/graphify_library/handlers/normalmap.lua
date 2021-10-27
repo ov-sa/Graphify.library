@@ -43,7 +43,7 @@ normalMapCache = {
         ["world"] = {
             rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]) or AVAILABLE_SHADERS["World"]["No_VS"])["RT_Input_Normal"], 3, 0, false, "world,object"},
             syncRT = true,
-            controlNormals = (DEFAULT_VS_MODE and true) or false,
+            controlNormals = false,
             ambientSupport = true,
             parameters = {
                 ["filterColor"] = {DEFAULT_FILTER_COLOR}
@@ -70,12 +70,15 @@ function generateNormalMap(texture, type, normalElement)
     local textureControlMap = imports.getControlMap(texture)
     if textureControlMap then
         createdNormalMap = textureControlMap
+        print("DAMN?")
     else
         createdNormalMap = imports.dxCreateShader(imports.unpack(normalMapCache.validNormalTypes[type].rwData))
+        print("CREATED: "..tostring(createdNormalMap))
         if normalMapCache.validNormalTypes[type].syncRT then
             imports.syncRTWithShader(createdNormalMap)
         end
     end
+    print("WOW PROCEEDED")
     for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
         imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
     end
