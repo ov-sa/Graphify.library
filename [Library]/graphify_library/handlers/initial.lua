@@ -40,14 +40,18 @@ imports.addEvent("onGraphifyLoad", false)
 imports.addEvent("onGraphifyUnLoad", false)
 
 imports.addEventHandler("onClientResourceStart", resource, function()
+
     if isGraphifySupported then
         imports.collectgarbage("setpause", 100)
-	imports.triggerEvent("onGraphifyLoad", resource)
+        imports.triggerEvent("onGraphifyLoad", resource)
     end
+
 end)
 
 imports.addEventHandler("onClientResourceStop", resource, function()
+
     if isGraphifySupported then
         imports.triggerEvent("onGraphifyUnLoad", resource)
     end
+
 end)
