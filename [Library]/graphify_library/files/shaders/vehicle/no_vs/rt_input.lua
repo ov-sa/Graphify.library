@@ -121,10 +121,10 @@ Pixel PixelShaderFunction(PSInput PS) {
     } else {
         worldColor *= filterColor;
     }
-    worldColor.a = inputTexel.a;
+    worldColor.a = inputTexel.a*PS.Diffuse.a;
     output.World = saturate(worldColor);
     output.Color.rgb = outputColor.rgb*0.85 + 0.15;
-    output.Color.a = inputTexel.a*PS.Diffuse.a;
+    output.Color.a = worldColor.a;
     output.Emissive.rgb = 0;
     output.Emissive.a = 1;
     output.Normal = float4(0, 0, 0, 1);
