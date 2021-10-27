@@ -41,7 +41,9 @@ local imports = {
 normalMapCache = {
     validNormalTypes = {
         ["world"] = {
-            rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]["Normal"]["RT_Input"]) or AVAILABLE_SHADERS["World"]["No_VS"]["Normal"]["RT_Input"]), 3, 0, false, "world,object"},
+            --TODO: ..
+            --rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]["Normal"]["RT_Input"]) or AVAILABLE_SHADERS["World"]["No_VS"]["Normal"]["RT_Input"]), 3, 0, false, "world,object"},
+            --rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]["Normal"]["RT_Input"]) or AVAILABLE_SHADERS["World"]["No_VS"]["Normal"]["RT_Input"]), 3, 0, false, "world,object"},
             syncRT = true,
             controlNormals = (DEFAULT_VS_MODE and true) or false,
             ambientSupport = true,
