@@ -107,6 +107,20 @@ function setFilterColor(color)
 end
 
 
+----------------------------------------
+--[[ Function: Sets Normal-Gen Mode ]]--
+----------------------------------------
+
+function setNormalGenMode(...)
+
+    if isGraphifySupported then
+        return imports.disableNormals(...)
+    end
+    return false
+
+end
+
+
 -------------------------------------------------
 --[[ Functions: Sets/Retrieves Emissive Mode ]]--
 -------------------------------------------------
@@ -159,20 +173,6 @@ function setTextureEmissiveState(texture, type, state, targetElement)
             local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
             return setterFunction(emissiveShader.shader, texture, targetElement)
         end
-    end
-    return false
-
-end
-
-
---------------------------------------------------
---[[ Function: Sets Normal Generation's State ]]--
---------------------------------------------------
-
-function setNormalGenerationState(...)
-
-    if isGraphifySupported then
-        return imports.disableNormals(...)
     end
     return false
 

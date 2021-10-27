@@ -61,11 +61,11 @@
     <export function="setSkyMapTexture" type="client"/>
     <export function="setFilterOverlayMode" type="client"/>
     <export function="setFilterColor" type="client"/>
+    <export function="setNormalGenMode" type="client"/>
     <export function="setEmissiveMode" type="client"/>
     <export function="getEmissiveMode" type="client"/>
     <export function="setTextureClearState" type="client"/>
     <export function="setTextureEmissiveState" type="client"/>
-    <export function="setNormalGenerationState" type="client"/>
     <export function="createNormalMap" type="client"/>
     <export function="destroyNormalMap" type="client"/>
     <export function="getNormalMap" type="client"/>
