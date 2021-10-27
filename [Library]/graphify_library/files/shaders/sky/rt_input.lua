@@ -54,6 +54,7 @@ shaderConfig.category[shaderConfig.reference] = [[
 -->> Variables <<--
 -------------------*/
 
+float4 filterColor;
 texture skyControlMap;
 texture skyControlTexture;
 float4 transparentTexel = float4(0, 0, 0, 0);
@@ -82,6 +83,9 @@ float4 PixelShaderFunction(float2 TexCoord : TEXCOORD0) : COLOR0 {
     float4 skyTexel = tex2D(skyControlSampler, TexCoord);
     float4 sampledControlTexel = lerp(skyTexel, controlTexel, controlTexel.a);
     sampledControlTexel = lerp(sampledControlTexel, transparentTexel, controlTexel.a);
+    float sampledControlAlpha = sampledControlTexel.a;
+    sampledControlTexel = lerp(sampledControlTexel, filterColor, filterColor.a);
+    sampledControlTexel.a = sampledControlAlpha;
     return sampledControlTexel;
 } 
 

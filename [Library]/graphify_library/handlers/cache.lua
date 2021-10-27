@@ -178,7 +178,7 @@ createdShaders = {
         rwData = {AVAILABLE_SHADERS["Sky"]["RT_Input"], 0, 0, false},
         syncRT = false,
         controlNormals = false,
-        ambientSupport = false,
+        ambientSupport = true,
         parameters = {},
         textureLists = {}
     },
