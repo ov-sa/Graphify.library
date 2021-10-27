@@ -175,7 +175,7 @@ end
 
 
 ----------------------------------------------------------
---[[ Functions: Retrieves/Creates/Destroys Normal-Map ]]--
+--[[ Functions: Retrieves/Creates/Destroys Normal Map ]]--
 ----------------------------------------------------------
 
 function getNormalMap(texture)
@@ -217,7 +217,7 @@ end
 
 
 ----------------------------------------------
---[[ Functions: Creates/Destroys Bump-Map ]]--
+--[[ Functions: Creates/Destroys Bump Map ]]--
 ----------------------------------------------
 
 function createBumpMap(...)

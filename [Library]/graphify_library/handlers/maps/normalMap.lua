@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: normalMap.lua
+     Script: handlers: maps: normalMap.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: Normal-Map Handler ]]--
+     Desc: Normal Map Handler ]]--
 ----------------------------------------------------------------
 
 
@@ -56,7 +56,7 @@ normalMapCache = {
 
 
 -----------------------------------------------------------
---[[ Functions: Generates/Re-Generates Normal/Bump-Map ]]--
+--[[ Functions: Generates/Re-Generates Normal/Bump Map ]]--
 -----------------------------------------------------------
 
 function generateNormalMap(texture, type, normalMap)

@@ -99,20 +99,20 @@ end
 
 
 ----------------------------------------
---[[ Function: Validates Normal-Map ]]--
+--[[ Function: Validates Normal Map ]]--
 ----------------------------------------
 
-function validateNormalMap(shader)
+function isValid(shader)
 
     if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
-        local validateNormalMap = true
+        local isValid = false
         for i, j in imports.pairs(normalMapCache.normalMaps.shaders[shader].shaderMaps) do
             if j and imports.isElement(j) then
-                validateNormalMap = false
+                isValid = true
                 break
             end
         end
-        if validateNormalMap then
+        if not isValid then
             return imports.destroyElement(shader)
         end
     end

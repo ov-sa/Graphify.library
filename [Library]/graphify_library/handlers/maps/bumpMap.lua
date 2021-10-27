@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: bumpMap.lua
+     Script: handlers: maps: bumpMap.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: Bump-Map Handler ]]--
+     Desc: Bump Map Handler ]]--
 ----------------------------------------------------------------
 
 
@@ -27,7 +27,7 @@ local imports = {
 
 
 --------------------------------------
---[[ Function: Generates Bump-Map ]]--
+--[[ Function: Generates Bump Map ]]--
 --------------------------------------
 
 function generateBumpMap(texture, type, bumpMap)
