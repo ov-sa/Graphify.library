@@ -81,6 +81,7 @@ function generateNormalMap(texture, type, normalMap)
             imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
         end
     end
+    --TODO: FIX REFERENCE....
     normalMapCache.normalMaps.shaders[createdNormalMap].shaderMaps.normal = normalMap
     imports.dxSetShaderValue(createdNormalMap, "enableNormalMap", true)
     imports.dxSetShaderValue(createdNormalMap, "normalTexture", normalMap)
@@ -103,10 +104,10 @@ function regenerateNormalMap(texture, destroyShader, controlReference)
     else
         local shaderReference = normalMapCache.normalMaps.textures[texture]
         if shaderReference then
+            mapDetails = imports.table.clone(normalMapCache.normalMaps.shaders[shaderReference], true)
             if destroyShader then
                 imports.destroyElement(shaderReference)
             end
-            mapDetails = imports.table.clone(normalMapCache.normalMaps.shaders[shaderReference], true)
             normalMapCache.normalMaps.textures[texture] = nil
             normalMapCache.normalMaps.shaders[shaderReference] = nil
         end
@@ -124,7 +125,7 @@ function regenerateNormalMap(texture, destroyShader, controlReference)
                     end
                 end
             end
-        end, 1, 1, controlReference.shaderMaps)
+        end, 1, 1, mapDetails)
         return true
     end
     return false

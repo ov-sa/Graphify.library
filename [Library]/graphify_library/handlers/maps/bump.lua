@@ -52,6 +52,7 @@ function generateBumpMap(texture, type, bumpMap)
             imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
         end
     end
+    --TODO: STORE IN PROPER REFERENCE...
     normalMapCache.normalMaps.shaders[createdNormalMap].shaderMaps.bump = bumpMap
     imports.dxSetShaderValue(createdNormalMap, "enableBumpMap", true)
     imports.dxSetShaderValue(createdNormalMap, "bumpTexture", bumpMap)
