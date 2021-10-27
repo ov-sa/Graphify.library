@@ -62,7 +62,7 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool filterOverlayMode;
+bool enableFilterOverlay = false;
 float4 filterColor;
 
 struct Pixel {
@@ -116,7 +116,7 @@ Pixel PixelShaderFunction(PSInput PS) {
         worldColor.rgb += PS.Specular.rgb;
     }
     float4 outputColor = worldColor;
-    if (filterOverlayMode) {
+    if (enableFilterOverlay) {
         worldColor += filterColor;
     } else {
         worldColor *= filterColor;

@@ -61,7 +61,7 @@ texture emissiveLayer <string renderTarget = "yes";>;
 
 bool disableNormals = false;
 bool enableBump = false;
-bool filterOverlayMode;
+bool enableFilterOverlay = false;
 float4 filterColor;
 texture bumpTexture;
 float anisotropy = 1;
@@ -184,7 +184,7 @@ Pixel PixelShaderFunction(PSInput PS) {
         sampledControlTexel.rgb *= bumpTexel.rgb;
     }
     float4 worldColor = sampledControlTexel;
-    if (filterOverlayMode) {
+    if (enableFilterOverlay) {
         worldColor += filterColor;
     } else {
         worldColor *= filterColor;

@@ -69,7 +69,7 @@ function setFilterOverlayMode(state)
         if (state == true) or (state == false) then
             for i, j in imports.pairs(createdShaders) do
                 if (i ~= "__SORT_ORDER__") and j.ambientSupport then
-                    imports.dxSetShaderValue(j.shader, "filterOverlayMode", state)
+                    imports.dxSetShaderValue(j.shader, "enableFilterOverlay", state)
                 end
             end
             return true

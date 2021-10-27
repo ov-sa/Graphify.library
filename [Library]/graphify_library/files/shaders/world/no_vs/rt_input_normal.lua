@@ -57,7 +57,7 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool filterOverlayMode;
+bool enableFilterOverlay = false;
 float4 filterColor;
 texture normalTexture;
 float bumpContrast = 0.5;
@@ -112,7 +112,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     inputTexel.rgb *= bumpTexel.rgb;
 
     float4 worldColor = inputTexel*PS.Diffuse;
-    if (filterOverlayMode) {
+    if (enableFilterOverlay) {
         worldColor += filterColor;
     } else {
         worldColor *= filterColor;

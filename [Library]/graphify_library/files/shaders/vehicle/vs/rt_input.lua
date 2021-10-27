@@ -64,7 +64,7 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool filterOverlayMode;
+bool enableFilterOverlay = false;
 float4 filterColor;
 
 struct Pixel {
@@ -155,7 +155,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     }
     worldColor.rgb = MTAApplyFog(worldColor.rgb, PS.Depth.x/PS.Depth.y);
     float4 outputColor = worldColor;
-    if (filterOverlayMode) {
+    if (enableFilterOverlay) {
         worldColor += filterColor;
     } else {
         worldColor *= filterColor;
