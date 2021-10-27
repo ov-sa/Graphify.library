@@ -162,11 +162,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     }
 
     float4 worldColor = sampledControlTexel;
-    if (enableFilterOverlay) {
-        worldColor += filterColor;
-    } else {
-        worldColor *= filterColor;
-    }
+    worldColor = lerp(worldColor, filterColor, filterColor.a);
     worldColor.a = controlTexel.a;
     output.World = saturate(worldColor);
     output.Color.rgb = sampledControlTexel.rgb;

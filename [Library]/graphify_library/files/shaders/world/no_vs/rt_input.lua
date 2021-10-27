@@ -92,11 +92,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
     float4 worldColor = inputTexel*PS.Diffuse;
-    if (enableFilterOverlay) {
-        worldColor += filterColor;
-    } else {
-        worldColor *= filterColor;
-    }
+    worldColor = lerp(worldColor, filterColor, filterColor.a);
     worldColor.a = inputTexel.a;
     output.World = saturate(worldColor);
     output.Color.rgb = inputTexel.rgb;
