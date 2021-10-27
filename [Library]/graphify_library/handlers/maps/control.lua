@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: maps: controlMap.lua
+     Script: handlers: maps: control.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: Control-Map Handler ]]--
+     Desc: Control Map Handler ]]--
 ----------------------------------------------------------------
 
 
@@ -59,7 +59,7 @@ controlMapCache = {
 
 
 -----------------------------------------
---[[ Function: Generates Control-Map ]]--
+--[[ Function: Generates Control Map ]]--
 -----------------------------------------
 
 function generateControlMap(texture, type, controls)

@@ -250,7 +250,7 @@ end
 
 
 -----------------------------------------------------------
---[[ Functions: Retrieves/Creates/Destroys Control-Map ]]--
+--[[ Functions: Retrieves/Creates/Destroys Control Map ]]--
 -----------------------------------------------------------
 
 function getControlMap(texture)

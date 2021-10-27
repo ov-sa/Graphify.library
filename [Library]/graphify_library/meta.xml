@@ -48,10 +48,10 @@
     <script src="handlers/initial.lua" type="client"/>
     <script src="handlers/cache.lua" type="client"/>
     <script src="handlers/loader.lua" type="client"/>
-    <script src="handlers/maps/emissiveMap.lua" type="client"/>
-    <script src="handlers/maps/normalMap.lua" type="client"/>
-    <script src="handlers/maps/bumpMap.lua" type="client"/>
-    <script src="handlers/maps/controlMap.lua" type="client"/>
+    <script src="handlers/maps/emissive.lua" type="client"/>
+    <script src="handlers/maps/normal.lua" type="client"/>
+    <script src="handlers/maps/bump.lua" type="client"/>
+    <script src="handlers/maps/control.lua" type="client"/>
 
     <!-- Files: Textures -->
     <file src="files/textures/sky/default.jpg"/>

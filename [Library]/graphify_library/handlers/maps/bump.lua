@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: maps: bumpMap.lua
+     Script: handlers: maps: bump.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril

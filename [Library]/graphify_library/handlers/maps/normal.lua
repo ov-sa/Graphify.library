@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: maps: normalMap.lua
+     Script: handlers: maps: normal.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril

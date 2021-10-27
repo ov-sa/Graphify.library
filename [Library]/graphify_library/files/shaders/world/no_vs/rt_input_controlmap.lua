@@ -5,7 +5,7 @@
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT Control-Map Inputter ]]--
+     Desc: World's RT Control Map Inputter ]]--
 ----------------------------------------------------------------
 
 
