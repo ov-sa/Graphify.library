@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: normalmap.lua
+     Script: handlers: normalMap.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
@@ -15,9 +15,7 @@
 
 local imports = {
     pairs = pairs,
-    ipairs = ipairs,
     unpack = unpack,
-    tonumber = tonumber,
     isElement = isElement,
     setTimer = setTimer,
     getElementType = getElementType,
@@ -46,7 +44,6 @@ normalMapCache = {
             controlNormals = false,
             ambientSupport = true,
             parameters = {
-                ["enableBumpMap"] = {true},
                 ["filterColor"] = {DEFAULT_FILTER_COLOR}
             }
         }
@@ -58,9 +55,9 @@ normalMapCache = {
 }
 
 
-------------------------------------------------------
---[[ FunctionS: Generates/Re-Generates Normal-Map ]]--
-------------------------------------------------------
+-----------------------------------------------------------
+--[[ Functions: Generates/Re-Generates Normal/Bump-Map ]]--
+-----------------------------------------------------------
 
 function generateNormalMap(texture, type, normalElement)
 
@@ -80,7 +77,8 @@ function generateNormalMap(texture, type, normalElement)
     for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
         imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
     end
-    imports.dxSetShaderValue(createdNormalMap, "bumpTexture", normalElement)
+    imports.dxSetShaderValue(createdNormalMap, "enableNormalMap", true)
+    imports.dxSetShaderValue(createdNormalMap, "normalTexture", normalElement)
     normalMapCache.normalMaps.shaders[createdNormalMap] = {
         texture = texture,
         normalElement = normalElement,

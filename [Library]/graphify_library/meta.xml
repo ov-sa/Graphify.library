@@ -48,9 +48,10 @@
     <script src="handlers/initial.lua" type="client" cache="false"/>
     <script src="handlers/cache.lua" type="client" cache="false"/>
     <script src="handlers/loader.lua" type="client" cache="false"/>
-    <script src="handlers/emissive.lua" type="client" cache="false"/>
-    <script src="handlers/normalmap.lua" type="client" cache="false"/>
-    <script src="handlers/controlmap.lua" type="client" cache="false"/>
+    <script src="handlers/emissiveMap.lua" type="client" cache="false"/>
+    <script src="handlers/normalMap.lua" type="client" cache="false"/>
+    <script src="handlers/bumpMap.lua" type="client" cache="false"/>
+    <script src="handlers/controlMap.lua" type="client" cache="false"/>
 
     <!-- Files: Textures -->
     <file src="files/textures/sky/default.jpg"/>
@@ -68,6 +69,8 @@
     <export function="createNormalMap" type="client"/>
     <export function="destroyNormalMap" type="client"/>
     <export function="getNormalMap" type="client"/>
+    <export function="createBumpMap" type="client"/>
+    <export function="destroyBumpMap" type="client"/>
     <export function="createControlMap" type="client"/>
     <export function="destroyControlMap" type="client"/>
     <export function="getControlMap" type="client"/>

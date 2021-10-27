@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: controlmap.lua
+     Script: handlers: controlMap.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril

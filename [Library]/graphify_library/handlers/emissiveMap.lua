@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Script: handlers: emissive.lua
+     Script: handlers: emissiveMap.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril

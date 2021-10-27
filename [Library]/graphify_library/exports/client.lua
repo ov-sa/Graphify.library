@@ -21,6 +21,7 @@ local imports = {
     destroyElement = destroyElement,
     unpackColor = unpackColor,
     disableNormals = disableNormals,
+    validateNormalMap = validateNormalMap,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
     engineRemoveShaderFromWorldTexture = engineRemoveShaderFromWorldTexture,
@@ -191,9 +192,13 @@ end
 function destroyNormalMap(shader)
 
     if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
-        return imports.destroyElement(shader)
+        imports.dxSetShaderValue(shader, "enableNormalMap", false)
+        imports.dxSetShaderValue(shader, "normalTexture", nil)
+        normalMapCache.normalMaps.shaders[shader].shaderMaps.normalElement = nil
+        imports.validateNormalMap(shader)
+        return true
     end
-    return true
+    return false
 
 end
 
@@ -201,6 +206,30 @@ function getNormalMap(texture)
 
     if isGraphifySupported and texture and normalMapCache.normalMaps.textures[texture] then
         return normalMapCache.normalMaps.textures[texture]
+    end
+    return false
+
+end
+
+
+--------------------------------------------------------
+--[[ Functions: Creates/Destroys/Retrieves Bump-Map ]]--
+--------------------------------------------------------
+
+function createBumpMap(...)
+
+    return generateBumpMap(...)
+
+end
+
+function destroyBumpMap(shader)
+
+    if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
+        imports.dxSetShaderValue(shader, "enableBumpMap", false)
+        imports.dxSetShaderValue(shader, "bumpTexture", nil)
+        normalMapCache.normalMaps.shaders[shader].shaderMaps.bumpElement = nil
+        imports.validateNormalMap(shader)
+        return true
     end
     return false
 
