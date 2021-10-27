@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: vs: normal: rt_input_normal.lua
+     Shaders: world: vs: rt_input_normal.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
