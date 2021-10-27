@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: no_vs: no_normal: rt_input.lua
+     Shaders: world: no_vs: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["No_VS"]["No_Normal"],
+    category = AVAILABLE_SHADERS["World"]["No_VS"],
     reference = "RT_Input",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
