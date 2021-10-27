@@ -103,6 +103,13 @@ sampler normalSampler = sampler_state {
     MipFilter = Linear;
 };
 
+sampler bumpSampler = sampler_state {
+    Texture = (bumpTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
+
 
 /*----------------
 -->> Handlers <<--
@@ -134,7 +141,7 @@ Pixel PixelShaderFunction(PSInput PS) {
 	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
     if (enableBumpMap) {
-        float4 bumpTexel = tex2D(normalSampler, PS.TexCoord);
+        float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
         inputTexel.rgb *= bumpTexel.rgb;
     }
 

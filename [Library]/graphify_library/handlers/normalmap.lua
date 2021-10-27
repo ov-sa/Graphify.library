@@ -46,6 +46,7 @@ normalMapCache = {
             controlNormals = false,
             ambientSupport = true,
             parameters = {
+                ["enableBumpMap"] = {true},
                 ["filterColor"] = {DEFAULT_FILTER_COLOR}
             }
         }
@@ -70,10 +71,8 @@ function generateNormalMap(texture, type, normalElement)
     local textureControlMap = imports.getControlMap(texture)
     if textureControlMap then
         createdNormalMap = textureControlMap
-        print("DAMN?")
     else
         createdNormalMap = imports.dxCreateShader(imports.unpack(normalMapCache.validNormalTypes[type].rwData))
-        print("CREATED: "..tostring(createdNormalMap))
         if normalMapCache.validNormalTypes[type].syncRT then
             imports.syncRTWithShader(createdNormalMap)
         end
@@ -86,7 +85,7 @@ function generateNormalMap(texture, type, normalElement)
     for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
         imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
     end
-    imports.dxSetShaderValue(createdNormalMap, "normalTexture", normalElement)
+    imports.dxSetShaderValue(createdNormalMap, "bumpTexture", normalElement)
     normalMapCache.normalMaps.shaders[createdNormalMap] = {
         texture = texture,
         normalElement = normalElement,
