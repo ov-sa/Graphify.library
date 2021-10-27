@@ -22,10 +22,7 @@ local imports = {
     getControlMap = getControlMap,
     dxCreateShader = dxCreateShader,
     dxSetShaderValue = dxSetShaderValue,
-    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
-    table = {
-        clone = table.clone
-    }
+    engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture
 }
 
 
