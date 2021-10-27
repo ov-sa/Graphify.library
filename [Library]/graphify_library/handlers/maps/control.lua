@@ -62,16 +62,16 @@ controlMapCache = {
 --[[ Function: Generates Control Map ]]--
 -----------------------------------------
 
-function generateControlMap(texture, type, controls)
+function generateControlMap(texture, type, shaderControls)
 
     type = ((type == "object") and "world") or type
-    if not texture or not type or not controlMapCache.validControlTypes[type] or not controls or controlMapCache.controlMaps.textures[texture] then return false end
+    if not texture or not type or not controlMapCache.validControlTypes[type] or not shaderControls or controlMapCache.controlMaps.textures[texture] then return false end
 
     for i, j in imports.ipairs(controlMapCache.validControls) do
-        if not controls[j] or not controls[j].texture or not imports.isElement(controls[j].texture) or (imports.getElementType(controls[j].texture) ~= "texture") then
+        if not shaderControls[j] or not shaderControls[j].texture or not imports.isElement(shaderControls[j].texture) or (imports.getElementType(shaderControls[j].texture) ~= "texture") then
             return false
         else
-            controls[j].scale = imports.math.max(0, imports.tonumber(controls[j].scale) or 1)
+            shaderControls[j].scale = imports.math.max(0, imports.tonumber(shaderControls[j].scale) or 1)
         end
     end
 
@@ -81,16 +81,17 @@ function generateControlMap(texture, type, controls)
         imports.syncRTWithShader(createdControlMap)
     end
     for i, j in imports.ipairs(controlMapCache.validControls) do
-        imports.dxSetShaderValue(createdControlMap, j.."ControlScale", controls[j].scale)
-        imports.dxSetShaderValue(createdControlMap, j.."ControlTexture", controls[j].texture)
+        imports.dxSetShaderValue(createdControlMap, j.."ControlScale", shaderControls[j].scale)
+        imports.dxSetShaderValue(createdControlMap, j.."ControlTexture", shaderControls[j].texture)
     end
     for i, j in imports.pairs(controlMapCache.validControlTypes[type].parameters) do
         imports.dxSetShaderValue(createdControlMap, i, imports.unpack(j))
     end
     controlMapCache.controlMaps.shaders[createdControlMap] = {
         texture = texture,
-        controls = controls,
-        type = type
+        type = type,
+        shaderMaps = {},
+        shaderControls = shaderControls
     }
     controlMapCache.controlMaps.textures[texture] = createdControlMap
     imports.engineApplyShaderToWorldTexture(createdControlMap, texture)
@@ -107,7 +108,7 @@ imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if controlMapCache.controlMaps.shaders[source] then
-            imports.regenerateNormalMap(controlMapCache.controlMaps.shaders[source].texture)
+            imports.regenerateNormalMap(false, false, controlMapCache.controlMaps.shaders[source])
             controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)] = nil
             controlMapCache.controlMaps.shaders[source] = nil
         end

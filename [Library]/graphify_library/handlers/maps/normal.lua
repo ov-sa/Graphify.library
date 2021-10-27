@@ -55,9 +55,9 @@ normalMapCache = {
 }
 
 
------------------------------------------------------------
---[[ Functions: Generates/Re-Generates Normal/Bump Map ]]--
------------------------------------------------------------
+------------------------------------------------------
+--[[ Functions: Generates/Re-Generates Normal Map ]]--
+------------------------------------------------------
 
 function generateNormalMap(texture, type, normalMap)
 
@@ -91,21 +91,40 @@ function generateNormalMap(texture, type, normalMap)
 
 end
 
-function regenerateNormalMap(texture, destroyMap)
+function regenerateNormalMap(texture, destroyShader, controlReference)
 
     if not texture then return false end
 
-    local textureReference = normalMapCache.normalMaps.textures[texture]
-    if textureReference then
-        local normalDetails = imports.table.clone(normalMapCache.normalMaps.shaders[textureReference], false)
-        if destroyMap then
-            imports.destroyElement(textureReference)
+    local mapDetails = false
+    if controlReference then
+        if controlReference.shaderMaps then
+            mapDetails = controlReference.shaderMaps
         end
-        normalMapCache.normalMaps.textures[texture] = nil
-        normalMapCache.normalMaps.shaders[textureReference] = nil
-        imports.setTimer(function()
-            generateNormalMap(normalDetails.texture, normalDetails.type, normalDetails.normalMap)
-        end, 1, 1)
+    else
+        local shaderReference = normalMapCache.normalMaps.textures[texture]
+        if shaderReference then
+            if destroyShader then
+                imports.destroyElement(shaderReference)
+            end
+            mapDetails = imports.table.clone(normalMapCache.normalMaps.shaders[shaderReference], true)
+            normalMapCache.normalMaps.textures[texture] = nil
+            normalMapCache.normalMaps.shaders[shaderReference] = nil
+        end
+    end
+
+    if mapDetails then
+        print("REGENERATIN!!!")
+        imports.setTimer(function(mapDetails)
+            if mapDetails and mapDetails.shaderMaps then
+                for i, j in imports.pairs(mapDetails.shaderMaps) do
+                    if i == "normal" then
+                        generateNormalMap(mapDetails.texture, mapDetails.type, j)
+                    elseif i == "bump" then
+                        generateBumpMap(mapDetails.texture, mapDetails.type, j)
+                    end
+                end
+            end
+        end, 1, 1, controlReference.shaderMaps)
         return true
     end
     return false
@@ -121,10 +140,8 @@ imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if normalMapCache.normalMaps.shaders[source] then
-            if not controlMapCache.controlMaps.shaders[source] then
-                normalMapCache.normalMaps.textures[(normalMapCache.normalMaps.shaders[source].texture)] = nil
-                normalMapCache.normalMaps.shaders[source] = nil
-            end
+            normalMapCache.normalMaps.textures[(normalMapCache.normalMaps.shaders[source].texture)] = nil
+            normalMapCache.normalMaps.shaders[source] = nil
         end
     end
 
