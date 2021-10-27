@@ -30,12 +30,12 @@ AVAILABLE_SHADERS = {
     ["Bloom"] = {},
     ["World"] = {
         ["No_VS"] = {
-            ["No_Bump"] = {},
-            ["Bump"] = {}
+            ["No_Normal"] = {},
+            ["Normal"] = {}
         },
         ["VS"] = {
-            ["No_Bump"] = {},
-            ["Bump"] = {}
+            ["No_Normal"] = {},
+            ["Normal"] = {}
         }
     },
     ["Ped"] = {},

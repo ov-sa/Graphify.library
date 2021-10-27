@@ -178,29 +178,29 @@ function setTextureEmissiveState(texture, type, state, targetElement)
 end
 
 
---------------------------------------------------------
---[[ Functions: Creates/Destroys/Retrieves Bump-Map ]]--
---------------------------------------------------------
+----------------------------------------------------------
+--[[ Functions: Creates/Destroys/Retrieves Normal-Map ]]--
+----------------------------------------------------------
 
-function createBumpMap(...)
+function createNormalMap(...)
 
-    return generateBumpMap(...)
+    return generateNormalMap(...)
 
 end
 
-function destroyBumpMap(shader)
+function destroyNormalMap(shader)
 
-    if isGraphifySupported and bumpMapCache.bumpMaps.shaders[shader] then
+    if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
         return imports.destroyElement(shader)
     end
     return true
 
 end
 
-function getBumpMap(texture)
+function getNormalMap(texture)
 
-    if isGraphifySupported and texture and bumpMapCache.bumpMaps.textures[texture] then
-        return bumpMapCache.bumpMaps.textures[texture]
+    if isGraphifySupported and texture and normalMapCache.normalMaps.textures[texture] then
+        return normalMapCache.normalMaps.textures[texture]
     end
     return false
 

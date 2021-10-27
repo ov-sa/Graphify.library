@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: vs: no_bump: rt_input.lua
+     Shaders: world: vs: normal: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["VS"]["No_Bump"],
+    category = AVAILABLE_SHADERS["World"]["VS"]["Normal"],
     subCategory = "VS",
     reference = "RT_Input",
     dependencies = {},
@@ -62,6 +62,9 @@ texture emissiveLayer <string renderTarget = "yes";>;
 bool disableNormals = false;
 bool filterOverlayMode;
 float4 filterColor;
+texture normalTexture;
+float bumpContrast = 0.5;
+float bumpBrightness = 0.5;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -94,6 +97,13 @@ sampler inputSampler = sampler_state {
     Texture = (gTexture0);
 };
 
+sampler normalSampler = sampler_state {
+    Texture = (normalTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
+
 
 /*----------------
 -->> Handlers <<--
@@ -124,6 +134,15 @@ Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
 	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
+    float4 bumpTexel = tex2D(normalSampler, PS.TexCoord);
+
+    float bumpAverage = (inputTexel.r + inputTexel.g + inputTexel.b)/3.0f;
+    bumpAverage.r = bumpAverage;
+    bumpAverage.g = bumpAverage;
+    bumpAverage.b = bumpAverage;
+    bumpTexel.rgb = ((bumpTexel.rgb - 0.5f) * max(bumpContrast, 0)) + 0.5f;
+    bumpTexel.rgb += bumpBrightness;
+    inputTexel.rgb *= bumpTexel.rgb;
 
     float4 worldColor = inputTexel*PS.Diffuse;
     if (filterOverlayMode) {

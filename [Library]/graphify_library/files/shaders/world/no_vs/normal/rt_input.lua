@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: no_vs: no_bump: rt_input.lua
+     Shaders: world: no_vs: normal: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["No_VS"]["No_Bump"],
+    category = AVAILABLE_SHADERS["World"]["No_VS"]["Normal"],
     reference = "RT_Input",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
@@ -57,8 +57,10 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
+bool enableBump = false;
 bool filterOverlayMode;
 float4 filterColor;
+texture bumpTexture;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -82,6 +84,13 @@ sampler inputSampler = sampler_state {
     Texture = (gTexture0);
 };
 
+sampler bumpSampler = sampler_state {
+    Texture = (bumpTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
+
 
 /*----------------
 -->> Handlers <<--
@@ -92,6 +101,10 @@ Pixel PixelShaderFunction(PSInput PS) {
 	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
+    if (enableBump) {
+        float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
+        inputTexel.rgb *= bumpTexel.rgb;
+    }
     float4 worldColor = inputTexel*PS.Diffuse;
     if (filterOverlayMode) {
         worldColor += filterColor;
