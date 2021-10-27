@@ -136,9 +136,9 @@ Pixel PixelShaderFunction(PSInput PS) {
     float4 bumpTexel = tex2D(normalSampler, PS.TexCoord);
 
     float bumpAverage = (inputTexel.r + inputTexel.g + inputTexel.b)/3.0f;
-    bumpAverage.r = bumpAverage;
-    bumpAverage.g = bumpAverage;
-    bumpAverage.b = bumpAverage;
+    bumpTexel.r = bumpAverage;
+    bumpTexel.g = bumpAverage;
+    bumpTexel.b = bumpAverage;
     bumpTexel.rgb = ((bumpTexel.rgb - 0.5f) * max(bumpContrast, 0)) + 0.5f;
     bumpTexel.rgb += bumpBrightness;
     inputTexel.rgb *= bumpTexel.rgb;
