@@ -107,9 +107,9 @@ function setFilterColor(color)
 end
 
 
-----------------------------------------
---[[ Function: Sets Normal-Gen Mode ]]--
-----------------------------------------
+------------------------------------------------------------
+--[[ Functions: Retrieves/Sets Normal-Gen/Emissive Mode ]]--
+------------------------------------------------------------
 
 function setNormalGenMode(...)
 
@@ -120,10 +120,14 @@ function setNormalGenMode(...)
 
 end
 
+function getEmissiveMode()
 
--------------------------------------------------
---[[ Functions: Sets/Retrieves Emissive Mode ]]--
--------------------------------------------------
+    if isGraphifySupported then
+        return emissiveMapCache.state
+    end
+    return false
+
+end
 
 function setEmissiveMode(state)
 
@@ -133,15 +137,6 @@ function setEmissiveMode(state)
         elseif state == false then
             return destroyEmissiveMode()
         end
-    end
-    return false
-
-end
-
-function getEmissiveMode()
-
-    if isGraphifySupported then
-        return emissiveMapCache.state
     end
     return false
 
@@ -180,27 +175,8 @@ end
 
 
 ----------------------------------------------------------
---[[ Functions: Creates/Destroys/Retrieves Normal-Map ]]--
+--[[ Functions: Retrieves/Creates/Destroys Normal-Map ]]--
 ----------------------------------------------------------
-
-function createNormalMap(...)
-
-    return generateNormalMap(...)
-
-end
-
-function destroyNormalMap(shader)
-
-    if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
-        imports.dxSetShaderValue(shader, "enableNormalMap", false)
-        imports.dxSetShaderValue(shader, "normalTexture", nil)
-        normalMapCache.normalMaps.shaders[shader].shaderMaps.normal = nil
-        imports.validateNormalMap(shader)
-        return true
-    end
-    return false
-
-end
 
 function getNormalMap(texture)
 
@@ -211,10 +187,38 @@ function getNormalMap(texture)
 
 end
 
+function createNormalMap(...)
 
---------------------------------------------------------
---[[ Functions: Creates/Destroys/Retrieves Bump-Map ]]--
---------------------------------------------------------
+    return generateNormalMap(...)
+
+end
+
+function destroyNormalMap(shader)
+
+    if isGraphifySupported then
+        local shaderReference = false
+        if normalMapCache.normalMaps.shaders[shader] then
+            normalMapCache.normalMaps.shaders[shader].shaderMaps.normal = nil
+            if not imports.validateNormalMap(shader) then
+                shaderReference = shader
+            end
+        elseif controlMapCache.controlMaps.shaders[shader] then
+            shaderReference = shader
+        end
+        if shaderReference then
+            imports.dxSetShaderValue(shaderReference, "enableNormalMap", false)
+            imports.dxSetShaderValue(shaderReference, "normalTexture", nil)
+        end
+        return true
+    end
+    return false
+
+end
+
+
+----------------------------------------------
+--[[ Functions: Creates/Destroys Bump-Map ]]--
+----------------------------------------------
 
 function createBumpMap(...)
 
@@ -224,11 +228,20 @@ end
 
 function destroyBumpMap(shader)
 
-    if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
-        imports.dxSetShaderValue(shader, "enableBumpMap", false)
-        imports.dxSetShaderValue(shader, "bumpTexture", nil)
-        normalMapCache.normalMaps.shaders[shader].shaderMaps.bump = nil
-        imports.validateNormalMap(shader)
+    if isGraphifySupported then
+        local shaderReference = false
+        if normalMapCache.normalMaps.shaders[shader] then
+            normalMapCache.normalMaps.shaders[shader].shaderMaps.bump = nil
+            if not imports.validateNormalMap(shader) then
+                shaderReference = shader
+            end
+        elseif controlMapCache.controlMaps.shaders[shader] then
+            shaderReference = shader
+        end
+        if shaderReference then
+            imports.dxSetShaderValue(shaderReference, "enableBumpMap", false)
+            imports.dxSetShaderValue(shaderReference, "bumpTexture", nil)
+        end
         return true
     end
     return false
@@ -237,8 +250,17 @@ end
 
 
 -----------------------------------------------------------
---[[ Functions: Creates/Destroys/Retrieves Control-Map ]]--
+--[[ Functions: Retrieves/Creates/Destroys Control-Map ]]--
 -----------------------------------------------------------
+
+function getControlMap(texture)
+
+    if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
+        return controlMapCache.controlMaps.textures[texture]
+    end
+    return false
+
+end
 
 function createControlMap(...)
 
@@ -252,14 +274,5 @@ function destroyControlMap(shader)
         return imports.destroyElement(shader)
     end
     return true
-
-end
-
-function getControlMap(texture)
-
-    if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
-        return controlMapCache.controlMaps.textures[texture]
-    end
-    return false
 
 end
