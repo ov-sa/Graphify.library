@@ -33,34 +33,31 @@ local imports = {
 --[[ Function: Generates Bump-Map ]]--
 --------------------------------------
 
-function generateBumpMap(texture, type, bumpElement)
+function generateBumpMap(texture, type, bumpMap)
 
     type = ((type == "object") and "world") or type
-    if not texture or not type or not normalMapCache.validNormalTypes[type] or not bumpElement or not imports.isElement(bumpElement) or (imports.getElementType(bumpElement) ~= "texture") or normalMapCache.normalMaps.textures[texture] then return false end
+    if not texture or not type or not normalMapCache.validNormalTypes[type] or not bumpMap or not imports.isElement(bumpMap) or (imports.getElementType(bumpMap) ~= "texture") or normalMapCache.normalMaps.textures[texture] then return false end
 
-    local createdNormalMap = false
-    local textureControlMap = imports.getControlMap(texture)
-    if textureControlMap then
-        createdNormalMap = textureControlMap
-    else
+    local textureControlMap, textureNormalMap = imports.getControlMap(texture), getNormalMap(texture)
+    local createdNormalMap = textureControlMap or textureNormalMap or false
+    if not createdNormalMap then
         createdNormalMap = imports.dxCreateShader(imports.unpack(normalMapCache.validNormalTypes[type].rwData))
+        normalMapCache.normalMaps.shaders[createdNormalMap] = {
+            texture = texture,
+            type = type,
+            shaderMaps = {}
+        }
+        normalMapCache.normalMaps.textures[texture] = createdNormalMap
         if normalMapCache.validNormalTypes[type].syncRT then
             imports.syncRTWithShader(createdNormalMap)
         end
+        for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
+            imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
+        end
     end
-    for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
-        imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
-    end
+    normalMapCache.normalMaps.shaders[createdNormalMap].shaderMaps.bump = bumpMap
     imports.dxSetShaderValue(createdNormalMap, "enableBumpMap", true)
-    imports.dxSetShaderValue(createdNormalMap, "bumpTexture", bumpElement)
-    normalMapCache.normalMaps.shaders[createdNormalMap] = {
-        texture = texture,
-        type = type,
-        shaderMaps = {
-            bumpElement = bumpElement
-        }
-    }
-    normalMapCache.normalMaps.textures[texture] = createdNormalMap
+    imports.dxSetShaderValue(createdNormalMap, "bumpTexture", bumpMap)
     if not textureControlMap then
         imports.engineApplyShaderToWorldTexture(createdNormalMap, texture)
     end

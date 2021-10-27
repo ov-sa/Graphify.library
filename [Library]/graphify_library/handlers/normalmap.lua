@@ -59,32 +59,31 @@ normalMapCache = {
 --[[ Functions: Generates/Re-Generates Normal/Bump-Map ]]--
 -----------------------------------------------------------
 
-function generateNormalMap(texture, type, normalElement)
+function generateNormalMap(texture, type, normalMap)
 
     type = ((type == "object") and "world") or type
-    if not texture or not type or not normalMapCache.validNormalTypes[type] or not normalElement or not imports.isElement(normalElement) or (imports.getElementType(normalElement) ~= "texture") or normalMapCache.normalMaps.textures[texture] then return false end
+    if not texture or not type or not normalMapCache.validNormalTypes[type] or not normalMap or not imports.isElement(normalMap) or (imports.getElementType(normalMap) ~= "texture") or normalMapCache.normalMaps.textures[texture] then return false end
 
-    local createdNormalMap = false
-    local textureControlMap = imports.getControlMap(texture)
-    if textureControlMap then
-        createdNormalMap = textureControlMap
-    else
+    local textureControlMap, textureNormalMap = imports.getControlMap(texture), getNormalMap(texture)
+    local createdNormalMap = textureControlMap or textureNormalMap or false
+    if not createdNormalMap then
         createdNormalMap = imports.dxCreateShader(imports.unpack(normalMapCache.validNormalTypes[type].rwData))
+        normalMapCache.normalMaps.shaders[createdNormalMap] = {
+            texture = texture,
+            type = type,
+            shaderMaps = {}
+        }
+        normalMapCache.normalMaps.textures[texture] = createdNormalMap
         if normalMapCache.validNormalTypes[type].syncRT then
             imports.syncRTWithShader(createdNormalMap)
         end
+        for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
+            imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
+        end
     end
-    for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
-        imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
-    end
+    normalMapCache.normalMaps.shaders[createdNormalMap].shaderMaps.normal = normalMap
     imports.dxSetShaderValue(createdNormalMap, "enableNormalMap", true)
-    imports.dxSetShaderValue(createdNormalMap, "normalTexture", normalElement)
-    normalMapCache.normalMaps.shaders[createdNormalMap] = {
-        texture = texture,
-        normalElement = normalElement,
-        type = type
-    }
-    normalMapCache.normalMaps.textures[texture] = createdNormalMap
+    imports.dxSetShaderValue(createdNormalMap, "normalTexture", normalMap)
     if not textureControlMap then
         imports.engineApplyShaderToWorldTexture(createdNormalMap, texture)
     end
@@ -105,7 +104,7 @@ function regenerateNormalMap(texture, destroyMap)
         normalMapCache.normalMaps.textures[texture] = nil
         normalMapCache.normalMaps.shaders[textureReference] = nil
         imports.setTimer(function()
-            generateNormalMap(normalDetails.texture, normalDetails.type, normalDetails.normalElement)
+            generateNormalMap(normalDetails.texture, normalDetails.type, normalDetails.normalMap)
         end, 1, 1)
         return true
     end
