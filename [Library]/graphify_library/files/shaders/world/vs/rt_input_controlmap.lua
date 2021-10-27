@@ -60,7 +60,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -------------------*/
 
 bool disableNormals = false;
-bool enableFilterOverlay = false;
 bool enableNormalMap = false;
 bool enableBumpMap = false;
 float4 filterColor;
@@ -194,11 +193,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     }
 
     float4 worldColor = sampledControlTexel;
-    if (enableFilterOverlay) {
-        worldColor += filterColor;
-    } else {
-        worldColor *= filterColor;
-    }
+    worldColor = lerp(worldColor, filterColor, filterColor.a);
     worldColor.a = controlTexel.a;
     output.World = saturate(worldColor);
     output.Color.rgb = sampledControlTexel.rgb;

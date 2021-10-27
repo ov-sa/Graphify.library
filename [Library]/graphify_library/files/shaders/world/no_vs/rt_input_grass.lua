@@ -58,7 +58,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool enableFilterOverlay = false;
 float4 filterColor;
 
 struct Pixel {

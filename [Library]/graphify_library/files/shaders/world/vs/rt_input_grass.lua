@@ -59,7 +59,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool enableFilterOverlay = false;
 float4 filterColor;
 
 struct Pixel {
@@ -101,11 +100,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     if (gStage1ColorOp == 4) {
         worldColor *= gTextureFactor;
     }
-    if (enableFilterOverlay) {
-        worldColor += filterColor;
-    } else {
-        worldColor *= filterColor;
-    }
+    worldColor = lerp(worldColor, filterColor, filterColor.a);
     worldColor.a = inputTexel.a;
     output.World = worldColor; 
     output.Color = inputTexel; 

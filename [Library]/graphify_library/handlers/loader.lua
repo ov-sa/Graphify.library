@@ -78,7 +78,6 @@ imports.addEventHandler("onGraphifyLoad", root, function()
         imports.dxDrawImage(0, 0, CLIENT_MTA_RESOLUTION[1], CLIENT_MTA_RESOLUTION[2], createdShaders.sky_RT_Input.shader)
     end, false, PRIORITY_LEVEL.Sky_Render)
 
-    setFilterOverlayMode(DEFAULT_FILTER_OVERLAY_MODE)
     setFilterColor(DEFAULT_FILTER_COLOR)
     if DEFAULT_EMISSIVE_MODE then
         createEmissiveMode()

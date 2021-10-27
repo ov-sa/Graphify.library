@@ -57,7 +57,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool enableFilterOverlay = false;
 bool enableNormalMap = false;
 bool enableBumpMap = false;
 float4 filterColor;

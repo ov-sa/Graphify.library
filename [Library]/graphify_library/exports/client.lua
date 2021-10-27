@@ -60,25 +60,9 @@ function setSkyMapTexture(textureElement)
 end
 
 
------------------------------------------------------
---[[ Functions: Sets Filter's Overlay Mode/Color ]]--
------------------------------------------------------
-
-function setFilterOverlayMode(state)
-
-    if isGraphifySupported then
-        if (state == true) or (state == false) then
-            for i, j in imports.pairs(createdShaders) do
-                if (i ~= "__SORT_ORDER__") and j.ambientSupport then
-                    imports.dxSetShaderValue(j.shader, "enableFilterOverlay", state)
-                end
-            end
-            return true
-        end
-    end
-    return false
-
-end
+----------------------------------------
+--[[ Functions: Sets Filter's Color ]]--
+----------------------------------------
 
 function setFilterColor(color)
 

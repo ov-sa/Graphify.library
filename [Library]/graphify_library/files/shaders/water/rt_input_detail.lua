@@ -58,7 +58,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -->> Variables <<--
 -------------------*/
 
-bool enableFilterOverlay = false;
 float4 filterColor;
 float worldZBias = 0.01;
 
@@ -114,11 +113,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
     float4 worldColor = inputTexel*PS.Diffuse;
-    if (enableFilterOverlay) {
-        worldColor += filterColor;
-    } else {
-        worldColor *= filterColor;
-    }
+    worldColor = lerp(worldColor, filterColor, filterColor.a);
     worldColor.a = inputTexel.a;
     output.World = saturate(worldColor);
     output.Color.rgb = inputTexel.rgb*PS.Diffuse.rgb;

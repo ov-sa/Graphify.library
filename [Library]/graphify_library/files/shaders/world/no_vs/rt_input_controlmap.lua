@@ -61,7 +61,6 @@ texture emissiveLayer <string renderTarget = "yes";>;
 bool disableNormals = false;
 bool enableNormalMap = false;
 bool enableBumpMap = false;
-bool enableFilterOverlay = false;
 float4 filterColor;
 texture normalTexture;
 texture bumpTexture;
