@@ -76,12 +76,7 @@ function generateNormalMap(texture, type, normalElement)
         if normalMapCache.validNormalTypes[type].syncRT then
             imports.syncRTWithShader(createdNormalMap)
         end
-        --TODO: >..
-        addEventHandler("onClientRender", root, function()
-            dxDrawImage(150, 150, 1366/4, 768/4, createdNormalMap)
-        end)
     end
-    print("WOW PROCEEDED")
     for i, j in imports.pairs(normalMapCache.validNormalTypes[type].parameters) do
         imports.dxSetShaderValue(createdNormalMap, i, imports.unpack(j))
     end
