@@ -180,8 +180,11 @@ end
 
 function getNormalMap(texture)
 
-    if isGraphifySupported and texture and normalMapCache.normalMaps.textures[texture] then
-        return normalMapCache.normalMaps.textures[texture]
+    if isGraphifySupported and texture then
+        local shaderReference = normalMapCache.normalMaps.textures[texture]
+        if shaderReference then
+            return shaderReference, normalMapCache.normalMaps.shaders[shaderReference]
+        end
     end
     return false
 
@@ -255,8 +258,11 @@ end
 
 function getControlMap(texture)
 
-    if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
-        return controlMapCache.controlMaps.textures[texture]
+    if isGraphifySupported and texture then
+        local shaderReference = controlMapCache.controlMaps.textures[texture]
+        if shaderReference then
+            return shaderReference, controlMapCache.controlMaps.shaders[shaderReference]
+        end
     end
     return false
 

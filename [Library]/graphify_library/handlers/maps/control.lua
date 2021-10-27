@@ -75,7 +75,7 @@ function generateControlMap(texture, type, shaderControls)
         end
     end
 
-    imports.regenerateNormalMap(texture, true)
+    imports.regenerateNormalMap(texture, nil, true)
     local createdControlMap = imports.dxCreateShader(imports.unpack(controlMapCache.validControlTypes[type].rwData))
     if controlMapCache.validControlTypes[type].syncRT then
         imports.syncRTWithShader(createdControlMap)
@@ -108,7 +108,7 @@ imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if controlMapCache.controlMaps.shaders[source] then
-            imports.regenerateNormalMap(false, false, controlMapCache.controlMaps.shaders[source])
+            imports.regenerateNormalMap(nil, controlMapCache.controlMaps.shaders[source])
             controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)] = nil
             controlMapCache.controlMaps.shaders[source] = nil
         end
