@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: vs: no_normal: rt_input.lua
+     Shaders: world: vs: rt_input.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["VS"]["No_Normal"],
+    category = AVAILABLE_SHADERS["World"]["VS"],
     subCategory = "VS",
     reference = "RT_Input",
     dependencies = {},
@@ -132,7 +132,6 @@ Pixel PixelShaderFunction(PSInput PS) {
         worldColor *= filterColor;
     }
     worldColor.a = inputTexel.a;
-
     output.World = saturate(worldColor);
     output.Color.rgb = inputTexel.rgb;
     output.Color.a = inputTexel.a*PS.Diffuse.a;

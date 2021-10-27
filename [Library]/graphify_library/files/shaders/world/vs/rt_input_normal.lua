@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: vs: normal: rt_input.lua
+     Shaders: world: vs: normal: rt_input_normal.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT Inputter ]]--
+     Desc: World's RT Normal Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -24,7 +24,7 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["VS"]["Normal"],
+    category = AVAILABLE_SHADERS["World"]["VS"],
     subCategory = "VS",
     reference = "RT_Input",
     dependencies = {},
@@ -170,7 +170,7 @@ Pixel PixelShaderFunction(PSInput PS) {
 -->> Techniques <<--
 --------------------*/
 
-technique world_rtInput {
+technique world_rtInputNormal {
     pass P0 {
         SRGBWriteEnable = false;
         VertexShader = compile vs_2_0 VertexShaderFunction();

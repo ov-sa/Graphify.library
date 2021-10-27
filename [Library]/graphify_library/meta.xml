@@ -29,8 +29,8 @@
     <script src="files/shaders/world/no_vs/rt_input_nozwrite.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input_emissive.lua" type="client" cache="false"/>
     <script src="files/shaders/world/no_vs/rt_input_controlmap.lua" type="client" cache="false"/>
-    <script src="files/shaders/world/vs/no_normal/rt_input.lua" type="client" cache="false"/>
-    <script src="files/shaders/world/vs/normal/rt_input.lua" type="client" cache="false"/>
+    <script src="files/shaders/world/vs/rt_input.lua" type="client" cache="false"/>
+    <script src="files/shaders/world/vs/rt_input_normal.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_ref.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_grass.lua" type="client" cache="false"/>
     <script src="files/shaders/world/vs/rt_input_nozwrite.lua" type="client" cache="false"/>

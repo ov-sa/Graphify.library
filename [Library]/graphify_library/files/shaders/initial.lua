@@ -29,14 +29,8 @@ AVAILABLE_SHADERS = {
     },
     ["Bloom"] = {},
     ["World"] = {
-        ["No_VS"] = {
-            ["No_Normal"] = {},
-            ["Normal"] = {}
-        },
-        ["VS"] = {
-            ["No_Normal"] = {},
-            ["Normal"] = {}
-        }
+        ["No_VS"] = {},
+        ["VS"] = {}
     },
     ["Ped"] = {},
     ["Vehicle"] = {
