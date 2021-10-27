@@ -18,6 +18,7 @@ local imports = {
     pairs = pairs,
     ipairs = ipairs,
     loadstring = loadstring,
+    destroyElement = destroyElement,
     addEventHandler = addEventHandler,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
@@ -93,5 +94,28 @@ function setShaderTextureList(shader, list, state)
         setterFunction(shader, j)
     end
     return true
+
+end
+
+
+----------------------------------------
+--[[ Function: Validates Normal Map ]]--
+----------------------------------------
+
+function validateNormalMap(shader)
+
+    if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
+        local isValid = false
+        for i, j in imports.pairs(normalMapCache.normalMaps.shaders[shader].shaderMaps) do
+            if j and imports.isElement(j) then
+                isValid = true
+                break
+            end
+        end
+        if not isValid then
+            return imports.destroyElement(shader)
+        end
+    end
+    return false
 
 end

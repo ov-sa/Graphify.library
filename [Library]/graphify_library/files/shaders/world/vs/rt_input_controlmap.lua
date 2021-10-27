@@ -5,7 +5,7 @@
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT Control-Map Inputter ]]--
+     Desc: World's RT Control Map Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -60,9 +60,11 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -------------------*/
 
 bool disableNormals = false;
-bool enableBump = false;
-bool filterOverlayMode;
+bool enableFilterOverlay = false;
+bool enableNormalMap = false;
+bool enableBumpMap = false;
 float4 filterColor;
+texture normalTexture;
 texture bumpTexture;
 float anisotropy = 1;
 float redControlScale = 1;
@@ -104,6 +106,13 @@ sampler controlSampler = sampler_state {
     MipFilter = Linear;
     MaxAnisotropy = gCapsMaxAnisotropy*anisotropy;
     MinFilter = Anisotropic;
+};
+
+sampler normalSampler = sampler_state {
+    Texture = (normalTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
 };
 
 sampler bumpSampler = sampler_state {
@@ -179,12 +188,13 @@ Pixel PixelShaderFunction(PSInput PS) {
     sampledControlTexel = lerp(sampledControlTexel, blueTexel, controlTexel.b);
     sampledControlTexel.rgb = sampledControlTexel.rgb/3;
 
-    if (enableBump) {
+    if (enableBumpMap) {
         float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
         sampledControlTexel.rgb *= bumpTexel.rgb;
     }
+
     float4 worldColor = sampledControlTexel;
-    if (filterOverlayMode) {
+    if (enableFilterOverlay) {
         worldColor += filterColor;
     } else {
         worldColor *= filterColor;

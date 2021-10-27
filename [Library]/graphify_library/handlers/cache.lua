@@ -56,7 +56,7 @@ createdShaders = {
     },
 
     world_RT_Input = {
-        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]["No_Bump"]) or AVAILABLE_SHADERS["World"]["No_VS"]["No_Bump"])["RT_Input"], 0, 0, false, "world,object"},
+        rwData = {((DEFAULT_VS_MODE and AVAILABLE_SHADERS["World"]["VS"]) or AVAILABLE_SHADERS["World"]["No_VS"])["RT_Input"], 0, 0, false, "world,object"},
         syncRT = true,
         controlNormals = (DEFAULT_VS_MODE and true) or false,
         ambientSupport = true,

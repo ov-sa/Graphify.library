@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
 --[[ Resource: Graphify Library
-     Shaders: world: vs: bump: rt_input.lua
+     Shaders: world: vs: rt_input_normal.lua
      Server: -
      Author: OvileAmriam, Ren712
      Developer: Aviril
      DOC: 29/09/2021 (OvileAmriam)
-     Desc: World's RT Inputter ]]--
+     Desc: World's RT Normal Inputter ]]--
 ----------------------------------------------------------------
 
 
@@ -24,9 +24,8 @@ local imports = {
 -------------------
 
 local shaderConfig = {
-    category = AVAILABLE_SHADERS["World"]["VS"]["Bump"],
-    subCategory = "VS",
-    reference = "RT_Input",
+    category = AVAILABLE_SHADERS["World"]["VS"],
+    reference = "RT_Input_Normal",
     dependencies = {},
     dependencyData = AVAILABLE_SHADERS["Utilities"]["MTA_Helper"]
 }
@@ -52,17 +51,18 @@ shaderConfig.category[shaderConfig.reference] = [[
 texture colorLayer <string renderTarget = "yes";>;
 texture normalLayer <string renderTarget = "yes";>;
 texture emissiveLayer <string renderTarget = "yes";>;
-// #define GENERATE_NORMALS
 
 
 /*-----------------
 -->> Variables <<--
 -------------------*/
 
-bool enableBump = false;
 bool disableNormals = false;
-bool filterOverlayMode;
+bool enableFilterOverlay = false;
+bool enableNormalMap = false;
+bool enableBumpMap = false;
 float4 filterColor;
+texture normalTexture;
 texture bumpTexture;
 
 struct Pixel {
@@ -94,6 +94,13 @@ struct PSInput {
 
 sampler inputSampler = sampler_state {
     Texture = (gTexture0);
+};
+
+sampler normalSampler = sampler_state {
+    Texture = (normalTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
 };
 
 sampler bumpSampler = sampler_state {
@@ -134,12 +141,13 @@ Pixel PixelShaderFunction(PSInput PS) {
 	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
 
-    if (enableBump) {
+    if (enableBumpMap) {
         float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
         inputTexel.rgb *= bumpTexel.rgb;
     }
+
     float4 worldColor = inputTexel*PS.Diffuse;
-    if (filterOverlayMode) {
+    if (enableFilterOverlay) {
         worldColor += filterColor;
     } else {
         worldColor *= filterColor;
@@ -164,7 +172,7 @@ Pixel PixelShaderFunction(PSInput PS) {
 -->> Techniques <<--
 --------------------*/
 
-technique world_rtInput {
+technique world_rtInputNormal {
     pass P0 {
         SRGBWriteEnable = false;
         VertexShader = compile vs_2_0 VertexShaderFunction();

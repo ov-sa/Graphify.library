@@ -21,6 +21,7 @@ local imports = {
     destroyElement = destroyElement,
     unpackColor = unpackColor,
     disableNormals = disableNormals,
+    validateNormalMap = validateNormalMap,
     dxSetShaderValue = dxSetShaderValue,
     engineApplyShaderToWorldTexture = engineApplyShaderToWorldTexture,
     engineRemoveShaderFromWorldTexture = engineRemoveShaderFromWorldTexture,
@@ -39,20 +40,6 @@ function getLayerRTs()
 
     if isGraphifySupported then 
         return createdRTs
-    end
-    return false
-
-end
-
-
---------------------------------------------------
---[[ Function: Sets Normal Generation's State ]]--
---------------------------------------------------
-
-function setNormalGenerationState(...)
-
-    if isGraphifySupported then
-        return imports.disableNormals(...)
     end
     return false
 
@@ -83,7 +70,7 @@ function setFilterOverlayMode(state)
         if (state == true) or (state == false) then
             for i, j in imports.pairs(createdShaders) do
                 if (i ~= "__SORT_ORDER__") and j.ambientSupport then
-                    imports.dxSetShaderValue(j.shader, "filterOverlayMode", state)
+                    imports.dxSetShaderValue(j.shader, "enableFilterOverlay", state)
                 end
             end
             return true
@@ -120,18 +107,14 @@ function setFilterColor(color)
 end
 
 
--------------------------------------------------
---[[ Functions: Sets/Retrieves Emissive Mode ]]--
--------------------------------------------------
+------------------------------------------------------------
+--[[ Functions: Retrieves/Sets Normal-Gen/Emissive Mode ]]--
+------------------------------------------------------------
 
-function setEmissiveMode(state)
+function setNormalGenMode(...)
 
     if isGraphifySupported then
-        if state == true then
-            return createEmissiveMode()
-        elseif state == false then
-            return destroyEmissiveMode()
-        end
+        return imports.disableNormals(...)
     end
     return false
 
@@ -141,6 +124,19 @@ function getEmissiveMode()
 
     if isGraphifySupported then
         return emissiveMapCache.state
+    end
+    return false
+
+end
+
+function setEmissiveMode(state)
+
+    if isGraphifySupported then
+        if state == true then
+            return createEmissiveMode()
+        elseif state == false then
+            return destroyEmissiveMode()
+        end
     end
     return false
 
@@ -178,9 +174,54 @@ function setTextureEmissiveState(texture, type, state, targetElement)
 end
 
 
---------------------------------------------------------
---[[ Functions: Creates/Destroys/Retrieves Bump-Map ]]--
---------------------------------------------------------
+----------------------------------------------------------
+--[[ Functions: Retrieves/Creates/Destroys Normal Map ]]--
+----------------------------------------------------------
+
+function getNormalMap(texture)
+
+    if isGraphifySupported and texture then
+        local shaderReference = normalMapCache.normalMaps.textures[texture]
+        if shaderReference then
+            return shaderReference, normalMapCache.normalMaps.shaders[shaderReference]
+        end
+    end
+    return false
+
+end
+
+function createNormalMap(...)
+
+    return generateNormalMap(...)
+
+end
+
+function destroyNormalMap(shader)
+
+    if isGraphifySupported then
+        local shaderReference = false
+        if normalMapCache.normalMaps.shaders[shader] then
+            normalMapCache.normalMaps.shaders[shader].shaderMaps.normal = nil
+            if not imports.validateNormalMap(shader) then
+                shaderReference = shader
+            end
+        elseif controlMapCache.controlMaps.shaders[shader] then
+            shaderReference = shader
+        end
+        if shaderReference then
+            imports.dxSetShaderValue(shaderReference, "enableNormalMap", false)
+            imports.dxSetShaderValue(shaderReference, "normalTexture", nil)
+        end
+        return true
+    end
+    return false
+
+end
+
+
+----------------------------------------------
+--[[ Functions: Creates/Destroys Bump Map ]]--
+----------------------------------------------
 
 function createBumpMap(...)
 
@@ -190,17 +231,21 @@ end
 
 function destroyBumpMap(shader)
 
-    if isGraphifySupported and bumpMapCache.bumpMaps.shaders[shader] then
-        return imports.destroyElement(shader)
-    end
-    return true
-
-end
-
-function getBumpMap(texture)
-
-    if isGraphifySupported and texture and bumpMapCache.bumpMaps.textures[texture] then
-        return bumpMapCache.bumpMaps.textures[texture]
+    if isGraphifySupported then
+        local shaderReference = false
+        if normalMapCache.normalMaps.shaders[shader] then
+            normalMapCache.normalMaps.shaders[shader].shaderMaps.bump = nil
+            if not imports.validateNormalMap(shader) then
+                shaderReference = shader
+            end
+        elseif controlMapCache.controlMaps.shaders[shader] then
+            shaderReference = shader
+        end
+        if shaderReference then
+            imports.dxSetShaderValue(shaderReference, "enableBumpMap", false)
+            imports.dxSetShaderValue(shaderReference, "bumpTexture", nil)
+        end
+        return true
     end
     return false
 
@@ -208,8 +253,20 @@ end
 
 
 -----------------------------------------------------------
---[[ Functions: Creates/Destroys/Retrieves Control-Map ]]--
+--[[ Functions: Retrieves/Creates/Destroys Control Map ]]--
 -----------------------------------------------------------
+
+function getControlMap(texture)
+
+    if isGraphifySupported and texture then
+        local shaderReference = controlMapCache.controlMaps.textures[texture]
+        if shaderReference then
+            return shaderReference, controlMapCache.controlMaps.shaders[shaderReference]
+        end
+    end
+    return false
+
+end
 
 function createControlMap(...)
 
@@ -217,20 +274,12 @@ function createControlMap(...)
 
 end
 
-function destroyControlMap(shader)
+function destroyControlMap(shader, skipPropagation)
 
     if isGraphifySupported and controlMapCache.controlMaps.shaders[shader] then
+        controlMapCache.controlMaps.shaders[source].skipPropagation = (skipPropagation and true) or false
         return imports.destroyElement(shader)
     end
     return true
-
-end
-
-function getControlMap(texture)
-
-    if isGraphifySupported and texture and controlMapCache.controlMaps.textures[texture] then
-        return controlMapCache.controlMaps.textures[texture]
-    end
-    return false
 
 end
