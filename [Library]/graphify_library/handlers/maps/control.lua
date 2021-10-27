@@ -108,7 +108,9 @@ imports.addEventHandler("onClientElementDestroy", resourceRoot, function()
 
     if not isLibraryResourceStopping then
         if controlMapCache.controlMaps.shaders[source] then
-            imports.regenerateNormalMap(nil, controlMapCache.controlMaps.shaders[source])
+            if not controlMapCache.controlMaps.shaders[source].skipPropagation then
+                imports.regenerateNormalMap(nil, controlMapCache.controlMaps.shaders[source])
+            end
             controlMapCache.controlMaps.textures[(controlMapCache.controlMaps.shaders[source].texture)] = nil
             controlMapCache.controlMaps.shaders[source] = nil
         end

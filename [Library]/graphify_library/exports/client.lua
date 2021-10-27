@@ -274,9 +274,10 @@ function createControlMap(...)
 
 end
 
-function destroyControlMap(shader)
+function destroyControlMap(shader, skipPropagation)
 
     if isGraphifySupported and controlMapCache.controlMaps.shaders[shader] then
+        controlMapCache.controlMaps.shaders[source].skipPropagation = (skipPropagation and true) or false
         return imports.destroyElement(shader)
     end
     return true

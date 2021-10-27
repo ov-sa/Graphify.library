@@ -62,7 +62,7 @@ normalMapCache = {
 function generateNormalMap(texture, type, normalMap)
 
     type = ((type == "object") and "world") or type
-    if not texture or not type or not normalMapCache.validNormalTypes[type] or not normalMap or not imports.isElement(normalMap) or (imports.getElementType(normalMap) ~= "texture") or normalMapCache.normalMaps.textures[texture] then return false end
+    if not texture or not type or not normalMapCache.validNormalTypes[type] or not normalMap or not imports.isElement(normalMap) or (imports.getElementType(normalMap) ~= "texture") then return false end
 
     local createdNormalMap, shaderReference = false, false
     local texControlMap, texControlReference = imports.getControlMap(texture)
@@ -118,7 +118,6 @@ function regenerateNormalMap(texture, shaderReference, destroyShader)
     end
 
     if mapDetails then
-        print("REGENERATIN!!!")
         imports.setTimer(function(mapDetails)
             if mapDetails and mapDetails.shaderMaps then
                 for i, j in imports.pairs(mapDetails.shaderMaps) do

@@ -34,7 +34,7 @@ local imports = {
 function generateBumpMap(texture, type, bumpMap)
 
     type = ((type == "object") and "world") or type
-    if not texture or not type or not normalMapCache.validNormalTypes[type] or not bumpMap or not imports.isElement(bumpMap) or (imports.getElementType(bumpMap) ~= "texture") or normalMapCache.normalMaps.textures[texture] then return false end
+    if not texture or not type or not normalMapCache.validNormalTypes[type] or not bumpMap or not imports.isElement(bumpMap) or (imports.getElementType(bumpMap) ~= "texture") then return false end
 
     local createdNormalMap, shaderReference = false, false
     local texControlMap, texControlReference = imports.getControlMap(texture)

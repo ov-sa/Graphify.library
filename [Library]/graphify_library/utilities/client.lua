@@ -102,7 +102,7 @@ end
 --[[ Function: Validates Normal Map ]]--
 ----------------------------------------
 
-function isValid(shader)
+function validateNormalMap(shader)
 
     if isGraphifySupported and normalMapCache.normalMaps.shaders[shader] then
         local isValid = false
