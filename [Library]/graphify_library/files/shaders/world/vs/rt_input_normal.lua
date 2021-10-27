@@ -140,6 +140,7 @@ Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
 	
     float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
+
     if (enableBumpMap) {
         float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
         inputTexel.rgb *= bumpTexel.rgb;
