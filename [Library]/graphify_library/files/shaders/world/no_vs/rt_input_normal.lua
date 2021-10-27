@@ -58,10 +58,11 @@ texture emissiveLayer <string renderTarget = "yes";>;
 -------------------*/
 
 bool enableFilterOverlay = false;
+bool enableNormalMap = false;
+bool enableBumpMap = false;
 float4 filterColor;
 texture normalTexture;
-float bumpContrast = 0.5;
-float bumpBrightness = 0.5;
+texture bumpTexture;
 
 struct Pixel {
     float4 World : COLOR0;
@@ -92,6 +93,13 @@ sampler normalSampler = sampler_state {
     MipFilter = Linear;
 };
 
+sampler bumpSampler = sampler_state {
+    Texture = (bumpTexture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
+
 
 /*----------------
 -->> Handlers <<--
@@ -99,17 +107,13 @@ sampler normalSampler = sampler_state {
 
 Pixel PixelShaderFunction(PSInput PS) {
     Pixel output;
-	
-    float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
-    float4 bumpTexel = tex2D(normalSampler, PS.TexCoord);
 
-    float bumpAverage = (inputTexel.r + inputTexel.g + inputTexel.b)/3.0f;
-    bumpTexel.r = bumpAverage;
-    bumpTexel.g = bumpAverage;
-    bumpTexel.b = bumpAverage;
-    bumpTexel.rgb = ((bumpTexel.rgb - 0.5f) * max(bumpContrast, 0)) + 0.5f;
-    bumpTexel.rgb += bumpBrightness;
-    inputTexel.rgb *= bumpTexel.rgb;
+    float4 inputTexel = tex2D(inputSampler, PS.TexCoord);
+
+    if (enableBumpMap) {
+        float4 bumpTexel = tex2D(bumpSampler, PS.TexCoord);
+        inputTexel.rgb *= bumpTexel.rgb;
+    }
 
     float4 worldColor = inputTexel*PS.Diffuse;
     if (enableFilterOverlay) {
