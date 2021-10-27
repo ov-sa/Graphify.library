@@ -45,20 +45,6 @@ function getLayerRTs()
 end
 
 
---------------------------------------------------
---[[ Function: Sets Normal Generation's State ]]--
---------------------------------------------------
-
-function setNormalGenerationState(...)
-
-    if isGraphifySupported then
-        return imports.disableNormals(...)
-    end
-    return false
-
-end
-
-
 ------------------------------------------
 --[[ Function: Sets Sky-Map's Texture ]]--
 ------------------------------------------
@@ -172,6 +158,20 @@ function setTextureEmissiveState(texture, type, state, targetElement)
             local setterFunction = (state and imports.engineApplyShaderToWorldTexture) or imports.engineRemoveShaderFromWorldTexture
             return setterFunction(emissiveShader.shader, texture, targetElement)
         end
+    end
+    return false
+
+end
+
+
+--------------------------------------------------
+--[[ Function: Sets Normal Generation's State ]]--
+--------------------------------------------------
+
+function setNormalGenerationState(...)
+
+    if isGraphifySupported then
+        return imports.disableNormals(...)
     end
     return false
 
