@@ -261,7 +261,7 @@ end
 function destroyControlMap(shader, skipPropagation)
 
     if isGraphifySupported and controlMapCache.controlMaps.shaders[shader] then
-        controlMapCache.controlMaps.shaders[source].skipPropagation = (skipPropagation and true) or false
+        controlMapCache.controlMaps.shaders[shader].skipPropagation = (skipPropagation and true) or false
         return imports.destroyElement(shader)
     end
     return true
