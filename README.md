@@ -4,7 +4,7 @@
 
 ##### ━ Maintainer(s): [Aviril](https://github.com/Aviril)
 
-**Graphify Library** is a open-source pixel oriented rendering library made by **Aviril & Ren712** for [Multi Theft Auto \(MTA\)](https://multitheftauto.com/).
+**Graphify Library** is an open-source pixel oriented rendering library made by **vStudio** for [Multi Theft Auto \(MTA\)](https://multitheftauto.com/).
 
 **Graphify** combines powerful next level of pixel lightning techniques towards gamemode perspective for graphic manipulation, giving you the full capabilities to customize the rendering environment. Graphify helps you to customize your environment faster without stressing about performances issues, since the library is developed with '**Performance-First**' in mind! This library is a heavy refactor of **dl_core** developed by **Ren712** with better optimization and more addons integrated aiming towards gamemode development.
 
