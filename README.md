@@ -28,7 +28,7 @@
 
 ## ━ Dependencies
 
-* [**Beautify Library**](https://github.com/ov-sa/Beautify-Library)
+* [**Beautify Library**](https://github.com/ov-sa/Beautify.library)
 
 ## ━ Roadmap
 
@@ -44,7 +44,7 @@
 
 ## ━ Contents
 
-* [**Official Releases**](https://github.com/ov-sa/Graphify-Library/releases)
+* [**Official Releases**](https://github.com/ov-sa/Graphify.library/releases)
 * [**Installation Guide**](#)
 * [**Documentations**](#)
 * [**Discord Community**](http://discord.gg/sVCnxPW)
