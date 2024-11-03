@@ -19,10 +19,6 @@
 * Spot Light
 * Necessary Integration APIs
 
-## ━ Dependencies
-
-* [**Beautify Library**](https://github.com/ov-sa/Beautify.library)
-
 ## ━ Contents
 
 * [**Official Releases**](https://github.com/ov-sa/Graphify.library/releases)
