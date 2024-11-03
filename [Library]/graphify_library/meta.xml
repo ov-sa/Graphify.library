@@ -1,77 +1,37 @@
 <meta>
+    <info author="vStudio" name="Shader: Dynamic Light" type="Script" version="1.0.0"/>
+    <min_mta_version server="1.5.9" client="1.5.9"/>
+	<oop>true</oop>
 
-    <info author="OvileAmriam + Ren712" name="Graphify Library" type="Library" version="1.0.0"/>
-    <min_mta_version client="1.5.9"/>
-
-    <!-- Imports -->
-    <include resource="beautify_library"/>
-
-    <!-- Settings & Utilities -->
-    <script src="utilities/client.lua" type="client"/>
-    <script src="settings/client.lua" type="client"/>
-
-    <!-- Exports -->
-    <script src="exports/client.lua" type="client"/>
-
-    <!-- Files: Shaders -->
-    <file src="files/shaders/utilities/mta-helper.fx"/>
-    <script src="files/shaders/initial.lua" type="client"/>
-    <script src="files/shaders/utilities/z_buffer.lua" type="client"/>
-    <script src="files/shaders/utilities/tex_clear.lua" type="client"/>
-    <script src="files/shaders/bloom/rt_bright.lua" type="client"/>
-    <script src="files/shaders/bloom/rt_blend.lua" type="client"/>
-    <script src="files/shaders/bloom/rt_blurX.lua" type="client"/>
-    <script src="files/shaders/bloom/rt_blurY.lua" type="client"/>
-    <script src="files/shaders/world/no_vs/rt_input.lua" type="client"/>
-    <script src="files/shaders/world/no_vs/rt_input_normal.lua" type="client"/>
-    <script src="files/shaders/world/no_vs/rt_input_ref.lua" type="client"/>
-    <script src="files/shaders/world/no_vs/rt_input_grass.lua" type="client"/>
-    <script src="files/shaders/world/no_vs/rt_input_nozwrite.lua" type="client"/>
-    <script src="files/shaders/world/no_vs/rt_input_emissive.lua" type="client"/>
-    <script src="files/shaders/world/no_vs/rt_input_controlmap.lua" type="client"/>
-    <script src="files/shaders/world/vs/rt_input.lua" type="client"/>
-    <script src="files/shaders/world/vs/rt_input_normal.lua" type="client"/>
-    <script src="files/shaders/world/vs/rt_input_ref.lua" type="client"/>
-    <script src="files/shaders/world/vs/rt_input_grass.lua" type="client"/>
-    <script src="files/shaders/world/vs/rt_input_nozwrite.lua" type="client"/>
-    <script src="files/shaders/world/vs/rt_input_emissive.lua" type="client"/>
-    <script src="files/shaders/world/vs/rt_input_controlmap.lua" type="client"/>
-    <script src="files/shaders/ped/rt_input.lua" type="client"/>
-    <script src="files/shaders/vehicle/no_vs/rt_input.lua" type="client"/>
-    <script src="files/shaders/vehicle/vs/rt_input.lua" type="client"/>
-    <script src="files/shaders/sky/rt_input.lua" type="client"/>
-    <script src="files/shaders/sky/rt_input_transform.lua" type="client"/>
-    <script src="files/shaders/water/rt_input.lua" type="client"/>
-    <script src="files/shaders/water/rt_input_detail.lua" type="client"/>
+    <!-- Files -->
+    <script src="files/shaders/zbuffer.lua" type="client" cache="false"/>
+	<script src="files/shaders/layer.lua" type="client" cache="false"/>
+	<script src="files/shaders/invisible.lua" type="client" cache="false"/>
+	<script src="files/shaders/pointlight.lua" type="client" cache="false"/>
+	<script src="files/shaders/spotlight.lua" type="client" cache="false"/>
 
     <!-- Handlers -->
-    <script src="handlers/initial.lua" type="client"/>
-    <script src="handlers/cache.lua" type="client"/>
-    <script src="handlers/loader.lua" type="client"/>
-    <script src="handlers/maps/emissive.lua" type="client"/>
-    <script src="handlers/maps/normal.lua" type="client"/>
-    <script src="handlers/maps/bump.lua" type="client"/>
-    <script src="handlers/maps/control.lua" type="client"/>
-
-    <!-- Files: Textures -->
-    <file src="files/textures/sky/default.jpg"/>
+	<script src="handlers/index.lua" type="client" cache="false"/>
+	<script src="handlers/pointlight.lua" type="client" cache="false"/>	
+	<script src="handlers/spotlight.lua" type="client" cache="false"/>
 
     <!-- Exports -->
-    <export function="getLayerRTs" type="client"/>
-    <export function="setSkyMapTexture" type="client"/>
-    <export function="setFilterColor" type="client"/>
-    <export function="setNormalGenMode" type="client"/>
-    <export function="getEmissiveMode" type="client"/>
-    <export function="setEmissiveMode" type="client"/>
-    <export function="setTextureClearState" type="client"/>
-    <export function="setTextureEmissiveState" type="client"/>
-    <export function="getNormalMap" type="client"/>
-    <export function="createNormalMap" type="client"/>
-    <export function="destroyNormalMap" type="client"/>
-    <export function="createBumpMap" type="client"/>
-    <export function="destroyBumpMap" type="client"/>
-    <export function="getControlMap" type="client"/>
-    <export function="createControlMap" type="client"/>
-    <export function="destroyControlMap" type="client"/>
-
+    <export function="getLayerRT" type="client"/>
+    <export function="createPointLight" type="client"/>
+    <export function="setPointLightPosition" type="client"/>
+    <export function="setPointLightAttenuation" type="client"/>
+    <export function="setPointLightAttenuationPower" type="client"/>
+    <export function="setPointLightColor" type="client"/>
+    <export function="setPointLightFadeDistance" type="client"/>
+    <export function="createSpotLight" type="client"/>
+    <export function="setSpotLightPosition" type="client"/>
+    <export function="setSpotLightRotation" type="client"/>
+    <export function="setSpotLightAttenuation" type="client"/>
+    <export function="setSpotLightAttenuationPower" type="client"/>
+    <export function="setSpotLightTheta" type="client"/>
+    <export function="setSpotLightPhi" type="client"/>
+    <export function="setSpotLightFallOff" type="client"/>
+    <export function="setSpotLightDirection" type="client"/>
+    <export function="setSpotLightColor" type="client"/>
+    <export function="setSpotLightFadeDistance" type="client"/>
 </meta>
