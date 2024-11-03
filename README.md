@@ -12,8 +12,9 @@
 💎**CONSIDER** [**SPONSORING**](https://ko-fi.com/ovstudio) **US TO SUPPORT THE DEVELOPMENT.**
 
 * Completely Open-Source
-* Procedure Oriented Programming
+* Modular Programming
 * Completely Performance-Friendly
+* Gamemode Perspective
 * Pixel Lightning
 * Point Light
 * Spot Light
